@@ -4,6 +4,8 @@ import "./globals.css";
 import Themes from "@/lib/theme/theme";
 import FooterPage from "@/components/appComponent/footer";
 import NavBar from "@/components/appComponent/navigation/DesktopNav";
+import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/lib/query/provider";
 
 const PoppinsSans = Poppins({
   variable: "--font-poppins",
@@ -33,11 +35,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}>
-        <Themes defaultTheme="dark">
-          <NavBar />
-          {children}
-          <FooterPage />
-        </Themes>
+        <Providers>
+          <Themes defaultTheme="dark">
+            <NavBar />
+            {children}
+            <FooterPage />
+          </Themes>
+          <Toaster richColors />
+        </Providers>
       </body>
     </html>
   );

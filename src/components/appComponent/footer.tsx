@@ -5,11 +5,13 @@ import { useRef, useEffect } from "react";
 import { Copyright } from "lucide-react";
 import Image from "next/image";
 import { Social } from "./socials";
+import { usePathname } from "next/navigation";
 
 export default function FooterPage() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.1, once: true });
   const controls = useAnimation();
+  const pathName = usePathname();
   useEffect(() => {
     if (inView) controls.start("visible");
   }, [inView, controls]);
@@ -30,6 +32,7 @@ export default function FooterPage() {
     },
   };
 
+  if (pathName === "/auth" || pathName === "/admin") return;
   return (
     <motion.footer
       ref={ref}
@@ -42,7 +45,7 @@ export default function FooterPage() {
           variants={containerVariants}
           className="grid md:grid-cols-2 gap-5">
           <motion.div variants={itemVariants} className="flex flex-col gap-4">
-            <div className="relative h-10 w-32">
+            <div className="relative h-10 w-28">
               <Image
                 src="/logo.png"
                 alt="logo"

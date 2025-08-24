@@ -1,0 +1,1 @@
+ALTER TABLE "recent_projects" ADD COLUMN "is_published" boolean DEFAULT false;

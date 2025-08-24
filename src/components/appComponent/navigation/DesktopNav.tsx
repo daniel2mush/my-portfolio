@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { scrollToSection } from "../scroll";
 import { FiMenu, FiX } from "react-icons/fi";
+import Hamburger from "../utils/hamburger";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const navSections = [
   { name: "Home", link: "#home" },
@@ -33,6 +36,7 @@ export default function NavBar() {
   const [activeSection, setActiveSection] = useState("#home");
   const [isScrolling, setIsScrolling] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathName = usePathname();
 
   const navbarHeight = 64; // adjust for offset
 
@@ -62,83 +66,146 @@ export default function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className={`fixed top-0 w-full z-50 flex justify-center items-center py-2 transition-all duration-300 ${
-        isScrolling ? "bg-black/70 backdrop-blur-xl ring-1 ring-primary/10" : ""
-      }`}>
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
-        <div className="relative h-10 w-20 bg-red">
-          <Image
-            src="/logo.png"
-            alt="logo"
-            fill
-            priority
-            className="object-contain invert"
-          />
+  if (pathName === "/resume")
+    return (
+      <div
+        className={`fixed top-0 w-full z-50  py-4 px-10 transition-all duration-300 ${
+          isScrolling
+            ? "bg-black/30 backdrop-blur-xl ring-1 ring-primary/10"
+            : ""
+        }`}>
+        <Link href="/" className="font-bold text-primary">
+          ← Back to Home
+        </Link>
+      </div>
+    );
+
+  if (pathName === "/")
+    return (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={`fixed top-0 w-full z-50 flex justify-center items-center py-2 transition-all duration-300 ${
+          isScrolling
+            ? "bg-black/30 backdrop-blur-xl ring-1 ring-primary/10"
+            : ""
+        }`}>
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
+          <div className="relative h-10 w-20 bg-red">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              fill
+              priority
+              className="object-contain invert"
+            />
+          </div>
+
+          {/* Desktop Menu */}
+          <nav className="hidden md:flex items-center gap-6">
+            {navSections.map((n) => {
+              const isResume = n.name === "Resume";
+              return (
+                <div key={n.name}>
+                  {isResume ? (
+                    <motion.a
+                      href="/resume"
+                      key={n.name}
+                      variants={itemVariants}
+                      className={`font-semibold text-sm transition-all duration-300 ${
+                        activeSection === n.link ? "text-primary" : "text-white"
+                      } ${
+                        isResume
+                          ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
+                          : ""
+                      }`}>
+                      {n.name}
+                    </motion.a>
+                  ) : (
+                    <motion.button
+                      key={n.name}
+                      variants={itemVariants}
+                      onClick={() => scrollToSection(n.link)}
+                      className={`font-semibold text-sm transition-all duration-300 ${
+                        activeSection === n.link ? "text-primary" : "text-white"
+                      } ${
+                        isResume
+                          ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
+                          : ""
+                      }`}>
+                      {n.name}
+                    </motion.button>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+
+          {/* Mobile Menu Button */}
+
+          <div className=" md:hidden">
+            <Hamburger open={menuOpen} onClick={() => setMenuOpen(!menuOpen)} />
+          </div>
         </div>
 
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navSections.map((n) => {
-            const isResume = n.name === "Resume";
-            return (
-              <motion.button
-                key={n.name}
-                variants={itemVariants}
-                onClick={() => scrollToSection(n.link)}
-                className={`font-semibold text-sm transition-all duration-300 ${
-                  activeSection === n.link ? "text-primary" : "text-white"
-                } ${
-                  isResume
-                    ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
-                    : ""
-                }`}>
-                {n.name}
-              </motion.button>
-            );
-          })}
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-white text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <FiX /> : <FiMenu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute top-16 left-0 w-full bg-black/90 backdrop-blur-xl flex flex-col items-center gap-6 py-6 md:hidden">
-          {navSections.map((n) => {
-            const isResume = n.name === "Resume";
-            return (
-              <button
-                key={n.name}
-                onClick={() => {
-                  scrollToSection(n.link, navbarHeight);
-                  setMenuOpen(false);
-                }}
-                className={`font-semibold text-lg transition-all duration-300 ${
-                  activeSection === n.link ? "text-primary" : "text-white"
-                } ${
-                  isResume
-                    ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
-                    : ""
-                }`}>
-                {n.name}
-              </button>
-            );
-          })}
-        </motion.div>
-      )}
-    </motion.div>
-  );
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-16 ring ring-primary/50  w-[70%] rounded-lg bg-black/90 backdrop-blur-3xl flex flex-col items-center gap-6 py-6 md:hidden ">
+              {navSections.map((n) => {
+                const isResume = n.name === "Resume";
+                return (
+                  <div key={n.name}>
+                    {isResume ? (
+                      <Link
+                        href={"/resume"}
+                        key={n.name}
+                        onClick={() => {
+                          scrollToSection(n.link, navbarHeight);
+                          setMenuOpen(false);
+                        }}
+                        className={`font-semibold text-lg transition-all duration-300 ${
+                          activeSection === n.link
+                            ? "text-primary"
+                            : "text-white"
+                        } ${
+                          isResume
+                            ? "border py-1 px-2 bg-primary w-full rounded hover:bg-primary hover:text-white"
+                            : ""
+                        }`}>
+                        {n.name}
+                      </Link>
+                    ) : (
+                      <button
+                        key={n.name}
+                        onClick={() => {
+                          scrollToSection(n.link, navbarHeight);
+                          setMenuOpen(false);
+                        }}
+                        className={`font-semibold text-lg transition-all duration-300 ${
+                          activeSection === n.link
+                            ? "text-primary"
+                            : "text-white"
+                        } ${
+                          isResume
+                            ? "border py-1 px-2 bg-primary w-full rounded hover:bg-primary hover:text-white"
+                            : ""
+                        }`}>
+                        {n.name}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    );
 }
