@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { scrollToSection } from "../scroll";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { scrollToSection } from "../scroll";
+import { FiMenu, FiX } from "react-icons/fi";
 
-const navSection = [
+const navSections = [
   { name: "Home", link: "#home" },
   { name: "About", link: "#about" },
   { name: "Skills", link: "#skills" },
@@ -18,11 +20,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5,
-      delayChildren: 0.3,
-      staggerChildren: 0.15,
-    },
+    transition: { duration: 0.5, delayChildren: 0.3, staggerChildren: 0.15 },
   },
 };
 
@@ -32,62 +30,115 @@ const itemVariants = {
 };
 
 export default function NavBar() {
-  const [position] = useState(50);
+  const [activeSection, setActiveSection] = useState("#home");
   const [isScrolling, setIsScrolling] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navbarHeight = 64; // adjust for offset
 
   useEffect(() => {
-    const scrollListener = () => {
-      const currentScroll = window.scrollY;
-      setIsScrolling(currentScroll > position);
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + navbarHeight + 20;
+
+      navSections.forEach((section) => {
+        const el = document.querySelector(section.link);
+        if (el) {
+          const htmlEl = el as HTMLElement; // cast to HTMLElement
+          const top = htmlEl.offsetTop;
+          const bottom = top + htmlEl.clientHeight;
+
+          if (scrollPos >= top && scrollPos < bottom) {
+            setActiveSection(section.link);
+          }
+        }
+      });
+
+      setIsScrolling(window.scrollY > 50);
     };
 
-    window.addEventListener("scroll", scrollListener);
-    scrollListener();
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", scrollListener);
-    };
-  }, [position]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className={`w-full fixed top-0 h-16 z-50 ${
-        isScrolling && "bg-black/720 backdrop-blur-3xl ring-1 ring-primary/10"
+      className={`fixed top-0 w-full z-50 flex justify-center items-center py-2 transition-all duration-300 ${
+        isScrolling ? "bg-black/70 backdrop-blur-xl ring-1 ring-primary/10" : ""
       }`}>
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="px-10 py-5 flex justify-between items-center">
-          <h1 className="text-xl font-semibold text-primary">ZCoder</h1>
-          <nav>
-            <motion.ul
-              className="flex items-center justify-center gap-4"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible">
-              {navSection.map((n) => {
-                const isResume = n.name === "Resume";
-                return (
-                  <motion.li
-                    key={n.name}
-                    variants={itemVariants}
-                    className="list-none">
-                    <button
-                      onClick={() => scrollToSection(n.link)}
-                      className={`font-semibold hover:text-primary text-sm ${
-                        isResume &&
-                        "border py-1 px-2 bg-background text-white rounded hover:bg-primary hover:text-white"
-                      }`}>
-                      {n.name}
-                    </button>
-                  </motion.li>
-                );
-              })}
-            </motion.ul>
-          </nav>
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
+        <div className="relative h-10 w-20 bg-red">
+          <Image
+            src="/logo.png"
+            alt="logo"
+            fill
+            priority
+            className="object-contain invert"
+          />
         </div>
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center gap-6">
+          {navSections.map((n) => {
+            const isResume = n.name === "Resume";
+            return (
+              <motion.button
+                key={n.name}
+                variants={itemVariants}
+                onClick={() => scrollToSection(n.link)}
+                className={`font-semibold text-sm transition-all duration-300 ${
+                  activeSection === n.link ? "text-primary" : "text-white"
+                } ${
+                  isResume
+                    ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
+                    : ""
+                }`}>
+                {n.name}
+              </motion.button>
+            );
+          })}
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-white text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <FiX /> : <FiMenu />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-16 left-0 w-full bg-black/90 backdrop-blur-xl flex flex-col items-center gap-6 py-6 md:hidden">
+          {navSections.map((n) => {
+            const isResume = n.name === "Resume";
+            return (
+              <button
+                key={n.name}
+                onClick={() => {
+                  scrollToSection(n.link, navbarHeight);
+                  setMenuOpen(false);
+                }}
+                className={`font-semibold text-lg transition-all duration-300 ${
+                  activeSection === n.link ? "text-primary" : "text-white"
+                } ${
+                  isResume
+                    ? "border py-1 px-2 bg-background rounded hover:bg-primary hover:text-white"
+                    : ""
+                }`}>
+                {n.name}
+              </button>
+            );
+          })}
+        </motion.div>
+      )}
     </motion.div>
   );
 }

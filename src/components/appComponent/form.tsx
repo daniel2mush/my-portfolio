@@ -9,93 +9,91 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Send } from "lucide-react";
 
+const formSchema = z.object({
+  fullname: z.string().min(2, "Full name is required"),
+  email: z.email("Invalid email address"),
+  subject: z.string().min(3, "Subject is required"),
+  message: z.string().min(5, "Message is required"),
+});
+
+type FormType = z.infer<typeof formSchema>;
+
 export default function MyForm() {
-  const formSchema = z.object({
-    fullname: z.string(),
-    email: z.email(),
-    subject: z.string(),
-    message: z.string(),
-  });
-
-  type formType = z.infer<typeof formSchema>;
-
-  const form = useForm<formType>({
+  const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      fullname: "",
-      message: "",
-      subject: "",
-    },
+    defaultValues: { fullname: "", email: "", subject: "", message: "" },
   });
+
+  const onSubmit = (data: FormType) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
-    <div>
-      <Form {...form}>
-        <form className=" space-y-5">
-          <div className=" flex justify-between items-center w-full gap-5  md:gap-10">
-            <FormField
-              name="fullname"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className=" w-full">
-                  <FormLabel className=" font-bold">Full name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className=" w-full"
-                      placeholder="Your name"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className=" w-full">
-                  <FormLabel className=" font-bold">Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="enter your email" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex flex-col md:flex-row gap-5">
           <FormField
-            name="subject"
+            name="fullname"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className=" font-bold">Subject</FormLabel>
+              <FormItem className="w-full">
+                <FormLabel className="font-bold">Full name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Project inquiry" {...field} />
+                  <Input placeholder="Your name" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
           <FormField
-            name="message"
+            name="email"
             control={form.control}
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className=" font-bold">Message </FormLabel>
+              <FormItem className="w-full">
+                <FormLabel className="font-bold">Email</FormLabel>
                 <FormControl>
-                  <Textarea
-                    className=" h-48"
-                    placeholder="Tell me about your project"
-                    {...field}
-                  />
+                  <Input placeholder="Your email" {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit" className=" w-full text-white">
-            <Send />
-            Send message
-          </Button>
-        </form>
-      </Form>
-    </div>
+        </div>
+
+        <FormField
+          name="subject"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">Subject</FormLabel>
+              <FormControl>
+                <Input placeholder="Project inquiry" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="message"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">Message</FormLabel>
+              <FormControl>
+                <Textarea
+                  className="h-48"
+                  placeholder="Tell me about your project"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="w-full flex items-center justify-center gap-2 text-white">
+          <Send size={18} /> Send message
+        </Button>
+      </form>
+    </Form>
   );
 }

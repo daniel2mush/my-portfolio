@@ -1,31 +1,26 @@
 "use client";
-import { useRef, useEffect } from "react";
+
 import { motion, useAnimation, useInView, Variants } from "motion/react";
+import { useRef, useEffect } from "react";
 import { Copyright } from "lucide-react";
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import Image from "next/image";
+import { Social } from "./socials";
 
 export default function FooterPage() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.1, once: true });
   const controls = useAnimation();
-
   useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
+    if (inView) controls.start("visible");
   }, [inView, controls]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.2, delayChildren: 0.2 },
     },
   };
-
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -40,43 +35,47 @@ export default function FooterPage() {
       ref={ref}
       initial="hidden"
       animate={controls}
-      variants={containerVariants}>
-      <div className="w-full max-w-7xl mx-auto p-10">
-        {/* Grid */}
+      variants={containerVariants}
+      className="bg-background/90 py-10">
+      <div className="max-w-7xl mx-auto px-10 space-y-10">
         <motion.div
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2">
-          <motion.div variants={itemVariants} className="space-y-4">
-            <h1 className="font-bold text-2xl text-primary">ZCoder</h1>
+          className="grid md:grid-cols-2 gap-5">
+          <motion.div variants={itemVariants} className="flex flex-col gap-4">
+            <div className="relative h-10 w-32">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                fill
+                className="object-contain invert"
+              />
+            </div>
             <p className="text-muted-foreground max-w-sm">
               Full-Stack Developer & UI/UX Designer creating digital experiences
               that inspire and engage.
             </p>
           </motion.div>
-
-          {/* Links */}
           <motion.div
             variants={containerVariants}
-            className="flex md:justify-end pt-5 md:mt-0 items-center gap-10">
-            {[FiGithub, FiLinkedin, FiMail].map((Icon, i) => (
-              <motion.button
+            className="flex md:justify-end gap-5 items-center">
+            {Social.map(({ icon, link }, i) => (
+              <motion.a
                 key={i}
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
                 variants={itemVariants}
-                className="rounded p-2 cursor-pointer hover:ring hover:ring-primary hover:text-primary">
-                <Icon size={20} />
-              </motion.button>
+                className="hover:text-primary cursor-pointer p-2 rounded ring ring-transparent hover:ring-primary transition-all">
+                {icon}
+              </motion.a>
             ))}
           </motion.div>
         </motion.div>
-
-        {/* Copyright */}
         <motion.div
           variants={itemVariants}
-          className="py-4 border-t mt-5 flex items-center space-x-3">
+          className="flex items-center gap-2 border-t border-primary/10 pt-4 text-muted-foreground">
           <Copyright size={12} />
-          <p className="text-sm text-muted-foreground">
-            2025 ZCoder. All rights reserved
-          </p>
+          <span>2025 ZCoder. All rights reserved</span>
         </motion.div>
       </div>
     </motion.footer>

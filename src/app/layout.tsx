@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Themes from "@/lib/theme/theme";
 import FooterPage from "@/components/appComponent/footer";
-import NavWrapper from "@/components/appComponent/navigation/NavbarWrapper";
+import NavBar from "@/components/appComponent/navigation/DesktopNav";
 
 const PoppinsSans = Poppins({
   variable: "--font-poppins",
@@ -34,10 +34,9 @@ export default function RootLayout({
       <body
         className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}>
         <Themes defaultTheme="dark">
-          <NavWrapper>
-            {children}
-            <FooterPage />
-          </NavWrapper>
+          <NavBar />
+          {children}
+          <FooterPage />
         </Themes>
       </body>
     </html>
