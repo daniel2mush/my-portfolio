@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { scrollToSection } from "../scroll";
-import { FiMenu, FiX } from "react-icons/fi";
 import Hamburger from "../utils/hamburger";
 import { usePathname } from "next/navigation";
 import Link from "next/link";

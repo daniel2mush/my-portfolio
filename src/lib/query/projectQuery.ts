@@ -7,7 +7,7 @@ export function useAddProjectQuery() {
 
   return useMutation({
     mutationFn: async (data: uploadTypes) => {
-      const res = await axios.post("/api/product", data);
+      const res = await axios.post("/api/project", data);
       console.log(res.data);
 
       return res.data as { message: string };
@@ -23,18 +23,33 @@ export function useGetAdminProject() {
   return useQuery({
     queryKey: ["admin-projects"],
     queryFn: async () => {
-      const res = await axios.get("/api/product/admin");
+      const res = await axios.get("/api/project/admin");
       return res.data as Project[];
     },
   });
 }
 
-export function useGetroject() {
+export function useGetAllProject() {
   return useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
-      const res = await axios.get("/api/product");
+      const res = await axios.get("/api/project");
       return res.data as Project[];
+    },
+  });
+}
+
+export function usePublishProject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ projectId }: { projectId: string }) => {
+      const res = await axios.put(`/api/project/publish/${projectId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-projects"] });
     },
   });
 }

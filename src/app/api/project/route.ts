@@ -9,7 +9,8 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ message }, { status: 200 });
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const res = await GetAllProjects();
+
   return NextResponse.json(res, { status: 200 });
 }

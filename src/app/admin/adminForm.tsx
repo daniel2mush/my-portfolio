@@ -24,6 +24,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
   const [uploadValue, setUploadValue] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const { mutate } = useAddProjectQuery();
+  const [inputValue, setInputValue] = useState<string>("");
 
   const ThumbnailSchema = z
     .instanceof(File)
@@ -152,10 +153,6 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           name="tools"
           control={form.control}
           render={({ field }) => {
-            const [inputValue, setInputValue] = useState(
-              field.value.join(", ")
-            );
-
             return (
               <FormItem>
                 <FormLabel className="font-bold">

@@ -61,3 +61,34 @@ export async function GetAllProjects() {
     return [];
   }
 }
+
+// Publish action
+
+export async function Publish(projectId: string) {
+  if (!projectId)
+    return {
+      status: false,
+      message: "No project id found",
+    };
+
+  try {
+    await db
+      .update(recentProjects)
+      .set({
+        isPublished: true,
+      })
+      .where(eq(recentProjects.id, projectId));
+
+    return {
+      status: true,
+      message: "Project published successfully",
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      status: false,
+      message: "Error occured, please try again later",
+    };
+  }
+}

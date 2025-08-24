@@ -15,12 +15,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AdminForm from "./adminForm";
-import { useGetAdminProject } from "@/lib/query/projectQuery";
+import {
+  useGetAdminProject,
+  usePublishProject,
+} from "@/lib/query/projectQuery";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function AdminDashboard() {
   const [open, setOpen] = useState(false);
   const { data, isLoading } = useGetAdminProject();
+  const { mutate: publish } = usePublishProject();
 
   if (isLoading) {
     return (
@@ -121,6 +126,14 @@ export default function AdminDashboard() {
                   </Button>
                   {!p.isPublished && (
                     <Button
+                      onClick={() =>
+                        publish(
+                          { projectId: p.id },
+                          {
+                            onSuccess: () => toast.success("Project published"),
+                          }
+                        )
+                      }
                       size="sm"
                       className="bg-green-500 hover:bg-green-600">
                       Publish

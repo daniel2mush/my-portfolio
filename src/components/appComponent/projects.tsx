@@ -1,50 +1,21 @@
 "use client";
 
-import { motion, useAnimation, useInView, Variants } from "motion/react";
-import { useRef, useEffect } from "react";
+import { useGetAllProject } from "@/lib/query/projectQuery";
 import { CiShare1 } from "react-icons/ci";
 import { FiGithub } from "react-icons/fi";
 import { Button } from "../ui/button";
-
-// Example project data
-export const myRecentProject = [
-  {
-    name: "Portfolio Website",
-    description: "A modern portfolio built with Next.js and TailwindCSS.",
-    tools: ["Next.js", "React", "Tailwind", "Framer Motion"],
-    imageIcon: <div className="text-6xl">🌐</div>,
-    liveDemo: "#",
-    code: "#",
-  },
-  {
-    name: "E-commerce App",
-    description: "Full-stack e-commerce solution with payment integration.",
-    tools: ["Node.js", "Express", "MongoDB", "React"],
-    imageIcon: <div className="text-6xl">🛒</div>,
-    liveDemo: "#",
-    code: "#",
-  },
-];
+import { motion, Variants } from "framer-motion";
+import Image from "next/image";
 
 export default function Projects() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.1, once: true });
-  const controls = useAnimation();
+  const { data: projects, isLoading, isError } = useGetAllProject();
 
-  useEffect(() => {
-    if (inView) controls.start("visible");
-  }, [inView, controls]);
+  if (isLoading) return <div>Loading projects...</div>;
+  if (isError) return <div>Error loading projects.</div>;
+  if (!projects || projects.length === 0) return <div>No projects found.</div>;
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -53,15 +24,10 @@ export default function Projects() {
   };
 
   return (
-    <motion.div
-      id="projects"
-      ref={ref}
-      initial="hidden"
-      animate={controls}
-      variants={containerVariants}
-      className="py-20 w-full min-h-screen">
+    <div id="projects" className="py-20 w-full min-h-screen">
       <div className="max-w-7xl mx-auto px-10 space-y-10">
-        <motion.div variants={itemVariants} className="text-center space-y-5">
+        {/* Header */}
+        <div className="text-center space-y-5">
           <h1 className="text-4xl md:text-5xl font-bold">
             Featured <span className="text-primary">Projects</span>
           </h1>
@@ -69,23 +35,37 @@ export default function Projects() {
             A showcase of my recent work, demonstrating technical expertise and
             creative problem-solving.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          className="grid md:grid-cols-2 gap-10">
-          {myRecentProject.map((p, i) => (
+        {/* Projects grid */}
+        <div className="grid md:grid-cols-2 gap-10">
+          {projects.map((p) => (
             <motion.div
-              key={i}
-              variants={itemVariants}
-              className="border border-primary/10 rounded-lg overflow-hidden hover:scale-105 transition-transform cursor-pointer">
+              key={p.id}
+              className="border border-primary/10 rounded-lg overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }} // animate only once when 20% visible
+              variants={cardVariants}
+              whileHover={{ scale: 1.03 }}>
               <div className="relative w-full h-60 flex justify-center items-center bg-primary/50">
-                {p.imageIcon}
+                {p.imageUrl ? (
+                  <Image
+                    src={p.imageUrl}
+                    alt={p.title}
+                    fill
+                    className="object-contain w-full h-full"
+                  />
+                ) : (
+                  <div className="text-6xl">🌐</div>
+                )}
               </div>
               <div className="p-5 bg-primary/5 space-y-5">
                 <div>
-                  <h3 className="text-xl font-bold">{p.name}</h3>
-                  <p className="text-muted-foreground">{p.description}</p>
+                  <h3 className="text-xl font-bold">{p.title}</h3>
+                  <p className="text-muted-foreground line-clamp-2">
+                    {p.description}
+                  </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {p.tools.map((t) => (
@@ -96,16 +76,16 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
                   <a
-                    href={p.liveDemo}
+                    href={p.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 rounded-lg border hover:bg-primary transition">
                     <CiShare1 /> Live Demo
                   </a>
                   <a
-                    href={p.code}
+                    href={p.projectLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 rounded-lg border hover:bg-primary transition">
@@ -115,12 +95,13 @@ export default function Projects() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div variants={itemVariants} className="text-center mt-5">
+        {/* View all button */}
+        <div className="text-center mt-5">
           <Button className="px-10 py-2 font-bold">View All Projects</Button>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
