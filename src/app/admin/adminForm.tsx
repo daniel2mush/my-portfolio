@@ -19,6 +19,7 @@ import z from "zod";
 import axios from "axios";
 import { useAddProjectQuery } from "@/lib/query/projectQuery";
 import { toast } from "sonner";
+import { env } from "../../../env";
 
 export default function AdminForm({ setOpen }: { setOpen: () => void }) {
   const [uploadValue, setUploadValue] = useState(0);
@@ -76,7 +77,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
 
     try {
       const res = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`,
+        `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`,
         formData,
         {
           onUploadProgress: (event) => {

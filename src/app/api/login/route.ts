@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { env } from "../../../../env";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
 
-  if (
-    email === process.env.ADMIN_EMAIL &&
-    password === process.env.ADMIN_PASSWORD
-  ) {
+  if (email === env.ADMIN_EMAIL && password === env.ADMIN_PASSWORD) {
     // ✅ Save session in cookie
     (await cookies()).set("admin_session", "logged_in", {
       httpOnly: true,
