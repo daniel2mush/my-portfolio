@@ -35,7 +35,7 @@ export default function AboutMe() {
 
   useEffect(() => {
     if (inView) controls.start("visible");
-  }, [inView]);
+  }, [inView, controls]);
 
   const container = {
     hidden: { opacity: 0 },

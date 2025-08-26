@@ -94,7 +94,6 @@ function AnimatedNumber({
 
   useEffect(() => {
     if (!inView) return;
-    let start = 0;
     const duration = 1500; // ms
     const stepTime = 1000 / 60; // ~60fps
     const totalSteps = Math.ceil(duration / stepTime);

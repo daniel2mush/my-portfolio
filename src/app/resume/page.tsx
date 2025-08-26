@@ -282,16 +282,3 @@ export default function ResumeSection() {
     </section>
   );
 }
-
-/* Suggested Tailwind extractable classes */
-const styles = `
-.section-heading {
-  @apply text-xl font-semibold mb-3;
-}
-.tag {
-  @apply bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium;
-}
-.resume-card {
-  @apply p-4 rounded-lg bg-background/50 border border-border;
-}
-`;

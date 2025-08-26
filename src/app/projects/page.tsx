@@ -5,8 +5,6 @@ import { CiShare1 } from "react-icons/ci";
 import { FiGithub } from "react-icons/fi";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { useState, useEffect } from "react";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
