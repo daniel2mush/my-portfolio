@@ -2,17 +2,26 @@
 
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, Mail, Hammer } from "lucide-react";
+import {
+  ArrowDown,
+  Mail,
+  Hammer,
+  Code2,
+  GitBranch,
+  ImageIcon,
+  Palette,
+  Smartphone,
+} from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Social } from "./socials";
 
 const roles = [
-  { label: "Full-Stack Developer", icon: "🧠" },
-  { label: "UI/UX Designer", icon: "🎨" },
-  { label: "Graphic Designer", icon: "🖼️" },
-  { label: "Open Source Contributor", icon: "🏛️" },
-  { label: "Mobile App Developer", icon: "📱" },
+  { label: "Full-Stack Developer", icon: <Code2 /> },
+  { label: "UI/UX Designer", icon: <Palette /> },
+  { label: "Graphic Designer", icon: <ImageIcon /> },
+  { label: "Open Source Contributor", icon: <GitBranch /> },
+  { label: "Mobile App Developer", icon: <Smartphone /> },
 ];
 
 export default function HeroSection() {
