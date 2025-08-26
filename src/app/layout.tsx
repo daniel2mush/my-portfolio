@@ -6,6 +6,7 @@ import FooterPage from "@/components/appComponent/footer";
 import NavBar from "@/components/appComponent/navigation/DesktopNav";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/lib/query/provider";
+import { Analytics } from "@vercel/analytics/next";
 
 const PoppinsSans = Poppins({
   variable: "--font-poppins",
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}>
         <Providers>
           <Themes defaultTheme="dark">
+            <Analytics />
             <NavBar />
             {children}
             <FooterPage />
