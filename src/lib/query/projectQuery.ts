@@ -29,11 +29,11 @@ export function useGetAdminProject() {
   });
 }
 
-export function useGetAllProject() {
+export function useGetAllProject(limit?: number) {
   return useQuery({
-    queryKey: ["projects"],
+    queryKey: ["projects", limit],
     queryFn: async () => {
-      const res = await axios.get("/api/project");
+      const res = await axios.get(`/api/project?limit=${limit}`);
       return res.data as Project[];
     },
   });

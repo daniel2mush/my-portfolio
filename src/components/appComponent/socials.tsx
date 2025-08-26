@@ -2,15 +2,15 @@ import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 
 export const Social = [
   {
-    icon: <FiGithub />,
+    icon: <FiGithub size={25} />,
     link: "https://github.com/daniel2mush",
   },
   {
-    icon: <FiLinkedin />,
+    icon: <FiLinkedin size={25} />,
     link: "https://www.linkedin.com/in/daniel-ogbeide/",
   },
   {
-    icon: <FiMail />,
+    icon: <FiMail size={25} />,
     link: "mailto:daniel2mush@gmail.com",
   },
 ];

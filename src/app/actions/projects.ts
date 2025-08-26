@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { recentProjects } from "@/lib/db/schema";
 import { uploadTypes } from "@/lib/types";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function AddToDatabase(formValue: uploadTypes) {
   console.log(formValue);
@@ -48,16 +48,21 @@ export async function GetAdminProjects() {
   }
 }
 
-export async function GetAllProjects() {
+export async function GetAllProjects(limit?: number) {
   try {
-    const res = await db
+    const baseQuery = db
       .select()
       .from(recentProjects)
       .where(eq(recentProjects.isPublished, true))
-      .limit(2);
+      .orderBy(desc(recentProjects.createdAt));
+
+    const finalQuery =
+      typeof limit === "number" ? baseQuery.limit(limit) : baseQuery;
+
+    const res = await finalQuery;
     return res;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }

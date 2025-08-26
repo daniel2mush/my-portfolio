@@ -1,50 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { motion, Variants } from "motion/react";
-import { ArrowDown } from "lucide-react";
-import { Social } from "./socials";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowDown, Mail, Hammer } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
-// const containerVariants: Variants = {
-//   hidden: { opacity: 0 },
-//   visible: {
-//     opacity: 1,
-//     transition: { staggerChildren: 0.3, delayChildren: 0.2 },
-//   },
-// };
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+import { Social } from "./socials";
 
 const roles = [
-  "Full-Stack Developer",
-  "UI/UX Designer",
-  "Graphic Designer",
-  // "Open Source Contributor",
+  { label: "Full-Stack Developer", icon: "🧠" },
+  { label: "UI/UX Designer", icon: "🎨" },
+  { label: "Graphic Designer", icon: "🖼️" },
+  { label: "Open Source Contributor", icon: "🏛️" },
+  { label: "Mobile App Developer", icon: "📱" },
 ];
 
 export default function HeroSection() {
   const [currentRole, setCurrentRole] = useState(0);
-  const [text, setText] = useState("");
 
   useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setText(roles[currentRole].substring(0, i));
-      i++;
-      if (i > roles[currentRole].length) {
-        setTimeout(() => {
-          i = 0;
-          setCurrentRole((prev) => (prev + 1) % roles.length);
-        }, 1500);
-      }
-    }, 100);
-    return () => clearInterval(interval);
-  }, [currentRole]);
+    const timer = setInterval(() => {
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   const scrollToSection = (id: string) => {
     const el = document.querySelector(id);
@@ -52,61 +31,110 @@ export default function HeroSection() {
   };
 
   return (
-    <div id="home" className="relative min-h-screen w-full">
-      <Image
-        src="/hero.png"
-        alt="hero"
-        fill
-        className="object-cover"
-        priority
-      />
-      <motion.div className="absolute inset-0 bg-background/50 flex flex-col justify-center items-center p-10">
+    <section
+      id="home"
+      className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+      <motion.div
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute inset-0">
+        <Image
+          src="/hero.png"
+          alt="Hero background"
+          fill
+          className="object-cover opacity-70"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/90 z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(var(--primary-rgb),0.25),transparent_60%)] animate-pulse" />
+      </motion.div>
+
+      <div className="absolute inset-0 z-20 flex flex-col justify-center items-center px-6 md:px-12 text-center">
         <motion.h1
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="text-5xl md:text-7xl font-bold text-center">
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight">
           Hey, I&apos;m <br />
-          <span className="text-primary text-6xl md:text-8xl font-black">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 text-5xl sm:text-6xl md:text-8xl font-black">
             Daniel Freeman
           </span>
         </motion.h1>
-        <motion.h3
-          variants={fadeUp}
-          className="mt-5 text-xl md:text-3xl text-center font-semibold">
-          {text}
-        </motion.h3>
-        <motion.div variants={fadeUp} className="mt-8 flex gap-4">
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={roles[currentRole].label}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="mt-6 px-6 py-3 rounded-full bg-primary/10 backdrop-blur-md text-primary font-semibold flex items-center gap-3 border border-primary/20">
+            <span className="text-xl">{roles[currentRole].icon}</span>
+            <span className="text-lg">{roles[currentRole].label}</span>
+          </motion.div>
+        </AnimatePresence>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+          className="mt-10 flex gap-4 flex-wrap justify-center">
           <button
             onClick={() => scrollToSection("#projects")}
-            className="bg-primary text-background font-bold py-2 px-4 rounded hover:bg-primary/80">
+            className="group flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-background font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300">
+            <Hammer size={20} className="group-hover:animate-bounce" />
             View My Work
           </button>
           <button
             onClick={() => scrollToSection("#contact")}
-            className="border border-primary text-primary font-bold py-2 px-4 rounded hover:bg-primary hover:text-background">
+            className="group flex items-center gap-2 border-2 border-primary text-primary font-bold py-3 px-6 rounded-lg hover:bg-primary hover:text-background hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300">
+            <Mail size={20} className="group-hover:animate-pulse" />
             Contact Me
           </button>
         </motion.div>
-        <motion.div variants={fadeUp} className="mt-8 flex gap-6">
+
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: { staggerChildren: 0.15, delayChildren: 0.6 },
+            },
+          }}
+          className="mt-12 flex gap-6">
           {Social.map(({ icon, link }, i) => (
-            <Link
+            <motion.div
               key={i}
-              href={link}
-              target="_blank"
-              className="p-3 rounded border hover:border-primary hover:text-primary transition-all">
-              {icon}
-            </Link>
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.5, ease: "easeOut" },
+                },
+              }}
+              whileHover={{ scale: 1.15, rotate: 5 }}
+              className="p-3 rounded-full bg-background/20 backdrop-blur-lg border border-primary/30 text-primary hover:text-background hover:bg-primary/90 transition-all duration-300 shadow hover:shadow-lg">
+              <Link href={link} target="_blank">
+                {icon}
+              </Link>
+            </motion.div>
           ))}
         </motion.div>
-        <motion.div variants={fadeUp} className="absolute bottom-10">
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="absolute bottom-8 md:bottom-12">
           <button
             onClick={() => scrollToSection("#about")}
-            className="animate-bounce">
-            <ArrowDown />
+            className="text-primary animate-bounce">
+            <ArrowDown size={32} />
           </button>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </section>
   );
 }

@@ -1,11 +1,14 @@
 "use client";
 
 import { motion, useAnimation, useInView, Variants } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Code2, Server, Palette, Cloud } from "lucide-react";
 
 const skills = [
   {
     name: "Frontend Development",
+    icon: <Code2 className="text-primary" size={24} />,
+    color: "from-primary/20 to-primary/5",
     skillSet: [
       "React",
       "TypeScript",
@@ -16,6 +19,8 @@ const skills = [
   },
   {
     name: "Backend Development",
+    icon: <Server className="text-purple-500" size={24} />,
+    color: "from-purple-500/20 to-purple-500/5",
     skillSet: [
       "Node.js",
       "Express",
@@ -27,6 +32,8 @@ const skills = [
   },
   {
     name: "Design & Tools",
+    icon: <Palette className="text-pink-500" size={24} />,
+    color: "from-pink-500/20 to-pink-500/5",
     skillSet: [
       "Figma",
       "Adobe XD",
@@ -39,6 +46,8 @@ const skills = [
   },
   {
     name: "DevOps & Cloud",
+    icon: <Cloud className="text-green-500" size={24} />,
+    color: "from-green-500/20 to-green-500/5",
     skillSet: [
       "AWS",
       "Docker",
@@ -51,11 +60,65 @@ const skills = [
 ];
 
 const serviceStats = [
-  { name: "5+", p: "Years Experience" },
-  { name: "50+", p: "Projects Completed" },
-  { name: "100%", p: "Client Satisfaction" },
-  { name: "24/7", p: "Support Available" },
+  { name: "Years Experience", value: 5, suffix: "+", color: "text-primary" },
+  {
+    name: "Projects Completed",
+    value: 50,
+    suffix: "+",
+    color: "text-purple-500",
+  },
+  {
+    name: "Client Satisfaction",
+    value: 100,
+    suffix: "%",
+    color: "text-pink-500",
+  },
+  {
+    name: "Support Available",
+    value: 24,
+    suffix: "/7",
+    color: "text-green-500",
+  },
 ];
+
+function AnimatedNumber({
+  target,
+  suffix,
+}: {
+  target: number;
+  suffix?: string;
+}) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const duration = 1500; // ms
+    const stepTime = 1000 / 60; // ~60fps
+    const totalSteps = Math.ceil(duration / stepTime);
+    const increment = target / totalSteps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      setCount(Math.floor(current));
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [inView, target]);
+
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
+}
 
 export default function Skills() {
   const ref = useRef<HTMLDivElement>(null);
@@ -66,79 +129,80 @@ export default function Skills() {
     if (inView) controls.start("visible");
   }, [inView, controls]);
 
-  const containerVariants: Variants = {
+  const container: Variants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
   };
-
-  const itemVariants: Variants = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
-    <motion.div
+    <motion.section
       id="skills"
       ref={ref}
       initial="hidden"
       animate={controls}
-      variants={containerVariants}
-      className="py-20 bg-primary/5">
-      <div className="max-w-7xl mx-auto px-10">
-        <motion.div variants={itemVariants} className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold">
+      variants={container}
+      className="py-24 bg-gradient-to-b from-background via-background/95 to-background">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <motion.div variants={item} className="text-center space-y-3">
+          <h2 className="text-4xl md:text-5xl font-bold relative inline-block">
             Skills & <span className="text-primary">Expertise</span>
-          </h1>
-          <p className="text-xl text-muted-foreground">
+            <span className="absolute left-0 bottom-0 w-full h-[4px] bg-gradient-to-r from-primary to-transparent scale-x-0 origin-left motion-safe:animate-[grow_0.6s_ease-out_forwards_0.3s]" />
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             A comprehensive toolkit for building modern web applications and
             digital experiences.
           </p>
         </motion.div>
+
         <motion.div
-          variants={containerVariants}
-          className="grid md:grid-cols-4 gap-10 mt-16">
+          variants={container}
+          className="grid md:grid-cols-4 gap-8 mt-16">
           {skills.map((s) => (
             <motion.div
               key={s.name}
-              variants={itemVariants}
-              className="bg-primary/5 border border-primary/10 rounded-xl p-5 flex flex-col gap-4 items-center">
-              <h3 className="text-xl font-semibold text-white">{s.name}</h3>
-              <div className="flex flex-wrap justify-center gap-2">
+              variants={item}
+              className={`rounded-xl p-5 bg-gradient-to-br ${s.color} border border-white/10 backdrop-blur-md hover:-rotate-6 transition-all duration-500 hover:scale-110`}>
+              <div className="flex items-center gap-3">
+                {s.icon}
+                <h3 className="text-xl font-semibold">{s.name}</h3>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-4">
                 {s.skillSet.map((skill) => (
-                  <motion.div
+                  <span
                     key={skill}
-                    variants={itemVariants}
-                    className="px-2 py-1 rounded-3xl bg-indigo-600 ring ring-indigo-50/50">
-                    <p className="text-[12px] font-bold text-white">{skill}</p>
-                  </motion.div>
+                    className="px-3 py-1 text-xs font-semibold rounded-full bg-background/40 border border-white/10">
+                    {skill}
+                  </span>
                 ))}
               </div>
             </motion.div>
           ))}
         </motion.div>
+
         <motion.div
-          variants={containerVariants}
-          className="grid md:grid-cols-4 gap-10 mt-10 border-t border-primary/10 p-5">
-          {serviceStats.map((s) => (
+          variants={container}
+          className="grid md:grid-cols-4 gap-8 mt-16 border-t border-white/10 pt-10">
+          {serviceStats.map((stat) => (
             <motion.div
-              key={s.name}
-              variants={itemVariants}
+              key={stat.name}
+              variants={item}
               className="flex flex-col items-center">
-              <h3 className="text-2xl md:text-4xl font-bold text-primary">
-                {s.name}
-              </h3>
-              <p className="text-muted-foreground">{s.p}</p>
+              <motion.span
+                className={`text-3xl md:text-4xl font-bold ${stat.color}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}>
+                <AnimatedNumber target={stat.value} suffix={stat.suffix} />
+              </motion.span>
+              <p className="text-sm text-muted-foreground">{stat.name}</p>
             </motion.div>
           ))}
         </motion.div>
       </div>
-    </motion.div>
+    </motion.section>
   );
 }

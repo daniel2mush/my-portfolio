@@ -9,8 +9,12 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ message }, { status: 200 });
 }
 
-export async function GET() {
-  const res = await GetAllProjects();
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  const limit = searchParams.get("limit");
+
+  const res = await GetAllProjects(Number(limit?.toString()));
 
   return NextResponse.json(res, { status: 200 });
 }

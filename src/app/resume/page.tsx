@@ -1,6 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.6, ease: "easeOut" },
+  }),
+};
 
 const resumeData = {
   name: "Daniel Freeman",
@@ -95,148 +104,194 @@ const resumeData = {
 
 export default function ResumeSection() {
   return (
-    <motion.div
+    <section
       id="resume"
-      className="min-h-screen w-full bg-primary/5 py-20 px-5 md:px-10"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}>
-      <div className="max-w-7xl mx-auto space-y-10">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold">
+      className="min-h-screen w-full bg-primary/5 py-20 px-5 md:px-10">
+      <div className="max-w-6xl mx-auto space-y-16">
+        {/* Header */}
+        <motion.div
+          className="text-center space-y-2"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={0}
+          variants={fadeInUp}>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
             My <span className="text-primary">Resume</span>
           </h1>
-          <p className="text-muted-foreground mt-2">
-            A snapshot of my experience, skills, and education.
+          <p className="text-muted-foreground text-lg">
+            A snapshot of my journey, skills, and milestones.
           </p>
-        </div>
+        </motion.div>
 
         {/* Summary */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Professional Summary</h2>
-          <p className="text-sm md:text-base leading-relaxed">
+        <motion.div
+          custom={1}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}>
+          <h2 className="section-heading">Professional Summary</h2>
+          <p className="leading-relaxed text-muted-foreground">
             {resumeData.summary}
           </p>
-        </div>
+        </motion.div>
 
         {/* Contact */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div>
-            <h2 className="font-bold">Email</h2>
-            <p>{resumeData.contact.email}</p>
-          </div>
-          <div>
-            <h2 className="font-bold">Phone</h2>
-            <p>{resumeData.contact.phone}</p>
-          </div>
-          <div>
-            <h2 className="font-bold">Location</h2>
-            <p>{resumeData.contact.location}</p>
-          </div>
-        </div>
-
-        {/* Skills */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Skills</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-semibold mb-2">Technical Skills</h3>
-              <div className="flex flex-wrap gap-3">
-                {resumeData.skills.technical.map((skill) => (
-                  <span
-                    key={skill}
-                    className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+        <motion.div
+          custom={2}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid md:grid-cols-3 gap-6 text-center">
+          {Object.entries(resumeData.contact).map(([label, value]) => (
+            <div
+              key={label}
+              className="p-4 rounded-lg bg-background/50 border border-border">
+              <h3 className="font-semibold capitalize">{label}</h3>
+              <p className="text-muted-foreground">{value}</p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-2">Design Skills</h3>
-              <div className="flex flex-wrap gap-3">
-                {resumeData.skills.design.map((skill) => (
-                  <span
-                    key={skill}
-                    className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+          ))}
+        </motion.div>
+
+        {/* Skills + Languages */}
+        <motion.div
+          custom={3}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h2 className="section-heading">Technical Skills</h2>
+            <div className="flex flex-wrap gap-2">
+              {resumeData.skills.technical.map((skill) => (
+                <span key={skill} className="tag">
+                  {skill}
+                </span>
+              ))}
+            </div>
+            <h2 className="section-heading mt-6">Design Skills</h2>
+            <div className="flex flex-wrap gap-2">
+              {resumeData.skills.design.map((skill) => (
+                <span key={skill} className="tag">
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
-        </div>
-
-        {/* Languages */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Languages</h2>
-          <ul className="list-disc ml-5 space-y-2">
-            {resumeData.languages.map((lang, i) => (
-              <li key={i}>
-                <span className="font-semibold">{lang.name}</span> —{" "}
-                <span className="text-muted-foreground">{lang.level}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div>
+            <h2 className="section-heading">Languages</h2>
+            <ul className="space-y-1">
+              {resumeData.languages.map((lang) => (
+                <li
+                  key={lang.name}
+                  className="flex justify-between border-b border-border/50 pb-1">
+                  <span>{lang.name}</span>
+                  <span className="text-muted-foreground">{lang.level}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
 
         {/* Experience */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Experience</h2>
+        <motion.div
+          custom={4}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}>
+          <h2 className="section-heading">Experience</h2>
           <div className="space-y-6">
-            {resumeData.experience.map((job) => (
-              <div key={job.role}>
-                <h3 className="font-bold text-xl">{job.role}</h3>
-                <p className="text-muted-foreground">
+            {resumeData.experience.map((job, i) => (
+              <motion.div
+                key={i}
+                className="resume-card"
+                custom={i}
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}>
+                <h3 className="font-bold text-lg">{job.role}</h3>
+                <p className="text-sm text-muted-foreground">
                   {job.company} • {job.period}
                 </p>
-                <ul className="list-disc ml-5 mt-2 text-sm space-y-1">
-                  {job.details.map((d, i) => (
-                    <li key={i}>{d}</li>
+                <ul className="list-disc pl-4 mt-2 space-y-1 text-muted-foreground text-sm">
+                  {job.details.map((d, idx) => (
+                    <li key={idx}>{d}</li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Education */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Education</h2>
-          <div className="space-y-4">
-            {resumeData.education.map((edu) => (
-              <div key={edu.degree}>
-                <h3 className="font-bold">{edu.degree}</h3>
-                <p className="text-muted-foreground">
-                  {edu.school} • {edu.period}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <motion.div
+          custom={5}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}>
+          <h2 className="section-heading">Education</h2>
+          {resumeData.education.map((edu, i) => (
+            <div key={i} className="resume-card">
+              <h3 className="font-bold">{edu.degree}</h3>
+              <p className="text-sm text-muted-foreground">
+                {edu.school} • {edu.period}
+              </p>
+            </div>
+          ))}
+        </motion.div>
 
         {/* Certifications */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Certifications</h2>
-          <div className="space-y-4">
-            {resumeData.certifications.map((cert, i) => (
-              <div key={i}>
-                <h3 className="font-bold">{cert.title}</h3>
-                <p className="text-muted-foreground">
-                  {cert.issuer} • {cert.year}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <motion.div
+          custom={6}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}>
+          <h2 className="section-heading">Certifications</h2>
+          {resumeData.certifications.map((cert, i) => (
+            <div key={i} className="resume-card">
+              <h3 className="font-bold">{cert.title}</h3>
+              <p className="text-sm text-muted-foreground">
+                {cert.issuer} • {cert.year}
+              </p>
+            </div>
+          ))}
+        </motion.div>
 
-        <div className="text-center mt-10">
+        {/* Download */}
+        <motion.div
+          custom={7}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center mt-8">
           <Button
             onClick={() => window.open("/resume.pdf", "_blank")}
             className="font-bold px-10">
             Download Resume
           </Button>
-        </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 }
+
+/* Suggested Tailwind extractable classes */
+const styles = `
+.section-heading {
+  @apply text-xl font-semibold mb-3;
+}
+.tag {
+  @apply bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium;
+}
+.resume-card {
+  @apply p-4 rounded-lg bg-background/50 border border-border;
+}
+`;
