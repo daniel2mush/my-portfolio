@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://zcoderportfolio.vercel.app
+
+# Sitemaps
+Sitemap: https://zcoderportfolio.vercel.app/sitemap.xml
