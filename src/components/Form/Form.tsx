@@ -37,6 +37,7 @@ export default function MyForm() {
     } catch (error) {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 5000);
+      console.log(error);
     }
   };
 
@@ -140,7 +141,7 @@ export default function MyForm() {
         {/* Status Feedback */}
         {status === "success" && (
           <p className={styles.successMessage}>
-            Thanks for reaching out! I'll get back to you soon.
+            Thanks for reaching out! I&apos;ll get back to you soon.
           </p>
         )}
         {status === "error" && (

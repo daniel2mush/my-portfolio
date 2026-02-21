@@ -24,7 +24,7 @@ export default function HeroSection() {
         </h1>
 
         <p className={styles.heroSubtitle}>
-          I'm Daniel, a Full-Stack Developer and Graphic Designer. I turn
+          I&apos;m Daniel, a Full-Stack Developer and Graphic Designer. I turn
           complex problems into elegant, high-performing solutions across the
           web and print.
         </p>

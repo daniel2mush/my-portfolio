@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, ChangeEvent } from "react";
 import Image from "next/image";
 import {
   Plus,
@@ -24,17 +24,8 @@ import {
 import styles from "./AdminDashboard.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
 import AdminForm from "@/components/Admin/Form/AdminForm";
-
-type Project = {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  tools: string[];
-  liveLink?: string;
-  projectLink?: string;
-  isPublished: boolean;
-};
+import { Project } from "@/lib/types";
+import { StatusFilter, SortOption } from "@/types/project";
 
 const AdminProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
@@ -58,7 +49,6 @@ const AdminProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-// Reusable Custom Modal Component
 const Modal = ({
   isOpen,
   onClose,
@@ -96,8 +86,8 @@ export default function AdminDashboard() {
   const [confirmDelete, setConfirmDelete] = useState<Project | null>(null);
 
   const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<"all" | "published" | "draft">("all");
-  const [sort, setSort] = useState<"title-asc" | "title-desc">("title-asc");
+  const [status, setStatus] = useState<StatusFilter>("all");
+  const [sort, setSort] = useState<SortOption>("title-asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const { data, isLoading, isError } = useGetAdminProject();
@@ -118,10 +108,10 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const projects: Project[] = useMemo(() => (data ?? []) as Project[], [data]);
+  const projects = useMemo(() => (data ?? []) as Project[], [data]);
 
   const processed = useMemo(() => {
-    let list = projects;
+    let list = [...projects];
     if (status !== "all") {
       list = list.filter((p) =>
         status === "published" ? p.isPublished : !p.isPublished,
@@ -137,9 +127,9 @@ export default function AdminDashboard() {
       );
     }
     if (sort === "title-asc")
-      list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+      list.sort((a, b) => a.title.localeCompare(b.title));
     else if (sort === "title-desc")
-      list = [...list].sort((a, b) => b.title.localeCompare(a.title));
+      list.sort((a, b) => b.title.localeCompare(a.title));
     return list;
   }, [projects, status, query, sort]);
 
@@ -189,7 +179,6 @@ export default function AdminDashboard() {
           <span className={styles.badge}>{projects.length} Total Projects</span>
         </div>
 
-        {/* Updated to use custom Button */}
         <Button variant="primary" onClick={() => setOpenForm(true)}>
           <Plus size={18} /> Add Project
         </Button>
@@ -212,7 +201,9 @@ export default function AdminDashboard() {
             type="text"
             placeholder="Search title, tools... (Press /)"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setQuery(e.target.value)
+            }
             className={styles.nativeInput}
           />
         </div>
@@ -220,7 +211,9 @@ export default function AdminDashboard() {
         <div className={styles.filters}>
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value as any)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setStatus(e.target.value as StatusFilter)
+            }
             className={styles.nativeSelect}
           >
             <option value="all">All Statuses</option>
@@ -230,7 +223,9 @@ export default function AdminDashboard() {
 
           <select
             value={sort}
-            onChange={(e) => setSort(e.target.value as any)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setSort(e.target.value as SortOption)
+            }
             className={styles.nativeSelect}
           >
             <option value="title-asc">Title (A-Z)</option>
@@ -245,7 +240,6 @@ export default function AdminDashboard() {
             {selected.size} items selected
           </span>
           <div className={styles.bulkActions}>
-            {/* Updated to use custom Button variants and isLoading prop */}
             <Button
               size="sm"
               variant="primary"
@@ -323,7 +317,6 @@ export default function AdminDashboard() {
 
                 <div className={styles.cardFooter}>
                   <div className={styles.actionGroup}>
-                    {/* Using outline variant */}
                     <Button
                       size="sm"
                       variant="outline"
@@ -350,7 +343,6 @@ export default function AdminDashboard() {
                         <CheckCircle2 size={14} />
                       </Button>
                     )}
-                    {/* Using danger variant */}
                     <Button
                       size="sm"
                       variant="danger"
@@ -366,7 +358,6 @@ export default function AdminDashboard() {
         )}
       </div>
 
-      {/* Custom Preview Modal */}
       <Modal
         isOpen={!!preview}
         onClose={() => setPreview(null)}
@@ -408,7 +399,6 @@ export default function AdminDashboard() {
         </div>
       </Modal>
 
-      {/* Custom Delete Modal */}
       <Modal
         isOpen={!!confirmDelete}
         onClose={() => setConfirmDelete(null)}

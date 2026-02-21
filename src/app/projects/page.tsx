@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Loader2, Image as ImageIcon, Eye, X } from "lucide-react";
 import { CiShare1 } from "react-icons/ci";
 import { FiGithub } from "react-icons/fi";
 
+// 1. Import your new shared type
+import { Project } from "@/types/project";
 import { useGetAllProject } from "@/lib/query/projectQuery";
 import { Button } from "@/components/ui/Buttons/Buttons";
 import styles from "./Projects.module.scss";
 
-// Reusable Image Component
 const ProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
   if (!src || hasError) {
@@ -33,7 +34,6 @@ const ProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-// Modal Component (Mirrored from Admin)
 const Modal = ({
   isOpen,
   onClose,
@@ -66,8 +66,13 @@ const Modal = ({
 };
 
 export default function AllProjectsPage() {
-  const { data: projects, isLoading, isError } = useGetAllProject();
-  const [preview, setPreview] = useState<any | null>(null);
+  const { data, isLoading, isError } = useGetAllProject();
+
+  // 2. Use the Project type instead of 'any'
+  const [preview, setPreview] = useState<Project | null>(null);
+
+  // Safely cast data from query
+  const projects = (data ?? []) as Project[];
 
   if (isLoading) {
     return (
@@ -78,7 +83,7 @@ export default function AllProjectsPage() {
     );
   }
 
-  if (isError || !projects || projects.length === 0) {
+  if (isError || projects.length === 0) {
     return (
       <div className={styles.statusContainer}>
         <p>No projects found. Check back soon!</p>
@@ -112,11 +117,11 @@ export default function AllProjectsPage() {
 
               <div className={styles.cardBody}>
                 <h3 className={styles.title}>{p.title}</h3>
-                {/* Truncated to 3 lines */}
+                {/* 3-line truncation handled via SCSS */}
                 <p className={styles.description}>{p.description}</p>
 
                 <div className={styles.tools}>
-                  {p.tools?.slice(0, 3).map((t: string) => (
+                  {p.tools?.slice(0, 3).map((t) => (
                     <span key={t} className={styles.toolTag}>
                       {t}
                     </span>
@@ -144,7 +149,6 @@ export default function AllProjectsPage() {
         </div>
       </div>
 
-      {/* Preview Modal */}
       <Modal
         isOpen={!!preview}
         onClose={() => setPreview(null)}
@@ -157,9 +161,10 @@ export default function AllProjectsPage() {
               alt={preview?.title || ""}
             />
           </div>
+          {/* Full description shown here */}
           <p className={styles.fullDescription}>{preview?.description}</p>
           <div className={styles.previewTools}>
-            {preview?.tools?.map((t: string) => (
+            {preview?.tools?.map((t) => (
               <span key={t} className={styles.toolTag}>
                 {t}
               </span>

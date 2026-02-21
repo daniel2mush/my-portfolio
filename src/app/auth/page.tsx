@@ -40,6 +40,7 @@ export default function LoginPage() {
         toast.error("Invalid credentials. Please try again.");
       }
     } catch (error) {
+      console.error("Login error:", error);
       toast.error("An error occurred. Please check your connection.");
     } finally {
       setIsLoading(false);

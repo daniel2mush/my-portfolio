@@ -2,7 +2,7 @@
 
 import { Mail, MapPin, Phone } from "lucide-react";
 // import MyForm from "./form"; // Assuming this handles its own styling or adapts to parent
-import Link from "next/link";
+
 import styles from "./Contact.module.scss";
 import MyForm from "@/components/Form/Form";
 
