@@ -92,7 +92,7 @@ export default function AllProjectsPage() {
   }
 
   return (
-    <section className={styles.section}>
+    <section id="projects" className={styles.section}>
       <div className={styles.content}>
         <header className={styles.header}>
           <h1>

@@ -82,7 +82,7 @@ export default function Footer() {
             <h3>Connect</h3>
             <div className={styles.socialIcons}>
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/daniel2mush"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub"
@@ -90,7 +90,7 @@ export default function Footer() {
                 <FiGithub size={22} />
               </a>
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://www.linkedin.com/in/daniel-ogbeide/"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn"

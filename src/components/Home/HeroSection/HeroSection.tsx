@@ -1,5 +1,6 @@
 "use client";
 
+import { scrollToSection } from "@/components/appComponent/scroll";
 import styles from "./HeroSection.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
@@ -31,10 +32,19 @@ export default function HeroSection() {
 
         {/* Call to Action */}
         <div className={styles.heroButtons}>
-          <Button size="md" className={styles.heroButton}>
+          <Button
+            onClick={() => scrollToSection("#projects")}
+            size="md"
+            className={styles.heroButton}
+          >
             View My Work
           </Button>
-          <Button size="md" variant="outline" className={styles.heroButton}>
+          <Button
+            onClick={() => scrollToSection("#contact")}
+            size="md"
+            variant="outline"
+            className={styles.heroButton}
+          >
             Contact Me
           </Button>
         </div>
@@ -42,7 +52,7 @@ export default function HeroSection() {
         {/* Social Links */}
         <div className={styles.socialIcons}>
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/daniel2mush"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
@@ -51,7 +61,7 @@ export default function HeroSection() {
             <FiGithub size={28} strokeWidth={1.5} />
           </a>
           <a
-            href="https://linkedin.com/in/yourusername"
+            href="https://www.linkedin.com/in/daniel-ogbeide/"
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
@@ -60,7 +70,7 @@ export default function HeroSection() {
             <FiLinkedin size={28} strokeWidth={1.5} />
           </a>
           <a
-            href="mailto:your@email.com"
+            href="mailto:daniel2mush@gmail.com"
             aria-label="Email"
             className={styles.socialIcon}
           >
