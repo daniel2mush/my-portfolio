@@ -14,14 +14,6 @@ import styles from "./Projects.module.scss";
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "Explore my latest work, ranging from full-stack Next.js web applications to high-fidelity graphic design and large-scale print production materials.",
-  // Optional: If you want a specific image to show when sharing the Projects page!
-  // openGraph: { images: ["/projects-og.jpg"] },
-};
-
 const ProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
   if (!src || hasError) {
