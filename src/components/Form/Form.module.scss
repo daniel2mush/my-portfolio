@@ -1,0 +1,165 @@
+@use "../../styles/mixins.scss" as *;
+
+// --- Animations ---
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- Form Layout ---
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+// --- Inputs & Textarea ---
+.input,
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm, 8px);
+  padding: 14px 16px;
+  color: white;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Custom placeholder color
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  // Smooth hover effect
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  // Premium Focus State (Glow)
+  &:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary-color);
+    // Uses the primary color variable to create a soft outer glow
+    box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.textarea {
+  min-height: 160px;
+  resize: vertical; // Allows users to make it taller, but not wider
+  line-height: 1.6;
+}
+
+// --- Submit Area ---
+.submitContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--primary-color);
+  color: #000;
+  border: none;
+  padding: 16px 32px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background-color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  // Success state override
+  &:disabled:has(svg.lucide-check-circle-2) {
+    background-color: #00e676; // Success green
+    color: #000;
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+// --- Status Messages ---
+.successMessage,
+.errorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  animation: slideUpFade 0.4s ease forwards;
+}
+
+.successMessage {
+  color: #00e676;
+}
+
+.errorMessage {
+  color: #ff5252;
+}

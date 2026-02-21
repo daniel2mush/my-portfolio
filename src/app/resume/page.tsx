@@ -1,26 +1,20 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
 
-const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.15, duration: 0.6, ease: "easeOut" },
-  }),
-};
+import { Download } from "lucide-react";
+import styles from "./Resume.module.scss";
+import { Button } from "@/components/ui/Buttons/Buttons";
 
+// Refined, high-impact copywriting
 const resumeData = {
-  name: "Daniel Freeman",
-  title: "Full-Stack Developer | UI/UX Designer | Graphic Designer",
+  name: "Daniel",
+  title: "Full-Stack Developer & Head of Production",
   contact: {
     email: "Daniel2mush@gmail.com",
     phone: "+223 71 90 70 48",
     location: "Bamako, Mali",
   },
   summary:
-    "Dynamic and versatile Full-Stack Developer with expertise in modern web technologies and a strong background in UI/UX and graphic design. Proficient in building responsive applications, creating intuitive user experiences, and delivering high-quality visual designs for digital and print media. Proven ability to collaborate on projects from concept to execution, blending technical skills with creative problem-solving to drive impactful results.",
+    "Versatile technologist and design leader bridging the gap between digital architecture and physical branding. I combine expertise in modern Full-Stack web development (React, Node.js) with extensive experience directing large-scale print production and UI/UX design. Passionate about building scalable applications and delivering pixel-perfect, high-impact visual experiences from screen to print.",
   skills: {
     technical: [
       "React",
@@ -30,6 +24,7 @@ const resumeData = {
       "Node.js",
       "Express",
       "PostgreSQL",
+      "Zod",
     ],
     design: [
       "UI/UX Design",
@@ -38,46 +33,35 @@ const resumeData = {
       "Photoshop",
       "Illustrator",
       "InDesign",
-      "After Effects",
-      "Book Design",
-      "Magazine Design",
-      "Advertising",
-      "Printing",
+      "Large Format Printing",
+      "Brand Identity",
     ],
   },
   languages: [
     { name: "English", level: "Fluent" },
     { name: "French", level: "Fluent" },
+    { name: "Bambara", level: "Learning" },
   ],
   experience: [
     {
-      role: "Full-Stack Developer & Designer",
-      company: "Freelance / Personal Projects",
+      role: "Head of Production & Senior Graphic Designer",
+      company: "PactAfrique",
+      period: "2020 - Present",
+      details: [
+        "Direct end-to-end production for high-volume custom print items, including kakemonos, apparel, and corporate merchandise.",
+        "Led the comprehensive design and print execution for major national events, including the Salon Monétique National du Mali (SamonaM).",
+        "Design engaging magazine layouts, promotional materials, and brand identities, optimizing for maximum visual impact and audience retention.",
+        "Ensure rigorous quality control across all print-ready files and final physical deliverables.",
+      ],
+    },
+    {
+      role: "Freelance Full-Stack Developer & UI/UX Designer",
+      company: "Independent",
       period: "2021 - Present",
       details: [
-        "Developed responsive web applications using React, Next.js, and Tailwind CSS, ensuring seamless performance across devices.",
-        "Designed intuitive UI/UX flows and interactive prototypes in Figma and Adobe XD to enhance user engagement and satisfaction.",
-        "Created compelling graphics, book layouts, and magazine designs with InDesign, Photoshop, and Illustrator, meeting diverse client needs.",
-        "Partnered with advertising agencies to conceptualize and execute print and digital campaigns, delivering polished, brand-aligned materials.",
-      ],
-    },
-    {
-      role: "Graphic Designer & Print Specialist",
-      company: "Senior Graphic Designer at PactAfrique",
-      period: "2020 - Present",
-      details: [
-        "Designed engaging magazine layouts, posters, flyers, and promotional materials, optimizing for visual impact and audience appeal.",
-        "Prepared and managed print-ready files for publications and campaigns, ensuring high-quality output and adherence to production standards.",
-        "Collaborated closely with clients to understand requirements and deliver customized visual branding solutions that aligned with business goals.",
-      ],
-    },
-    {
-      role: "Frontend Developer",
-      company: "Pact Afrique",
-      period: "2020 - Present",
-      details: [
-        "Built reusable React components to streamline development processes and improve code maintainability.",
-        "Optimized web page performance and accessibility, implementing best practices to enhance user experience and compliance with standards.",
+        "Architect and develop responsive, high-performance web applications utilizing React, Next.js, and modern CSS frameworks.",
+        "Design intuitive UI/UX flows and interactive prototypes in Figma, translating complex client requirements into seamless user journeys.",
+        "Implement robust backend solutions and authentication systems (Postgres, BetterAuth) to support scalable web platforms.",
       ],
     },
   ],
@@ -88,184 +72,145 @@ const resumeData = {
       period: "2017 - 2021",
     },
   ],
-  certifications: [
-    {
-      title: "Full-Stack Web Development Certification",
-      issuer: "FreeCodeCamp",
-      year: "2021",
-    },
-    {
-      title: "Adobe Creative Suite Masterclass",
-      issuer: "Udemy",
-      year: "2020",
-    },
-  ],
 };
 
 export default function ResumeSection() {
   return (
-    <section id="resume">
-      <div>
-        {/* Header */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          custom={0}
-          variants={fadeInUp}
+    <section id="resume" className={styles.section}>
+      <div className={styles.content}>
+        {/* Section Header */}
+        <header
+          className={styles.header}
+          style={{ "--index": 0 } as React.CSSProperties}
         >
-          <h1>
-            My <span>Resume</span>
-          </h1>
-          <p>A snapshot of my journey, skills, and milestones.</p>
-        </motion.div>
+          <h2>
+            My{" "}
+            <span className={styles.highlight}>
+              Resume
+              <span className={styles.underline} />
+            </span>
+          </h2>
+          <p className={styles.subtitle}>
+            A snapshot of my professional journey, skills, and milestones.
+          </p>
+        </header>
 
-        {/* Summary */}
-        <motion.div
-          custom={1}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <h2>Professional Summary</h2>
-          <p>{resumeData.summary}</p>
-        </motion.div>
+        {/* Main Resume Grid */}
+        <div className={styles.resumeGrid}>
+          {/* Left Column: Summary & Experience */}
+          <div className={styles.mainColumn}>
+            {/* Summary */}
+            <article
+              className={styles.resumeBlock}
+              style={{ "--index": 1 } as React.CSSProperties}
+            >
+              <h3 className={styles.blockTitle}>Professional Summary</h3>
+              <p className={styles.summaryText}>{resumeData.summary}</p>
+            </article>
 
-        {/* Contact */}
-        <motion.div
-          custom={2}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {Object.entries(resumeData.contact).map(([label, value]) => (
-            <div key={label}>
-              <h3>{label}</h3>
-              <p>{value}</p>
+            {/* Experience (Timeline style) */}
+            <article
+              className={styles.resumeBlock}
+              style={{ "--index": 2 } as React.CSSProperties}
+            >
+              <h3 className={styles.blockTitle}>Experience</h3>
+              <div className={styles.timeline}>
+                {resumeData.experience.map((job, i) => (
+                  <div key={i} className={styles.timelineItem}>
+                    <div className={styles.timelineDot} />
+                    <h4 className={styles.role}>{job.role}</h4>
+                    <span className={styles.companyMeta}>
+                      {job.company} • {job.period}
+                    </span>
+                    <ul className={styles.jobDetails}>
+                      {job.details.map((detail, idx) => (
+                        <li key={idx}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          {/* Right Column: Skills, Education, Languages */}
+          <aside className={styles.sidebarColumn}>
+            {/* Technical Skills */}
+            <div
+              className={styles.resumeCard}
+              style={{ "--index": 3 } as React.CSSProperties}
+            >
+              <h3 className={styles.cardTitle}>Technical Stack</h3>
+              <div className={styles.tags}>
+                {resumeData.skills.technical.map((skill) => (
+                  <span key={skill} className={styles.tag}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
-          ))}
-        </motion.div>
 
-        {/* Skills + Languages */}
-        <motion.div
-          custom={3}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <div>
-            <h2>Technical Skills</h2>
-            <div>
-              {resumeData.skills.technical.map((skill) => (
-                <span key={skill}>{skill}</span>
+            {/* Design Skills */}
+            <div
+              className={styles.resumeCard}
+              style={{ "--index": 4 } as React.CSSProperties}
+            >
+              <h3 className={styles.cardTitle}>Design & Production</h3>
+              <div className={styles.tags}>
+                {resumeData.skills.design.map((skill) => (
+                  <span key={skill} className={styles.tag}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Education */}
+            <div
+              className={styles.resumeCard}
+              style={{ "--index": 5 } as React.CSSProperties}
+            >
+              <h3 className={styles.cardTitle}>Education</h3>
+              {resumeData.education.map((edu, i) => (
+                <div key={i} className={styles.eduItem}>
+                  <h4>{edu.degree}</h4>
+                  <p>{edu.school}</p>
+                  <span>{edu.period}</span>
+                </div>
               ))}
             </div>
-            <h2>Design Skills</h2>
-            <div>
-              {resumeData.skills.design.map((skill) => (
-                <span key={skill}>{skill}</span>
-              ))}
+
+            {/* Languages */}
+            <div
+              className={styles.resumeCard}
+              style={{ "--index": 6 } as React.CSSProperties}
+            >
+              <h3 className={styles.cardTitle}>Languages</h3>
+              <ul className={styles.langList}>
+                {resumeData.languages.map((lang) => (
+                  <li key={lang.name}>
+                    <strong>{lang.name}</strong>
+                    <span className={styles.langLevel}>{lang.level}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-          <div>
-            <h2>Languages</h2>
-            <ul>
-              {resumeData.languages.map((lang) => (
-                <li key={lang.name}>
-                  <span>{lang.name}</span>
-                  <span>{lang.level}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </motion.div>
+          </aside>
+        </div>
 
-        {/* Experience */}
-        <motion.div
-          custom={4}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+        {/* Download Action */}
+        <div
+          className={styles.footerAction}
+          style={{ "--index": 7 } as React.CSSProperties}
         >
-          <h2>Experience</h2>
-          <div>
-            {resumeData.experience.map((job, i) => (
-              <motion.div
-                key={i}
-                custom={i}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                <h3>{job.role}</h3>
-                <p>
-                  {job.company} • {job.period}
-                </p>
-                <ul>
-                  {job.details.map((d, idx) => (
-                    <li key={idx}>{d}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Education */}
-        <motion.div
-          custom={5}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <h2>Education</h2>
-          {resumeData.education.map((edu, i) => (
-            <div key={i}>
-              <h3>{edu.degree}</h3>
-              <p>
-                {edu.school} • {edu.period}
-              </p>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Certifications */}
-        <motion.div
-          custom={6}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <h2>Certifications</h2>
-          {resumeData.certifications.map((cert, i) => (
-            <div key={i}>
-              <h3>{cert.title}</h3>
-              <p>
-                {cert.issuer} • {cert.year}
-              </p>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Download */}
-        <motion.div
-          custom={7}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <Button onClick={() => window.open("/resume.pdf", "_blank")}>
-            Download Resume
+          <Button
+            onClick={() => window.open("/resume.pdf", "_blank")}
+            className={styles.downloadBtn}
+          >
+            <Download size={18} />
+            Download Full Resume
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

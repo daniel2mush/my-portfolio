@@ -1,0 +1,16 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin container {
+  min-height: 100vh;
+  padding: 50px;
+  @include flex-center;
+}
+
+@mixin content {
+  max-width: 1200px;
+  width: 100%;
+}

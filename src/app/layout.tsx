@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "../styles/globals.scss";
 import Themes from "@/lib/theme/theme";
-import FooterPage from "@/components/appComponent/footer";
 import { Providers } from "@/lib/query/provider";
 import { Analytics } from "@vercel/analytics/next";
-import NavBar from "@/components/Home/Navigation/Navigation";
+import Footer from "@/components/Home/Footer/Footer";
+import NavBar from "@/components/Navigation/Navigation";
 
 const PoppinsSans = Poppins({
   variable: "--font-poppins",
@@ -87,6 +87,7 @@ export default function RootLayout({
             {/* <FooterPage /> */}
           </Themes>
         </Providers>
+        <Footer />
       </body>
     </html>
   );

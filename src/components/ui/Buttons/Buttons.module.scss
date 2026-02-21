@@ -1,118 +1,147 @@
-@use "sass:color";
 @use "@/styles/variables" as *;
 
+// --- Base Button Styles ---
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.5rem;
-  border-radius: var(--radius-sm); // 8px
+  gap: 8px; // Automatically spaces text and icons perfectly
+  border-radius: var(--radius-full, 9999px); // Pill shape for a premium feel
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Snappy, easing transition
   border: 1px solid transparent;
   width: auto;
+  font-family: var(--font-family);
 
   &:disabled {
-    opacity: 0.7;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  // Premium focus state for accessibility
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
   }
 }
 
-// Create Project CTA
-.cta {
-  background-color: var(--cta);
-  color: white;
-  border: 1px solid var(--cta);
-
-  &:hover:not(:disabled) {
-    background-color: #e0694d; // Darker coral
-    border-color: #e0694d;
-  }
-}
-
-// Variant: Solid Color (Primary)
-.primary {
-  background-color: var(--button-color);
-  color: white;
-
-  //Sass has recently updated, and the darken() function is now considered "old."
-  // We need to use the modern color.scale function.
-  &:hover:not(:disabled) {
-    background-color: color.scale(
-      $primaryColor,
-      $lightness: -10%
-    ); // SCSS function on the hex value
-  }
-}
-
-// Variant: Outline (White background, colored border)
-.outline {
-  background-color: transparent;
-  border-color: var(--border-color);
-  color: var(--text-primary);
-
-  &:hover:not(:disabled) {
-    border-color: var(--text-secondary);
-    background-color: var(--app-bg);
-  }
-}
-/* Destructive Variant: Red background for high-risk actions */
-.danger {
-  background-color: var(--warning-red);
-  color: white;
-
-  &:hover:not(:disabled) {
-    background-color: #dc2626;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-    text-decoration: none;
-  }
-}
-
-// Variant: Danger Text (Minimal destructive action)
-.danger-text {
-  background-color: transparent;
-  color: var(--warning-red); // Standard red text
-  padding: 0 0.75rem; // Slightly tighter padding for text-only buttons
-
-  &:hover:not(:disabled) {
-    background-color: rgba(239, 68, 68, 0.08); // Subtle red tint on hover
-    color: #dc2626; // Darker red text
-    text-decoration: none;
-  }
-}
-
-/* Variant: Ghost (No background or border, subtle hover) */
-.ghost {
-  background-color: transparent;
-  color: var(--text-secondary);
-  padding: 0 0.75rem;
-  border: none;
-  &:hover:not(:disabled) {
-    background-color: var(--app-bg);
-    color: var(--text-primary);
-    text-decoration: none;
-  }
-}
-
-// Prop: Full Width
-.fullWidth {
-  width: 100%;
-}
-
+// --- Sizing ---
 .sm {
-  height: 40px; // Standard height
+  height: 36px;
+  padding: 0 1rem;
   font-size: var(--font-sm);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .md {
-  height: 50px;
+  height: 48px;
+  padding: 0 1.5rem;
   font-size: var(--font-md);
   font-weight: 600;
 }
 
 .lg {
-  height: 60px;
+  height: 56px;
+  padding: 0 2rem;
   font-size: var(--font-lg);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+// --- Variants ---
+
+// Primary (Main Actions)
+.primary {
+  background-color: var(--primary-color);
+  color: #000; // High contrast text
+
+  &:hover:not(:disabled) {
+    background-color: white; // Snappy contrast flip
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.35);
+  }
+}
+
+// Outline (Glassmorphic)
+.outline {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text-base);
+  backdrop-filter: blur(8px);
+
+  &:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.25);
+  }
+}
+
+// CTA (High Attention)
+.cta {
+  background-color: var(--cta);
+  color: #000;
+
+  &:hover:not(:disabled) {
+    background-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+  }
+}
+
+// Ghost (Subtle UI Actions)
+.ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: white;
+  }
+}
+
+// Danger (Destructive Action)
+.danger {
+  background-color: var(--warning-red);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background-color: #dc2626; // Slightly darker red
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+  }
+}
+
+// Danger Text (Minimal Destructive)
+.danger-text {
+  background-color: transparent;
+  color: var(--warning-red);
+  padding: 0 1rem;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #f87171; // Lighter red text on dark background
+  }
+}
+
+// --- Animations ---
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinnerIcon {
+  animation: spin 1s linear infinite;
+  // Prevents the icon from shrinking if the button text is long
+  flex-shrink: 0;
 }

@@ -1,47 +1,29 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence, Variants } from "motion/react";
 import Image from "next/image";
-import { CiShare1 } from "react-icons/ci";
-import { FiGithub } from "react-icons/fi";
 import {
   Plus,
   Eye,
   CheckCircle2,
   Trash2,
   Pencil,
-  Filter,
   X,
+  Search,
+  Image as ImageIcon,
 } from "lucide-react";
+import { CiShare1 } from "react-icons/ci";
+import { FiGithub } from "react-icons/fi";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
-import AdminForm from "./adminForm";
 import {
   useGetAdminProject,
   usePublishProject,
 } from "@/lib/query/projectQuery";
+import styles from "./AdminDashboard.module.scss";
+import { Button } from "@/components/ui/Buttons/Buttons";
+import AdminForm from "@/components/Admin/Form/AdminForm";
 
 type Project = {
   id: string;
@@ -52,16 +34,60 @@ type Project = {
   liveLink?: string;
   projectLink?: string;
   isPublished: boolean;
-  // createdAt?: string; // if available, you can use it for sorting
 };
 
-const fadeIn: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.35, ease: "easeOut" },
-  },
+const AdminProjectImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [hasError, setHasError] = useState(false);
+  if (!src || hasError) {
+    return (
+      <div className={styles.imageFallback}>
+        <ImageIcon size={30} className={styles.fallbackIcon} />
+        <span>No image</span>
+      </div>
+    );
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={styles.image}
+      sizes="(max-width: 768px) 100vw, 300px"
+      onError={() => setHasError(true)}
+    />
+  );
+};
+
+// Reusable Custom Modal Component
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}) => {
+  if (!isOpen) return null;
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
+          <h2>{title}</h2>
+          <button
+            className={styles.closeModalBtn}
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        <div className={styles.modalBody}>{children}</div>
+      </div>
+    </div>
+  );
 };
 
 export default function AdminDashboard() {
@@ -77,15 +103,11 @@ export default function AdminDashboard() {
   const { data, isLoading, isError } = useGetAdminProject();
   const { mutate: publish, isPending: isPublishing } = usePublishProject();
 
-  // Keyboard shortcuts: "/" to focus search, "a" to open Add
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "/") {
         e.preventDefault();
-        const el = document.getElementById(
-          "admin-search",
-        ) as HTMLInputElement | null;
-        el?.focus();
+        document.getElementById("admin-search")?.focus();
       }
       if ((e.key === "a" || e.key === "A") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -100,13 +122,11 @@ export default function AdminDashboard() {
 
   const processed = useMemo(() => {
     let list = projects;
-
     if (status !== "all") {
       list = list.filter((p) =>
         status === "published" ? p.isPublished : !p.isPublished,
       );
     }
-
     if (query.trim()) {
       const q = query.toLowerCase();
       list = list.filter(
@@ -116,13 +136,10 @@ export default function AdminDashboard() {
           p.tools?.some((t) => t.toLowerCase().includes(q)),
       );
     }
-
-    if (sort === "title-asc") {
+    if (sort === "title-asc")
       list = [...list].sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sort === "title-desc") {
+    else if (sort === "title-desc")
       list = [...list].sort((a, b) => b.title.localeCompare(a.title));
-    }
-
     return list;
   }, [projects, status, query, sort]);
 
@@ -141,376 +158,278 @@ export default function AdminDashboard() {
     const ids = processed
       .filter((p) => !p.isPublished && selected.has(p.id))
       .map((p) => p.id);
-    if (ids.length === 0) {
-      toast.info("No drafts selected to publish.");
-      return;
-    }
+    if (ids.length === 0) return toast.info("No drafts selected to publish.");
     ids.forEach((id) =>
       publish(
         { projectId: id },
         {
-          onSuccess: () => toast.success("Project published"),
-          onError: () => toast.error("Failed to publish project"),
+          onSuccess: () => toast.success("Published"),
+          onError: () => toast.error("Failed"),
         },
       ),
     );
     clearSelection();
   };
 
-  // Placeholder delete handler — wire your own mutation here if available
   const doDelete = (proj: Project) => {
     setConfirmDelete(null);
-    toast.info(`Implement delete for: ${proj.title}`);
+    toast.info(`Implement delete mutation for: ${proj.title}`);
   };
 
-  if (isLoading) {
-    return (
-      <div>
-        <span />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return <div>Failed to load projects.</div>;
-  }
+  if (isLoading)
+    return <div className={styles.loader}>Loading dashboard...</div>;
+  if (isError)
+    return <div className={styles.error}>Failed to load projects.</div>;
 
   return (
-    <div>
-      {/* Top Bar */}
-      <div>
-        <div>
-          <h1>Projects</h1>
-          <span>{projects.length} total</span>
+    <div className={styles.dashboard}>
+      <header className={styles.header}>
+        <div className={styles.headerTitles}>
+          <h1>Project Management</h1>
+          <span className={styles.badge}>{projects.length} Total Projects</span>
         </div>
 
-        <div>
-          <div>
-            <Label htmlFor="admin-search">Search</Label>
-            <Input
-              id="admin-search"
-              placeholder="Search title, tools, description…  (Press /)"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <div>/</div>
-          </div>
+        {/* Updated to use custom Button */}
+        <Button variant="primary" onClick={() => setOpenForm(true)}>
+          <Plus size={18} /> Add Project
+        </Button>
+      </header>
 
-          <div>
-            <Select
-              value={status}
-              onValueChange={(v: "all" | "published" | "draft") => setStatus(v)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">
-                  <Filter />
-                  All
-                </SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-              </SelectContent>
-            </Select>
+      <Modal
+        isOpen={openForm}
+        onClose={() => setOpenForm(false)}
+        title="Add New Project"
+      >
+        <AdminForm setOpen={() => setOpenForm(false)} />
+      </Modal>
 
-            <Select
-              value={sort}
-              onValueChange={(v: "title-asc" | "title-desc") => setSort(v)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Sort" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="title-asc">Title A → Z</SelectItem>
-                <SelectItem value="title-desc">Title Z → A</SelectItem>
-              </SelectContent>
-            </Select>
+      {/* Toolbar */}
+      <div className={styles.toolbar}>
+        <div className={styles.searchBox}>
+          <Search size={18} className={styles.searchIcon} />
+          <input
+            id="admin-search"
+            type="text"
+            placeholder="Search title, tools... (Press /)"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className={styles.nativeInput}
+          />
+        </div>
 
-            <Dialog open={openForm} onOpenChange={setOpenForm}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus />
-                  Add Project
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add new project</DialogTitle>
-                </DialogHeader>
-                <AdminForm setOpen={() => setOpenForm(false)} />
-              </DialogContent>
-            </Dialog>
-          </div>
+        <div className={styles.filters}>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as any)}
+            className={styles.nativeSelect}
+          >
+            <option value="all">All Statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Drafts</option>
+          </select>
+
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as any)}
+            className={styles.nativeSelect}
+          >
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="title-desc">Title (Z-A)</option>
+          </select>
         </div>
       </div>
 
-      {/* Bulk Bar */}
-      <AnimatePresence>
-        {selected.size > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-          >
-            <div>{selected.size} selected</div>
-            <div>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={bulkPublish}
-                disabled={isPublishing}
-              >
-                <CheckCircle2 /> Publish
-              </Button>
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={() => toast.info("Wire bulk delete mutation")}
-              >
-                <Trash2 /> Delete
-              </Button>
-              <Button size="sm" variant="ghost" onClick={clearSelection}>
-                <X /> Clear
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <Separator />
+      {selected.size > 0 && (
+        <div className={styles.bulkBar}>
+          <span className={styles.bulkCount}>
+            {selected.size} items selected
+          </span>
+          <div className={styles.bulkActions}>
+            {/* Updated to use custom Button variants and isLoading prop */}
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={bulkPublish}
+              isLoading={isPublishing}
+            >
+              <CheckCircle2 size={16} /> Publish Selected
+            </Button>
+            <Button
+              size="sm"
+              variant="danger"
+              onClick={() => toast.info("Bulk delete not implemented")}
+            >
+              <Trash2 size={16} /> Delete Selected
+            </Button>
+            <Button size="sm" variant="ghost" onClick={clearSelection}>
+              <X size={16} /> Clear
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Grid */}
-      <motion.div layout>
-        <AnimatePresence>
-          {processed.map((p) => {
+      <div className={styles.grid}>
+        {processed.length === 0 ? (
+          <div className={styles.emptyState}>
+            No projects match your search criteria.
+          </div>
+        ) : (
+          processed.map((p, index) => {
             const isChecked = selected.has(p.id);
             return (
-              <motion.div
+              <article
                 key={p.id}
-                layout
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeIn}
-                whileHover={{ y: -2 }}
+                className={`${styles.card} ${isChecked ? styles.cardSelected : ""}`}
+                style={{ "--index": index } as React.CSSProperties}
               >
-                <Card>
-                  {/* Select Checkbox */}
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => toggleSelect(p.id)}
-                        aria-label={`Select ${p.title}`}
-                      />
-                      Select
-                    </label>
+                <div className={styles.cardHeader}>
+                  <div className={styles.imageWrapper}>
+                    <AdminProjectImage src={p.imageUrl} alt={p.title} />
                   </div>
-
-                  {/* Image */}
-                  <div>
-                    {p.imageUrl ? (
-                      <Image src={p.imageUrl} alt={p.title} fill />
-                    ) : (
-                      <div>🌐</div>
-                    )}
+                  <div className={styles.badges}>
                     <span
-                      className={`absolute top-3 right-3 px-3 py-1 text-xs font-medium rounded-full ${
-                        p.isPublished
-                          ? "bg-green-100 text-green-700"
-                          : "bg-amber-100 text-amber-700"
-                      }`}
+                      className={`${styles.statusBadge} ${p.isPublished ? styles.published : styles.draft}`}
                     >
                       {p.isPublished ? "Published" : "Draft"}
                     </span>
-
-                    {/* Subtle overlay actions (desktop hover, always accessible via buttons below too) */}
-                    <div>
-                      <div>{p.description}</div>
-                      <div>
-                        {p.liveLink && (
-                          <a
-                            href={p.liveLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <CiShare1 /> Live
-                          </a>
-                        )}
-                        {p.projectLink && (
-                          <a
-                            href={p.projectLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <FiGithub /> Code
-                          </a>
-                        )}
-                      </div>
-                    </div>
                   </div>
+                  <label className={styles.checkboxWrapper}>
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleSelect(p.id)}
+                      className={styles.checkbox}
+                    />
+                  </label>
+                </div>
 
-                  {/* Content */}
-                  <div>
-                    <div>
-                      <h3>{p.title}</h3>
-                      <p>{p.description}</p>
-                    </div>
-
-                    <div>
-                      {p.tools?.map((t) => (
-                        <span key={t}>{t}</span>
-                      ))}
-                    </div>
-
-                    {/* Actions (always visible, mobile-first) */}
-                    <div>
-                      {p.liveLink && (
-                        <a
-                          href={p.liveLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <CiShare1 /> Live
-                        </a>
-                      )}
-                      {p.projectLink && (
-                        <a
-                          href={p.projectLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FiGithub /> Code
-                        </a>
-                      )}
-
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() =>
-                          toast.info("Open edit modal with project data")
-                        }
-                      >
-                        <Pencil /> Edit
-                      </Button>
-
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setPreview(p)}
-                      >
-                        <Eye /> Preview
-                      </Button>
-
-                      {!p.isPublished && (
-                        <Button
-                          onClick={() =>
-                            publish(
-                              { projectId: p.id },
-                              {
-                                onSuccess: () =>
-                                  toast.success("Project published"),
-                                onError: () => toast.error("Failed to publish"),
-                              },
-                            )
-                          }
-                          size="sm"
-                          disabled={isPublishing}
-                        >
-                          <CheckCircle2 /> Publish
-                        </Button>
-                      )}
-
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => setConfirmDelete(p)}
-                      >
-                        <Trash2 /> Delete
-                      </Button>
-                    </div>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.title}>{p.title}</h3>
+                  <p className={styles.description}>{p.description}</p>
+                  <div className={styles.tools}>
+                    {p.tools?.slice(0, 4).map((t) => (
+                      <span key={t} className={styles.toolTag}>
+                        {t}
+                      </span>
+                    ))}
+                    {p.tools && p.tools.length > 4 && (
+                      <span className={styles.toolTag}>
+                        +{p.tools.length - 4} more
+                      </span>
+                    )}
                   </div>
-                </Card>
-              </motion.div>
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <div className={styles.actionGroup}>
+                    {/* Using outline variant */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => toast.info("Edit modal coming soon")}
+                    >
+                      <Pencil size={14} /> Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setPreview(p)}
+                    >
+                      <Eye size={14} /> Preview
+                    </Button>
+                  </div>
+                  <div className={styles.actionGroup}>
+                    {!p.isPublished && (
+                      <Button
+                        size="sm"
+                        variant="primary"
+                        onClick={() => publish({ projectId: p.id })}
+                        isLoading={isPublishing}
+                      >
+                        <CheckCircle2 size={14} />
+                      </Button>
+                    )}
+                    {/* Using danger variant */}
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => setConfirmDelete(p)}
+                    >
+                      <Trash2 size={14} />
+                    </Button>
+                  </div>
+                </div>
+              </article>
             );
-          })}
-        </AnimatePresence>
-      </motion.div>
+          })
+        )}
+      </div>
 
-      {/* Preview Dialog */}
-      <Dialog open={!!preview} onOpenChange={(v) => !v && setPreview(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{preview?.title}</DialogTitle>
-            <DialogDescription>{preview?.description}</DialogDescription>
-          </DialogHeader>
-          <div>
-            <div>
-              {preview?.imageUrl ? (
-                <Image src={preview.imageUrl} alt={preview.title} fill />
-              ) : (
-                <div>🌐</div>
-              )}
-            </div>
-            <div>
-              <div>
-                {preview?.tools?.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
-              </div>
-              <div>
-                {preview?.liveLink && (
-                  <a
-                    href={preview.liveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <CiShare1 /> Live
-                  </a>
-                )}
-                {preview?.projectLink && (
-                  <a
-                    href={preview.projectLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FiGithub /> Code
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Confirm Delete Dialog */}
-      <Dialog
-        open={!!confirmDelete}
-        onOpenChange={(v) => !v && setConfirmDelete(null)}
+      {/* Custom Preview Modal */}
+      <Modal
+        isOpen={!!preview}
+        onClose={() => setPreview(null)}
+        title={preview?.title || "Project Preview"}
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete project</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete{" "}
-              <span>{confirmDelete?.title}</span>.
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <Button variant="ghost" onClick={() => setConfirmDelete(null)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => confirmDelete && doDelete(confirmDelete)}
-            >
-              Delete
-            </Button>
+        <div className={styles.previewContent}>
+          <p className={styles.description}>{preview?.description}</p>
+          <div className={styles.previewImageWrapper}>
+            <AdminProjectImage
+              src={preview?.imageUrl || ""}
+              alt={preview?.title || ""}
+            />
           </div>
-        </DialogContent>
-      </Dialog>
+          <div className={styles.previewTools}>
+            {preview?.tools?.map((t) => (
+              <span key={t} className={styles.toolTag}>
+                {t}
+              </span>
+            ))}
+          </div>
+          <div className={styles.previewLinks}>
+            {preview?.liveLink && (
+              <Button
+                variant="outline"
+                onClick={() => window.open(preview.liveLink, "_blank")}
+              >
+                <CiShare1 size={18} /> View Live Demo
+              </Button>
+            )}
+            {preview?.projectLink && (
+              <Button
+                variant="outline"
+                onClick={() => window.open(preview.projectLink, "_blank")}
+              >
+                <FiGithub size={18} /> View Source Code
+              </Button>
+            )}
+          </div>
+        </div>
+      </Modal>
+
+      {/* Custom Delete Modal */}
+      <Modal
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        title="Delete Project"
+      >
+        <p className={styles.deleteWarning}>
+          Are you sure? This will permanently delete{" "}
+          <strong>{confirmDelete?.title}</strong>. This action cannot be undone.
+        </p>
+        <div className={styles.deleteDialogActions}>
+          <Button variant="outline" onClick={() => setConfirmDelete(null)}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => confirmDelete && doDelete(confirmDelete)}
+          >
+            Delete Permanently
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

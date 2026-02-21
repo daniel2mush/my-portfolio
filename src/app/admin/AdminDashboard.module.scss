@@ -1,0 +1,545 @@
+@use "../../styles/mixins.scss" as *;
+
+// ==========================================
+// 🎨 ANIMATIONS
+// ==========================================
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ==========================================
+// 📊 DASHBOARD LAYOUT
+// ==========================================
+.dashboard {
+  padding: clamp(20px, 4vw, 40px);
+  background-color: var(--app-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  color: white;
+}
+
+.loader,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  background-color: var(--app-bg);
+}
+
+// ==========================================
+// 🏷️ HEADER
+// ==========================================
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+.headerTitles {
+  h1 {
+    font-size: clamp(1.8rem, 3vw, 2.2rem);
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: white;
+  }
+}
+
+.badge {
+  display: inline-block;
+  background-color: rgba(var(--primary-color-rgb), 0.15);
+  color: var(--primary-color);
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+// ==========================================
+// 🎛️ TOOLBAR (SEARCH & FILTERS)
+// ==========================================
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.searchBox {
+  position: relative;
+  flex-grow: 1;
+  max-width: 450px;
+
+  @media screen and (max-width: 900px) {
+    max-width: 100%;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.nativeInput,
+.nativeSelect {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md, 8px);
+  color: white;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  outline: none;
+
+  &:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.15);
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.nativeInput {
+  padding-left: 44px; // Room for the search icon
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.nativeSelect {
+  cursor: pointer;
+  appearance: none; // Hides default OS arrow
+  min-width: 160px;
+  // Custom SVG Arrow inside the background
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px top 50%;
+  background-size: 10px auto;
+  padding-right: 36px;
+
+  option {
+    background-color: var(--app-bg);
+    color: white;
+  }
+}
+
+// ==========================================
+// 🗃️ BULK ACTION BAR
+// ==========================================
+.bulkBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+  padding: 16px 24px;
+  border-radius: var(--radius-md, 12px);
+  animation: slideDownFade 0.3s ease-out forwards;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.bulkCount {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 1.05rem;
+}
+
+.bulkActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+// ==========================================
+// 📱 PROJECT GRID & CARDS
+// ==========================================
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-lg, 16px);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  font-size: 1.1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+
+  // Staggered CSS Animation
+  opacity: 0;
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--index) * 0.05s);
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.cardSelected {
+  border-color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.05);
+  box-shadow: 0 0 0 1px var(--primary-color);
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+}
+
+// --- Card Image Area ---
+.cardHeader {
+  position: relative;
+  height: 180px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.imageFallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  color: var(--text-secondary);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+
+  .fallbackIcon {
+    opacity: 0.5;
+  }
+}
+
+// --- Badges & Checkboxes ---
+.badges {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.statusBadge {
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.published {
+  background-color: rgba(16, 185, 129, 0.15); // Emerald Green
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.draft {
+  background-color: rgba(245, 158, 11, 0.15); // Amber
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.checkboxWrapper {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  padding: 8px;
+  border-radius: var(--radius-sm, 8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+// --- Card Body & Text ---
+.cardBody {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: white;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  // Truncates text after 2 lines
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto; // Always pushes to the bottom
+}
+
+.toolTag {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-light);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+// --- Card Footer ---
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.actionGroup {
+  display: flex;
+  gap: 12px;
+}
+
+// ==========================================
+// 🪟 CUSTOM MODALS
+// ==========================================
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.modalContent {
+  background-color: var(--app-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl, 24px);
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+  }
+}
+
+.closeModalBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.modalBody {
+  padding: 32px;
+}
+
+// --- Preview Modal Specifics ---
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.previewImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md, 12px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.previewTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.previewLinks {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+// --- Delete Modal Specifics ---
+.deleteWarning {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+
+  strong {
+    color: white;
+  }
+}
+
+.deleteDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}

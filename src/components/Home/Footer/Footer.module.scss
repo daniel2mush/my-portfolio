@@ -1,0 +1,244 @@
+@use "../../../styles/mixins.scss" as *;
+
+.footer {
+  position: relative;
+  background-color: rgba(10, 10, 15, 0.95); // Deep dark, slightly transparent
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: clamp(60px, 8vw, 80px) 20px 30px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+// Subtle gradient line at the very top of the footer
+.glowBar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--primary-color-rgb), 0.5) 50%,
+    transparent 100%
+  );
+  box-shadow: 0 0 15px rgba(var(--primary-color-rgb), 0.4);
+}
+
+.container {
+  @include content;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// --- Top Section Grid ---
+.topSection {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+}
+
+// --- Brand Column ---
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media screen and (max-width: 600px) {
+    align-items: center;
+  }
+}
+
+.logoContainer {
+  position: relative;
+  width: 120px;
+  height: 40px;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .logo {
+    object-fit: contain;
+    filter: invert(100%);
+  }
+}
+
+.brandDescription {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0;
+}
+
+// --- Shared Column Styles ---
+.linksCol,
+.socialCol {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h3 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+}
+
+// --- Quick Links ---
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @media screen and (max-width: 600px) {
+    align-items: center;
+  }
+}
+
+.navLink {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  width: fit-content;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    color: var(--primary-color);
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 600px) {
+    text-align: center;
+    &:hover {
+      transform: translateY(
+        -2px
+      ); // Upward lift on mobile instead of right shift
+    }
+  }
+}
+
+// --- Social Icons ---
+.socialIcons {
+  display: flex;
+  gap: 16px;
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background: var(--primary-color);
+      color: #000;
+      border-color: var(--primary-color);
+      transform: translateY(-4px);
+      box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+    }
+  }
+}
+
+// --- Bottom Section ---
+.bottomSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column-reverse;
+    gap: 24px;
+    text-align: center;
+  }
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+
+  p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.location {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+
+  &::before {
+    content: "•";
+    margin-right: 8px;
+
+    @media screen and (max-width: 600px) {
+      display: none; // Hide the dot on mobile since they stack
+    }
+  }
+}
+
+.backToTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: white;
+    color: #000;
+    transform: translateY(-3px);
+  }
+}

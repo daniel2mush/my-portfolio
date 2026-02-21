@@ -1,0 +1,239 @@
+@use "../../styles/mixins.scss" as *;
+
+.section {
+  padding: 100px 20px;
+  background-color: var(--app-bg);
+  min-height: 100vh;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    margin-bottom: 16px;
+    color: white;
+  }
+
+  .highlight {
+    color: var(--primary-color);
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// --- Grid ---
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+// --- Card (Mirrored from Admin) ---
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: calc(var(--index) * 0.1s);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+.cardBody {
+  padding: 24px;
+  flex-grow: 1;
+
+  .title {
+    font-size: 1.25rem;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+
+    // THE MAGIC: 3-line truncation
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.toolTag {
+  background: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.cardFooter {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+// --- Status States ---
+.statusContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: var(--text-secondary);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: var(--primary-color);
+}
+
+// --- Modal Styling (Consistent with Admin) ---
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalContent {
+  background: var(--app-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 700px;
+  border-radius: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modalHeader {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  h2 {
+    color: white;
+    margin: 0;
+  }
+}
+
+.modalBody {
+  padding: 32px;
+}
+
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.previewImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fullDescription {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  white-space: pre-wrap;
+}
+
+.previewLinks {
+  display: flex;
+  gap: 16px;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.closeModalBtn {
+  background: transparent; // Removes that ugly default background
+  border: none; // Removes the default button border
+  outline: none; // Removes the focus ring
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%; // Makes the hover effect a perfect circle
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1); // Subtle glass circle on hover
+    transform: rotate(90deg); // Slight playful rotation
+  }
+
+  &:active {
+    transform: scale(0.9) rotate(90deg); // Feedback when clicked
+  }
+}

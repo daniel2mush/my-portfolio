@@ -1,89 +1,107 @@
-$primaryColor: #6b74d0;
-$secondaryColor: #f0f0f0;
-$app-bg: #0e172a;
-$ButtonColor: #818cf8;
-$Cta: #ffb546;
-$WarningRed: #d20c0c;
+// ==========================================
+// 🎨 CORE COLOR PALETTE
+// ==========================================
+$app-bg: #0b1120; // Deeper, cinematic dark navy (makes glassmorphism pop)
+$primaryColor: #818cf8; // Vivid, electric indigo (Tailwind indigo-400)
+$secondaryColor: #1e293b; // Deep slate for subtle card backgrounds/borders
+$Cta: #f59e0b; // Amber/Orange for high-contrast actions
+$WarningRed: #ef4444;
 
-// Typography
-$fontFamily: "Roboto", sans-serif;
-$fontSizeBase: 16px;
-$fontSizeLg: 18px;
-$fontSizeSm: 14px;
-$fontWeightNormal: 400;
-$fontWeightBold: 700;
+// Base RGB values (Crucial for glassmorphism and soft glowing shadows!)
+$primaryColorRgb: 129, 140, 248;
+$appBgRgb: 11, 17, 32;
+
+// ==========================================
+// 📝 TYPOGRAPHY & TEXT COLORS
+// ==========================================
+$fontFamily: "Roboto", system-ui, sans-serif;
 
 // Text Colors
-$textPrimary: #818cf8;
-$textSecondary: #9ca3af;
-$textLight: #e5e7eb;
+$textBase: #f8fafc; // Pure, crisp white for main headings
+$textPrimary: #818cf8; // The accent color used for span highlights
+$textSecondary: #94a3b8; // Soft, readable slate-gray for paragraphs
+$textLight: #e2e8f0; // Off-white for secondary headings
 
-// Spacing
-$spacingSm: 8px;
-$spacingMd: 16px;
-$spacingLg: 24px;
-$spacingXl: 32px;
-$spacingXXl: 48px;
-$spacingXXXl: 64px;
+// Font Weights
+$fontWeightNormal: 400;
+$fontWeightMedium: 500;
+$fontWeightBold: 700;
+$fontWeightBlack: 800; // Added for those massive Hero headings
 
-// Border Radius
-$borderRadiusSm: 4px;
-$borderRadiusMd: 8px;
-$borderRadiusLg: 12px;
-$borderRadiusXl: 16px;
-$borderRadiusXXl: 24px;
+// Unified Font Sizes
+$font-sm: 0.875rem; // 14px
+$font-md: 1rem; // 16px
+$font-lg: 1.125rem; // 18px
+$font-xl: 1.5rem; // 24px
+$font-xxl: 2.5rem; // 40px
 
-//font size
-$font-sm: 12px;
-$font-md: 16px;
-$font-lg: 36px;
-$font-xl: 40px;
-$font-xxl: 48px;
+// ==========================================
+// 📏 SPACING & SIZING
+// ==========================================
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+$spacing-xxxl: 64px;
 
-$radius-sm: 8px; // Added from design doc
-$radius-md: 12px; // Added from design doc
-$radius-lg: 24px;
+// ==========================================
+// 🔲 BORDERS & RADII
+// ==========================================
+// Unified to one single, clean naming convention
+$radius-sm: 6px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 24px;
+$radius-full: 9999px; // Great for pill-shaped buttons and tags
 
-// Export to CSS Custom Properties (So you can use var(--name) in CSS)
+// ==========================================
+// 🌍 EXPORT TO CSS VARIABLES (:root)
+// ==========================================
+// This makes them accessible dynamically in the browser
 :root {
-  --primary-color: #{$primaryColor};
-  --secondary-color: #{$secondaryColor};
+  // Colors
   --app-bg: #{$app-bg};
-  --button-color: #{$ButtonColor};
+  --app-bg-rgb: #{$appBgRgb};
+
+  --primary-color: #{$primaryColor};
+  --primary-color-rgb: #{$primaryColorRgb};
+
+  --secondary-color: #{$secondaryColor};
   --cta: #{$Cta};
-
-  --radius-sm: #{$radius-sm};
-  --radius-md: #{$radius-md};
-  --radius-lg: #{$radius-lg};
-
   --warning-red: #{$WarningRed};
-  --font-family: #{$fontFamily};
-  --font-size-base: #{$fontSizeBase};
-  --font-size-lg: #{$fontSizeLg};
-  --font-size-sm: #{$fontSizeSm};
-  --font-weight-normal: #{$fontWeightNormal};
-  --font-weight-bold: #{$fontWeightBold};
 
+  // Text Colors
+  --text-base: #{$textBase};
   --text-primary: #{$textPrimary};
   --text-secondary: #{$textSecondary};
   --text-light: #{$textLight};
 
-  --spacing-sm: #{$spacingSm};
-  --spacing-md: #{$spacingMd};
-  --spacing-lg: #{$spacingLg};
-  --spacing-xl: #{$spacingXl};
-  --spacing-xxl: #{$spacingXXl};
-  --spacing-xxxl: #{$spacingXXXl};
-
-  --border-radius-sm: #{$borderRadiusSm};
-  --border-radius-md: #{$borderRadiusMd};
-  --border-radius-lg: #{$borderRadiusLg};
-  --border-radius-xl: #{$borderRadiusXl};
-  --border-radius-xxl: #{$borderRadiusXXl};
+  // Typography
+  --font-family: #{$fontFamily};
+  --font-weight-normal: #{$fontWeightNormal};
+  --font-weight-medium: #{$fontWeightMedium};
+  --font-weight-bold: #{$fontWeightBold};
+  --font-weight-black: #{$fontWeightBlack};
 
   --font-sm: #{$font-sm};
   --font-md: #{$font-md};
   --font-lg: #{$font-lg};
   --font-xl: #{$font-xl};
   --font-xxl: #{$font-xxl};
+
+  // Spacing
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
+  --spacing-xxl: #{$spacing-xxl};
+  --spacing-xxxl: #{$spacing-xxxl};
+
+  // Border Radius
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
+  --radius-full: #{$radius-full};
 }

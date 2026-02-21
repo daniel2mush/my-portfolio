@@ -1,99 +1,105 @@
 "use client";
 
-import { Code, Rocket, Users } from "lucide-react";
-import { IoColorPaletteOutline } from "react-icons/io5";
+import { IoCode, IoColorPaletteOutline, IoRocket } from "react-icons/io5";
+import { FiUser } from "react-icons/fi";
 import styles from "./AboutMe.module.scss";
 
+// Moved outside the component to prevent recreation on every render
 const skillsInfo = [
   {
     header: "Clean Code",
     p: "Maintainable, scalable, future-proof.",
-    icon: <Code size={20} />,
+    icon: <IoCode size={24} />,
   },
   {
     header: "Design Thinking",
     p: "User-first, detail-obsessed workflows.",
-    icon: <IoColorPaletteOutline size={20} />,
+    icon: <IoColorPaletteOutline size={24} />,
   },
   {
     header: "Performance",
     p: "Optimized for speed, efficiency, and trust.",
-    icon: <Rocket size={20} />,
+    icon: <IoRocket size={24} />,
   },
   {
     header: "Collaboration",
     p: "Team synergy for exceptional outcomes.",
-    icon: <Users size={20} />,
+    icon: <FiUser size={24} />,
   },
 ];
 
 export default function AboutMe() {
   return (
-    <section className={styles.section}>
-      {/* Moving background pattern */}
-      <div />
+    <section id="about" className={styles.section}>
+      {/* Decorative background pattern (if you add CSS for it later) */}
+      <div className={styles.bgPattern} aria-hidden="true" />
 
       <div className={styles.sectionContent}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h1>
+        {/* Section Header */}
+        <header className={styles.header}>
+          <h2>
             About
-            <span className={styles.me}>
+            <span className={styles.highlight}>
               Me
               <span className={styles.underline} />
             </span>
-          </h1>
-          <p>
+          </h2>
+          <p className={styles.subtitle}>
             I build digital tools that empower people — blending{" "}
-            <span>code</span>, <span>design</span>, and civic purpose.
+            <span className={styles.textAccent}>code</span>,{" "}
+            <span className={styles.textAccent}>design</span>, and civic
+            purpose.
           </p>
-        </div>
+        </header>
 
-        {/* Divider */}
-        <div />
-
-        {/* Grid */}
-        <div>
-          {/* Left Content */}
-          <div>
-            <h2>Crafting Digital Experiences</h2>
-            <p>
-              With roots in both development and design, I bridge the gap
-              between aesthetics and functionality. My journey began with
-              curiosity and became a mission to build scalable, civic‑minded
-              platforms.
-            </p>
-            <p>
-              Specializing in React, Node.js, and modern design systems, I
-              deliver inclusive and high‑performance experiences.
-            </p>
-            <p>
-              Outside of code, I explore design trends, contribute to open
-              source, and mentor emerging creatives.
-            </p>
+        {/* Main Grid Content */}
+        <div className={styles.sectionGrid}>
+          {/* Left Column: Text */}
+          <article className={styles.gridLeft}>
+            <h3>Crafting Digital Experiences</h3>
+            <div className={styles.textContent}>
+              <p>
+                With roots in both development and design, I bridge the gap
+                between aesthetics and functionality. My journey began with
+                curiosity and became a mission to build scalable, civic‑minded
+                platforms.
+              </p>
+              <p>
+                Specializing in React, Node.js, and modern design systems, I
+                deliver inclusive and high‑performance experiences.
+              </p>
+              <p>
+                Outside of code, I explore design trends, contribute to open
+                source, and mentor emerging creatives.
+              </p>
+            </div>
 
             {/* Tags */}
-            <div>
+            <div className={styles.tags}>
               {["#Accessibility", "#ScalableCode", "#CivicImpact"].map(
                 (tag) => (
-                  <span key={tag}>{tag}</span>
+                  <span key={tag} className={styles.tag}>
+                    {tag}
+                  </span>
                 ),
               )}
             </div>
+          </article>
+
+          {/* Center Column: Vertical Accent Bar */}
+          <div className={styles.dividerWrapper}>
+            <div className={styles.divider} />
           </div>
 
-          {/* Vertical Accent Bar */}
-          <div />
-
-          {/* Skills */}
-          <div>
+          {/* Right Column: Skill Cards */}
+          <div className={styles.gridRight}>
             {skillsInfo.map((skill) => (
-              <div key={skill.header}>
-                <div>
-                  <div>{skill.icon}</div>
+              <div className={styles.skillCard} key={skill.header}>
+                <div className={styles.iconWrapper}>
+                  <div className={styles.icon}>{skill.icon}</div>
                 </div>
-                <h3>{skill.header}</h3>
-                <p>{skill.p}</p>
+                <h4 className={styles.skillHeader}>{skill.header}</h4>
+                <p className={styles.skillP}>{skill.p}</p>
               </div>
             ))}
           </div>

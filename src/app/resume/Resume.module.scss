@@ -1,0 +1,298 @@
+@use "../../styles/mixins.scss" as *;
+
+// --- Animations ---
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- Layout ---
+.section {
+  @include container;
+  padding: clamp(60px, 10vw, 120px) 20px;
+  background-color: var(--app-bg);
+}
+
+.content {
+  @include content;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// --- Header ---
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(40px, 8vw, 60px);
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: calc(var(--index) * 0.15s);
+
+  h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: white;
+    margin: 0 0 16px 0;
+    font-weight: 800;
+
+    .highlight {
+      color: var(--text-primary);
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+
+      .underline {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        border-radius: 4px;
+        background-color: var(--primary-color);
+      }
+    }
+  }
+
+  .subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+// --- Grid Layout ---
+.resumeGrid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 40px;
+
+  @media screen and (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// --- Left Column ---
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.resumeBlock {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: calc(var(--index) * 0.15s);
+}
+
+.blockTitle {
+  font-size: 1.8rem;
+  color: white;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+}
+
+.summaryText {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 300;
+}
+
+// --- Timeline (Experience) ---
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-left: 20px;
+  border-left: 2px solid rgba(var(--primary-color-rgb), 0.3);
+}
+
+.timelineItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -27px; // Align to border
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
+}
+
+.role {
+  font-size: 1.3rem;
+  color: white;
+  margin: 0;
+  font-weight: 600;
+}
+
+.companyMeta {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.jobDetails {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+
+  li {
+    margin-bottom: 8px;
+    &::marker {
+      color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+// --- Right Column (Sidebar) ---
+.sidebarColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.resumeCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md, 12px);
+  padding: 24px;
+
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: calc(var(--index) * 0.15s);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  color: white;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    color: white;
+    border-color: var(--primary-color);
+  }
+}
+
+.eduItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  h4 {
+    color: white;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  span {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+}
+
+.langList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 0.95rem;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.langLevel {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+// --- Footer Action ---
+.footerAction {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: calc(var(--index) * 0.15s);
+}
+
+.downloadBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  padding: 24px 40px;
+  border-radius: 30px;
+}
