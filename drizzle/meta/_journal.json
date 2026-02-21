@@ -15,6 +15,20 @@
       "when": 1756057769268,
       "tag": "0001_chubby_kate_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771713187007,
+      "tag": "0002_violet_spiral",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771713527977,
+      "tag": "0003_neat_darkhawk",
+      "breakpoints": true
     }
   ]
 }

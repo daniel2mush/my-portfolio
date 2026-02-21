@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { toast } from "sonner"; // Using the toast provider we set up earlier
 import styles from "./Form.module.scss";
 
 export default function MyForm() {
@@ -26,24 +27,33 @@ export default function MyForm() {
     e.preventDefault();
     setStatus("loading");
 
-    // Simulate an API call (Replace this with your actual form submission logic, e.g., Resend, EmailJS, Formspree)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error("Failed to send");
+
       setStatus("success");
+      toast.success("Message sent successfully!");
       setFormData({ name: "", email: "", subject: "", message: "" });
 
-      // Reset success message after 5 seconds
+      // Reset success status UI after 5 seconds
       setTimeout(() => setStatus("idle"), 5000);
     } catch (error) {
       setStatus("error");
+      toast.error("Could not send message. Please try again later.");
       setTimeout(() => setStatus("idle"), 5000);
-      console.log(error);
+      console.error("Form Submission Error:", error);
     }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {/* Row for Name and Email */}
       <div className={styles.row}>
         <div className={styles.inputGroup}>
           <label htmlFor="name" className={styles.label}>
@@ -113,7 +123,6 @@ export default function MyForm() {
         />
       </div>
 
-      {/* Submit Button & Status Messages */}
       <div className={styles.submitContainer}>
         <button
           type="submit"
@@ -138,7 +147,6 @@ export default function MyForm() {
           )}
         </button>
 
-        {/* Status Feedback */}
         {status === "success" && (
           <p className={styles.successMessage}>
             Thanks for reaching out! I&apos;ll get back to you soon.

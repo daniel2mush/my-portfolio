@@ -52,16 +52,20 @@
   padding: clamp(20px, 4vw, 40px);
   background-color: var(--app-bg);
   min-height: 100vh;
-  @include flex(flex-start, stretch, column, var(--spacing-xl));
-  color: var(--text-base);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  color: white;
 }
 
 .loader,
 .error {
-  @include flex-center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
   color: var(--text-secondary);
-  font-size: var(--font-lg);
+  font-size: 1.2rem;
   background-color: var(--app-bg);
 }
 
@@ -69,23 +73,25 @@
 // 🏷️ HEADER
 // ==========================================
 .header {
-  @include flex(space-between, center);
-  padding-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
-  @include respond-to("sm") {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-md);
+    gap: 20px;
   }
 }
 
 .headerTitles {
   h1 {
     font-size: clamp(1.8rem, 3vw, 2.2rem);
-    font-weight: var(--font-weight-bold);
-    margin: 0 0 var(--spacing-sm) 0;
-    color: var(--text-base);
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: white;
   }
 }
 
@@ -94,9 +100,9 @@
   background-color: rgba(var(--primary-color-rgb), 0.15);
   color: var(--primary-color);
   padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-sm);
-  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.85rem;
+  font-weight: 600;
   border: 1px solid rgba(var(--primary-color-rgb), 0.2);
 }
 
@@ -104,9 +110,12 @@
 // 🎛️ TOOLBAR (SEARCH & FILTERS)
 // ==========================================
 .toolbar {
-  @include flex(space-between, center, row, var(--spacing-lg));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 
-  @include respond-to("lg") {
+  @media screen and (max-width: 900px) {
     flex-direction: column;
     align-items: stretch;
   }
@@ -117,7 +126,7 @@
   flex-grow: 1;
   max-width: 450px;
 
-  @include respond-to("lg") {
+  @media screen and (max-width: 900px) {
     max-width: 100%;
   }
 }
@@ -134,13 +143,13 @@
 .nativeInput,
 .nativeSelect {
   width: 100%;
-  padding: 12px var(--spacing-md);
+  padding: 12px 16px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  color: var(--text-base);
+  border-radius: var(--radius-md, 8px);
+  color: white;
   font-family: inherit;
-  font-size: var(--font-sm);
+  font-size: 0.95rem;
   transition: all 0.2s ease;
   outline: none;
 
@@ -160,9 +169,10 @@
 }
 
 .filters {
-  @include flex(flex-start, stretch, row, var(--spacing-md));
+  display: flex;
+  gap: 16px;
 
-  @include respond-to("sm") {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
   }
 }
@@ -180,7 +190,7 @@
 
   option {
     background-color: var(--app-bg);
-    color: var(--text-base);
+    color: white;
   }
 }
 
@@ -188,28 +198,31 @@
 // 🗃️ BULK ACTION BAR
 // ==========================================
 .bulkBar {
-  @include flex(space-between, center);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: rgba(var(--primary-color-rgb), 0.1);
   border: 1px solid rgba(var(--primary-color-rgb), 0.3);
-  padding: var(--spacing-md) var(--spacing-xl);
-  border-radius: var(--radius-md);
+  padding: 16px 24px;
+  border-radius: var(--radius-md, 12px);
   animation: slideDownFade 0.3s ease-out forwards;
 
-  @include respond-to("md") {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: 16px;
     align-items: flex-start;
   }
 }
 
 .bulkCount {
-  font-weight: var(--font-weight-bold);
+  font-weight: 600;
   color: var(--primary-color);
-  font-size: var(--font-md);
+  font-size: 1.05rem;
 }
 
 .bulkActions {
-  @include flex(flex-start, center, row, 12px);
+  display: flex;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -225,19 +238,20 @@
 .emptyState {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 80px var(--spacing-lg);
+  padding: 80px 20px;
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.02);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-lg, 16px);
   border: 1px dashed rgba(255, 255, 255, 0.15);
-  font-size: var(--font-lg);
+  font-size: 1.1rem;
 }
 
 .card {
-  @include flex(flex-start, stretch, column);
+  display: flex;
+  flex-direction: column;
   background-color: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-lg, 16px);
   overflow: hidden;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
@@ -282,8 +296,12 @@
 }
 
 .imageFallback {
-  @include flex(center, center, column, var(--spacing-sm));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100%;
+  gap: 8px;
   color: var(--text-secondary);
   background: linear-gradient(
     135deg,
@@ -305,24 +323,23 @@
 
 .statusBadge {
   padding: 4px 12px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-full, 9999px);
   font-size: 0.75rem;
-  font-weight: var(--font-weight-bold);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-// Replaced hardcoded greens/yellows with color-mix logic for consistency
 .published {
-  background-color: color-mix(in srgb, #10b981 15%, transparent);
+  background-color: rgba(16, 185, 129, 0.15); // Emerald Green
   color: #34d399;
-  border: 1px solid color-mix(in srgb, #10b981 30%, transparent);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .draft {
-  background-color: color-mix(in srgb, var(--cta) 15%, transparent);
-  color: var(--cta);
-  border: 1px solid color-mix(in srgb, var(--cta) 30%, transparent);
+  background-color: rgba(245, 158, 11, 0.15); // Amber
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .checkboxWrapper {
@@ -331,10 +348,12 @@
   left: 12px;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-sm);
+  padding: 8px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
-  @include flex-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: background 0.2s;
 
@@ -352,23 +371,24 @@
 
 // --- Card Body & Text ---
 .cardBody {
-  @include flex(flex-start, stretch, column);
-  padding: var(--spacing-xl);
+  padding: 24px;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  font-size: var(--font-xl);
-  font-weight: var(--font-weight-bold);
-  margin: 0 0 var(--spacing-sm) 0;
-  color: var(--text-base);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: white;
 }
 
 .description {
-  font-size: var(--font-sm);
+  font-size: 0.9rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0 0 var(--spacing-lg) 0;
+  margin: 0 0 20px 0;
   // Truncates text after 2 lines
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -377,8 +397,9 @@
 }
 
 .tools {
-  @include flex(flex-start, center, row, var(--spacing-sm));
+  display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   margin-top: auto; // Always pushes to the bottom
 }
 
@@ -386,22 +407,24 @@
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-light);
   padding: 4px 10px;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   font-size: 0.75rem;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 // --- Card Footer ---
 .cardFooter {
-  @include flex(space-between, center);
-  padding: var(--spacing-md) var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
   background-color: rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .actionGroup {
-  @include flex(flex-start, center, row, 12px);
+  display: flex;
+  gap: 12px;
 }
 
 // ==========================================
@@ -411,17 +434,19 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background-color: rgba(var(--app-bg-rgb), 0.85); // Matches user modal
+  background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
-  @include flex-center;
-  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
   animation: fadeIn 0.2s ease-out forwards;
 }
 
 .modalContent {
   background-color: var(--app-bg);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-xl, 24px);
   width: 100%;
   max-width: 650px;
   max-height: 90vh;
@@ -431,15 +456,17 @@
 }
 
 .modalHeader {
-  @include flex(space-between, center);
-  padding: var(--spacing-xl) 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   h2 {
     margin: 0;
     font-size: 1.4rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--text-base);
+    font-weight: 700;
+    color: white;
   }
 }
 
@@ -449,12 +476,14 @@
   color: var(--text-secondary);
   cursor: pointer;
   padding: 6px;
-  border-radius: var(--radius-sm);
-  @include flex-center;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s;
 
   &:hover {
-    color: var(--text-base);
+    color: white;
     background: rgba(255, 255, 255, 0.1);
   }
 }
@@ -465,30 +494,33 @@
 
 // --- Preview Modal Specifics ---
 .previewContent {
-  @include flex(flex-start, stretch, column, var(--spacing-xl));
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .previewImageWrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-md, 12px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .previewTools {
-  @include flex(flex-start, center, row, 10px);
+  display: flex;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .previewLinks {
-  @include flex(flex-start, center, row, var(--spacing-md));
+  display: flex;
+  gap: 16px;
   margin-top: 8px;
 
-  @include respond-to("sm") {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
-    align-items: stretch;
   }
 }
 
@@ -497,15 +529,92 @@
   color: var(--text-secondary);
   font-size: 1.05rem;
   line-height: 1.6;
-  margin: 0 0 var(--spacing-xl) 0;
+  margin: 0 0 24px 0;
 
   strong {
-    color: var(--text-base);
+    color: white;
   }
 }
 
 .deleteDialogActions {
-  @include flex(flex-end, center, row, var(--spacing-md));
-  padding-top: var(--spacing-xl);
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.messageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.messageCard {
+  background: var(--glass-bg); // Use your existing glassmorphism variable
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+  }
+}
+
+.subject {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.messageBody {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-base);
+  min-height: 80px;
+}
+
+.deleteBtn {
+  margin-top: auto;
+  background: rgba(255, 68, 68, 0.1);
+  color: #ff4444;
+  border: 1px solid rgba(255, 68, 68, 0.2);
+  padding: 0.6rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #ff4444;
+    color: white;
+  }
 }

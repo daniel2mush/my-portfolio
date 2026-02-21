@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/Buttons/Buttons";
 import AdminForm from "@/components/Admin/Form/AdminForm";
 import { Project } from "@/lib/types";
 import { StatusFilter, SortOption } from "@/types/project";
+import MessagesList from "./MessageList";
 
 const AdminProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
@@ -212,6 +213,8 @@ export default function AdminDashboard() {
           <Plus size={18} /> Add Project
         </Button>
       </header>
+
+      <MessagesList />
 
       <Modal
         isOpen={openForm}
