@@ -23,26 +23,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Card className="p-6 rounded shadow-md w-full max-w-lg">
-        <h1 className="text-xl mb-4">Admin Login</h1>
+    <div>
+      <Card>
+        <h1>Admin Login</h1>
         <Input
           type="email"
           placeholder="Email"
-          className="border p-2 mb-2 w-full"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           type="password"
           placeholder="Password"
-          className="border p-2 mb-4 w-full"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={handleLogin} className="font-bold text-white">
-          Login
-        </Button>
+        <Button onClick={handleLogin}>Login</Button>
       </Card>
     </div>
   );

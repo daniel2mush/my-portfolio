@@ -1,0 +1,89 @@
+$primaryColor: #6b74d0;
+$secondaryColor: #f0f0f0;
+$app-bg: #0e172a;
+$ButtonColor: #818cf8;
+$Cta: #ffb546;
+$WarningRed: #d20c0c;
+
+// Typography
+$fontFamily: "Roboto", sans-serif;
+$fontSizeBase: 16px;
+$fontSizeLg: 18px;
+$fontSizeSm: 14px;
+$fontWeightNormal: 400;
+$fontWeightBold: 700;
+
+// Text Colors
+$textPrimary: #818cf8;
+$textSecondary: #9ca3af;
+$textLight: #e5e7eb;
+
+// Spacing
+$spacingSm: 8px;
+$spacingMd: 16px;
+$spacingLg: 24px;
+$spacingXl: 32px;
+$spacingXXl: 48px;
+$spacingXXXl: 64px;
+
+// Border Radius
+$borderRadiusSm: 4px;
+$borderRadiusMd: 8px;
+$borderRadiusLg: 12px;
+$borderRadiusXl: 16px;
+$borderRadiusXXl: 24px;
+
+//font size
+$font-sm: 12px;
+$font-md: 16px;
+$font-lg: 36px;
+$font-xl: 40px;
+$font-xxl: 48px;
+
+$radius-sm: 8px; // Added from design doc
+$radius-md: 12px; // Added from design doc
+$radius-lg: 24px;
+
+// Export to CSS Custom Properties (So you can use var(--name) in CSS)
+:root {
+  --primary-color: #{$primaryColor};
+  --secondary-color: #{$secondaryColor};
+  --app-bg: #{$app-bg};
+  --button-color: #{$ButtonColor};
+  --cta: #{$Cta};
+
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+
+  --warning-red: #{$WarningRed};
+  --font-family: #{$fontFamily};
+  --font-size-base: #{$fontSizeBase};
+  --font-size-lg: #{$fontSizeLg};
+  --font-size-sm: #{$fontSizeSm};
+  --font-weight-normal: #{$fontWeightNormal};
+  --font-weight-bold: #{$fontWeightBold};
+
+  --text-primary: #{$textPrimary};
+  --text-secondary: #{$textSecondary};
+  --text-light: #{$textLight};
+
+  --spacing-sm: #{$spacingSm};
+  --spacing-md: #{$spacingMd};
+  --spacing-lg: #{$spacingLg};
+  --spacing-xl: #{$spacingXl};
+  --spacing-xxl: #{$spacingXXl};
+  --spacing-xxxl: #{$spacingXXXl};
+
+  --border-radius-sm: #{$borderRadiusSm};
+  --border-radius-md: #{$borderRadiusMd};
+  --border-radius-lg: #{$borderRadiusLg};
+  --border-radius-xl: #{$borderRadiusXl};
+  --border-radius-xxl: #{$borderRadiusXXl};
+
+  --font-sm: #{$font-sm};
+  --font-md: #{$font-md};
+  --font-lg: #{$font-lg};
+  --font-xl: #{$font-xl};
+  --font-xxl: #{$font-xxl};
+}

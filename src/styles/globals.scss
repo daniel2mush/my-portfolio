@@ -1,0 +1,35 @@
+// Import the variables file so we can use them here if needed.
+// 'as *' means we can use variables directly like $primary-blue without a prefix.
+@use "variables" as *;
+
+// --- BASE RESET ---
+// This ensures that padding and borders are included in an element's total width.
+// Without this, a 100% width input with padding would overflow the screen.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// --- BODY DEFAULTS ---
+body {
+  margin: 0; // Remove default browser margin
+  padding: 0; // Remove default browser padding
+
+  // Set the default font for the whole app.
+  // 'Inter' is loaded by Next.js in layout.tsx.
+  font-family: "Inter", sans-serif;
+
+  // Set the background color using our CSS Variable (defined in _variables.scss)
+  background-color: var(--app-bg);
+
+  // Set the default text color
+  color: var(--text-primary);
+}
+
+// --- LINK DEFAULTS ---
+// Ensure links inherit the font settings and don't look like default blue browser links
+a {
+  text-decoration: none;
+  color: inherit;
+}

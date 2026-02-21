@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.scss";
 import Themes from "@/lib/theme/theme";
 import FooterPage from "@/components/appComponent/footer";
-import NavBar from "@/components/appComponent/navigation/DesktopNav";
-import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/lib/query/provider";
 import { Analytics } from "@vercel/analytics/next";
+import NavBar from "@/components/Home/Navigation/Navigation";
 
 const PoppinsSans = Poppins({
   variable: "--font-poppins",
@@ -78,15 +77,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}>
+        className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}
+      >
         <Providers>
           <Themes defaultTheme="dark">
             <Analytics />
             <NavBar />
             {children}
-            <FooterPage />
+            {/* <FooterPage /> */}
           </Themes>
-          <Toaster richColors />
         </Providers>
       </body>
     </html>

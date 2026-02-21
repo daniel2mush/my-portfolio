@@ -104,24 +104,20 @@ const resumeData = {
 
 export default function ResumeSection() {
   return (
-    <section
-      id="resume"
-      className="min-h-screen w-full bg-primary/5 py-20 px-5 md:px-10">
-      <div className="max-w-6xl mx-auto space-y-16">
+    <section id="resume">
+      <div>
         {/* Header */}
         <motion.div
-          className="text-center space-y-2"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           custom={0}
-          variants={fadeInUp}>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-            My <span className="text-primary">Resume</span>
+          variants={fadeInUp}
+        >
+          <h1>
+            My <span>Resume</span>
           </h1>
-          <p className="text-muted-foreground text-lg">
-            A snapshot of my journey, skills, and milestones.
-          </p>
+          <p>A snapshot of my journey, skills, and milestones.</p>
         </motion.div>
 
         {/* Summary */}
@@ -130,11 +126,10 @@ export default function ResumeSection() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}>
-          <h2 className="section-heading">Professional Summary</h2>
-          <p className="leading-relaxed text-muted-foreground">
-            {resumeData.summary}
-          </p>
+          viewport={{ once: true }}
+        >
+          <h2>Professional Summary</h2>
+          <p>{resumeData.summary}</p>
         </motion.div>
 
         {/* Contact */}
@@ -144,13 +139,11 @@ export default function ResumeSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-3 gap-6 text-center">
+        >
           {Object.entries(resumeData.contact).map(([label, value]) => (
-            <div
-              key={label}
-              className="p-4 rounded-lg bg-background/50 border border-border">
-              <h3 className="font-semibold capitalize">{label}</h3>
-              <p className="text-muted-foreground">{value}</p>
+            <div key={label}>
+              <h3>{label}</h3>
+              <p>{value}</p>
             </div>
           ))}
         </motion.div>
@@ -162,34 +155,28 @@ export default function ResumeSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-8">
+        >
           <div>
-            <h2 className="section-heading">Technical Skills</h2>
-            <div className="flex flex-wrap gap-2">
+            <h2>Technical Skills</h2>
+            <div>
               {resumeData.skills.technical.map((skill) => (
-                <span key={skill} className="tag">
-                  {skill}
-                </span>
+                <span key={skill}>{skill}</span>
               ))}
             </div>
-            <h2 className="section-heading mt-6">Design Skills</h2>
-            <div className="flex flex-wrap gap-2">
+            <h2>Design Skills</h2>
+            <div>
               {resumeData.skills.design.map((skill) => (
-                <span key={skill} className="tag">
-                  {skill}
-                </span>
+                <span key={skill}>{skill}</span>
               ))}
             </div>
           </div>
           <div>
-            <h2 className="section-heading">Languages</h2>
-            <ul className="space-y-1">
+            <h2>Languages</h2>
+            <ul>
               {resumeData.languages.map((lang) => (
-                <li
-                  key={lang.name}
-                  className="flex justify-between border-b border-border/50 pb-1">
+                <li key={lang.name}>
                   <span>{lang.name}</span>
-                  <span className="text-muted-foreground">{lang.level}</span>
+                  <span>{lang.level}</span>
                 </li>
               ))}
             </ul>
@@ -202,23 +189,24 @@ export default function ResumeSection() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}>
-          <h2 className="section-heading">Experience</h2>
-          <div className="space-y-6">
+          viewport={{ once: true }}
+        >
+          <h2>Experience</h2>
+          <div>
             {resumeData.experience.map((job, i) => (
               <motion.div
                 key={i}
-                className="resume-card"
                 custom={i}
                 variants={fadeInUp}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}>
-                <h3 className="font-bold text-lg">{job.role}</h3>
-                <p className="text-sm text-muted-foreground">
+                viewport={{ once: true }}
+              >
+                <h3>{job.role}</h3>
+                <p>
                   {job.company} • {job.period}
                 </p>
-                <ul className="list-disc pl-4 mt-2 space-y-1 text-muted-foreground text-sm">
+                <ul>
                   {job.details.map((d, idx) => (
                     <li key={idx}>{d}</li>
                   ))}
@@ -234,12 +222,13 @@ export default function ResumeSection() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}>
-          <h2 className="section-heading">Education</h2>
+          viewport={{ once: true }}
+        >
+          <h2>Education</h2>
           {resumeData.education.map((edu, i) => (
-            <div key={i} className="resume-card">
-              <h3 className="font-bold">{edu.degree}</h3>
-              <p className="text-sm text-muted-foreground">
+            <div key={i}>
+              <h3>{edu.degree}</h3>
+              <p>
                 {edu.school} • {edu.period}
               </p>
             </div>
@@ -252,12 +241,13 @@ export default function ResumeSection() {
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}>
-          <h2 className="section-heading">Certifications</h2>
+          viewport={{ once: true }}
+        >
+          <h2>Certifications</h2>
           {resumeData.certifications.map((cert, i) => (
-            <div key={i} className="resume-card">
-              <h3 className="font-bold">{cert.title}</h3>
-              <p className="text-sm text-muted-foreground">
+            <div key={i}>
+              <h3>{cert.title}</h3>
+              <p>
                 {cert.issuer} • {cert.year}
               </p>
             </div>
@@ -271,10 +261,8 @@ export default function ResumeSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="text-center mt-8">
-          <Button
-            onClick={() => window.open("/resume.pdf", "_blank")}
-            className="font-bold px-10">
+        >
+          <Button onClick={() => window.open("/resume.pdf", "_blank")}>
             Download Resume
           </Button>
         </motion.div>

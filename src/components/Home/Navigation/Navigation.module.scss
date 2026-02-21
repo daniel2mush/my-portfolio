@@ -1,0 +1,207 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  width: 150px;
+  height: 50px;
+}
+.logo {
+  object-fit: contain;
+  filter: invert(100%);
+  margin-right: 10px;
+  width: 100%;
+}
+
+.navContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navLinks {
+  display: flex;
+  gap: 20px;
+}
+.resumeButton {
+  text-decoration: none;
+  color: white;
+  border: 1px dashed var(--primary-color);
+  padding: 8px 16px;
+  &:hover {
+    color: var(--textPrimary);
+    font-weight: 800;
+  }
+}
+
+.navButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  font-weight: 800;
+  &:hover {
+    color: var(--textPrimary);
+  }
+}
+.activeNavLink {
+  color: var(--primary-color);
+  ::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+  }
+}
+.mobileMenu {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--app-bg);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.mobileMenu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.mobileMenuLinks {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButtonMobile {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  font-size: var(--font-lg);
+  &:hover {
+    color: var(--textPrimary);
+  }
+}
+.activeNavLinkMobie {
+  color: var(--primary-color);
+}
+
+.resumeButtonMobile {
+  text-decoration: none;
+  color: white;
+  border: 1px dashed var(--primary-color);
+  padding: 12px 24px;
+  font-size: var(--font-lg);
+  &:hover {
+    color: var(--textPrimary);
+    font-weight: 800;
+  }
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: white;
+}
+
+.cancelMobileButton {
+  position: relative;
+  background-color: transparent;
+  top: 20px;
+  right: 20px;
+}
+.cancelIcon {
+  background-color: transparent;
+  border: none;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  cursor: pointer;
+}
+
+.cancelIconLine1 {
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  transform: rotate(45deg);
+}
+.cancelIconLine2 {
+  width: 24px;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  transform: rotate(-45deg);
+}
+// .mobileMenu a {
+//   text-decoration: none;
+//   color: black;
+//   margin: 10px 0;
+//   font-size: 18px;
+//   &:hover {
+//     color: blue;
+//   }
+// }
+// .mobileMenu.open {
+//   height: auto;
+//   transition: height 0.3s ease-in-out;
+// }
+// .mobileMenu.closed {
+//   height: 0;
+//   overflow: hidden;
+//   transition: height 0.3s ease-in-out;
+// }
+// .mobileMenu.closed.no-transition {
+//   transition: none;
+// }
+.progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background-color: blue;
+  width: 0%;
+}

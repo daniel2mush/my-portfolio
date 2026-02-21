@@ -45,85 +45,63 @@ export default function Contact() {
       initial="hidden"
       animate={controls}
       variants={containerVariants}
-      className="relative py-20 bg-gradient-to-b from-background via-background/95 to-background overflow-hidden">
+    >
       {/* Decorative blobs */}
-      <motion.div
-        className="absolute -top-32 -left-32 w-72 h-72 bg-primary/20 rounded-full mix-blend-multiply blur-3xl animate-pulse"
-        aria-hidden
-      />
-      <motion.div
-        className="absolute -bottom-32 -right-32 w-72 h-72 bg-accent/20 rounded-full mix-blend-multiply blur-3xl animate-pulse"
-        aria-hidden
-      />
+      <motion.div aria-hidden />
+      <motion.div aria-hidden />
 
-      <div className="max-w-7xl mx-auto px-6 space-y-14 relative z-10">
+      <div>
         {/* Header */}
-        <motion.div variants={itemVariants} className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Let&apos;s <span className="text-primary">Connect</span>
+        <motion.div variants={itemVariants}>
+          <h1>
+            Let&apos;s <span>Connect</span>
           </h1>
-          <p className="md:text-lg text-muted-foreground">
+          <p>
             Have a project in mind or just want to chat — I’d love to hear from
             you.
           </p>
         </motion.div>
 
         {/* Layout */}
-        <motion.div
-          variants={containerVariants}
-          className="grid md:grid-cols-3 gap-10">
+        <motion.div variants={containerVariants}>
           {/* Contact Info */}
-          <motion.div
-            variants={itemVariants}
-            className="space-y-6 p-6 rounded-2xl bg-background/60 backdrop-blur-lg border border-white/10 shadow-xl">
-            <h2 className="text-2xl font-bold">Get In Touch</h2>
-            <div className="space-y-5">
+          <motion.div variants={itemVariants}>
+            <h2>Get In Touch</h2>
+            <div>
               {contactInfo.map((c) => (
                 <motion.div
                   key={c.name}
                   variants={itemVariants}
                   whileHover={{ scale: 1.02, translateY: -2 }}
-                  className="flex items-center gap-5 p-4 rounded-lg bg-primary/5 border border-primary/10 transition-all cursor-pointer">
-                  <div className="flex justify-center items-center w-12 h-12 rounded-full bg-primary text-white">
-                    {c.icon}
-                  </div>
+                >
+                  <div>{c.icon}</div>
                   <div>
-                    <h3 className="text-sm text-muted-foreground">{c.name}</h3>
+                    <h3>{c.name}</h3>
                     {c.name === "Email" ? (
-                      <Link
-                        href={`mailto:${c.info}`}
-                        className="font-bold hover:underline">
-                        {c.info}
-                      </Link>
+                      <Link href={`mailto:${c.info}`}>{c.info}</Link>
                     ) : (
-                      <p className="font-bold">{c.info}</p>
+                      <p>{c.info}</p>
                     )}
                   </div>
                 </motion.div>
               ))}
 
               {/* Freelance Availability */}
-              <motion.div
-                variants={itemVariants}
-                className="p-5 rounded-lg bg-green-500/10 border border-green-500/20">
-                <h3 className="font-bold flex items-center gap-2">
-                  <span className="relative flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
+              <motion.div variants={itemVariants}>
+                <h3>
+                  <span>
+                    <span />
+                    <span />
                   </span>
                   Available for Freelance
                 </h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Open to exciting projects and new opportunities.
-                </p>
+                <p>Open to exciting projects and new opportunities.</p>
               </motion.div>
             </div>
           </motion.div>
 
           {/* Contact Form */}
-          <motion.div
-            variants={itemVariants}
-            className="md:col-span-2 p-6 rounded-2xl bg-background/60 backdrop-blur-lg border border-white/10 shadow-xl">
+          <motion.div variants={itemVariants}>
             <MyForm />
           </motion.div>
         </motion.div>

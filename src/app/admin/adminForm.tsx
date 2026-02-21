@@ -39,7 +39,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           "image/webp",
           "image/avif",
         ].includes(f.type),
-      "Invalid image format"
+      "Invalid image format",
     );
 
   const FormSchema = z.object({
@@ -49,7 +49,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
       .array(z.string())
       .min(1, "Tools cannot be null")
       .transform((tools) =>
-        tools.map((t) => t.trim()).filter((t) => t.length > 0)
+        tools.map((t) => t.trim()).filter((t) => t.length > 0),
       ),
     liveLink: z.string().min(5, "Live link cannot be null"),
     projectLink: z.string().min(5, "Project link cannot be null"),
@@ -85,7 +85,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
               setUploadValue(percent);
             }
           },
-        }
+        },
       );
 
       return res.data;
@@ -118,13 +118,13 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSave)} className=" space-y-5">
+      <form onSubmit={form.handleSubmit(handleOnSave)}>
         <FormField
           name="title"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Title</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Enter your project title" {...field} />
               </FormControl>
@@ -137,10 +137,9 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Description</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  className=" h-20"
                   placeholder="Enter your project description"
                   {...field}
                 />
@@ -155,9 +154,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel className="font-bold">
-                  Tools (comma separated)
-                </FormLabel>
+                <FormLabel>Tools (comma separated)</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="React, Vue, MongoDB"
@@ -185,7 +182,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Live link</FormLabel>
+              <FormLabel>Live link</FormLabel>
               <FormControl>
                 <Input placeholder="Enter your project live link" {...field} />
               </FormControl>
@@ -198,7 +195,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Github Link</FormLabel>
+              <FormLabel>Github Link</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your project github link"
@@ -215,7 +212,7 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Thumbnail</FormLabel>
+              <FormLabel>Thumbnail</FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -230,18 +227,10 @@ export default function AdminForm({ setOpen }: { setOpen: () => void }) {
             </FormItem>
           )}
         />
-        <div>
-          {isUploading && (
-            <progress
-              className="w-full h-3 rounded-lg bg-gray-100 overflow-hidden"
-              value={uploadValue}
-              max={100}
-            />
-          )}
-        </div>
+        <div>{isUploading && <progress value={uploadValue} max={100} />}</div>
         <DialogFooter>
           <DialogClose>Close</DialogClose>
-          <Button disabled={isUploading} className=" font-bold text-white">
+          <Button disabled={isUploading}>
             {isUploading ? "Uploading" : "Upload"}
           </Button>
         </DialogFooter>

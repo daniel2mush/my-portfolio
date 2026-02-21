@@ -30,14 +30,14 @@ export default function MyForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="flex flex-col md:flex-row gap-5">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div>
           <FormField
             name="fullname"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="font-bold">Full name</FormLabel>
+              <FormItem>
+                <FormLabel>Full name</FormLabel>
                 <FormControl>
                   <Input placeholder="Your name" {...field} />
                 </FormControl>
@@ -48,8 +48,8 @@ export default function MyForm() {
             name="email"
             control={form.control}
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel className="font-bold">Email</FormLabel>
+              <FormItem>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="Your email" {...field} />
                 </FormControl>
@@ -63,7 +63,7 @@ export default function MyForm() {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Subject</FormLabel>
+              <FormLabel>Subject</FormLabel>
               <FormControl>
                 <Input placeholder="Project inquiry" {...field} />
               </FormControl>
@@ -76,21 +76,15 @@ export default function MyForm() {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="font-bold">Message</FormLabel>
+              <FormLabel>Message</FormLabel>
               <FormControl>
-                <Textarea
-                  className="h-48"
-                  placeholder="Tell me about your project"
-                  {...field}
-                />
+                <Textarea placeholder="Tell me about your project" {...field} />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full flex items-center justify-center gap-2 text-white">
+        <Button type="submit">
           <Send size={18} /> Send message
         </Button>
       </form>

@@ -7,7 +7,7 @@ import { Code2, Server, Palette, Cloud } from "lucide-react";
 const skills = [
   {
     name: "Frontend Development",
-    icon: <Code2 className="text-primary" size={24} />,
+    icon: <Code2 size={24} />,
     color: "from-primary/20 to-primary/5",
     skillSet: [
       "React",
@@ -19,7 +19,7 @@ const skills = [
   },
   {
     name: "Backend Development",
-    icon: <Server className="text-purple-500" size={24} />,
+    icon: <Server size={24} />,
     color: "from-purple-500/20 to-purple-500/5",
     skillSet: [
       "Node.js",
@@ -32,7 +32,7 @@ const skills = [
   },
   {
     name: "Design & Tools",
-    icon: <Palette className="text-pink-500" size={24} />,
+    icon: <Palette size={24} />,
     color: "from-pink-500/20 to-pink-500/5",
     skillSet: [
       "Figma",
@@ -46,7 +46,7 @@ const skills = [
   },
   {
     name: "DevOps & Cloud",
-    icon: <Cloud className="text-green-500" size={24} />,
+    icon: <Cloud size={24} />,
     color: "from-green-500/20 to-green-500/5",
     skillSet: [
       "AWS",
@@ -144,60 +144,51 @@ export default function Skills() {
       initial="hidden"
       animate={controls}
       variants={container}
-      className="py-24 bg-gradient-to-b from-background via-background/95 to-background">
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <motion.div variants={item} className="text-center space-y-3">
-          <h2 className="text-4xl md:text-5xl font-bold relative inline-block">
-            Skills & <span className="text-primary">Expertise</span>
-            <span className="absolute left-0 bottom-0 w-full h-[4px] bg-gradient-to-r from-primary to-transparent scale-x-0 origin-left motion-safe:animate-[grow_0.6s_ease-out_forwards_0.3s]" />
+    >
+      <div>
+        <motion.div variants={item}>
+          <h2>
+            Skills & <span>Expertise</span>
+            <span />
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p>
             A comprehensive toolkit for building modern web applications and
             digital experiences.
           </p>
         </motion.div>
 
-        <motion.div
-          variants={container}
-          className="grid md:grid-cols-4 gap-8 mt-16">
+        <motion.div variants={container}>
           {skills.map((s) => (
             <motion.div
               key={s.name}
               variants={item}
-              className={`rounded-xl p-5 bg-gradient-to-br ${s.color} border border-white/10 backdrop-blur-md hover:-rotate-6 transition-all duration-500 hover:scale-110`}>
-              <div className="flex items-center gap-3">
+              className={`rounded-xl p-5 bg-gradient-to-br ${s.color} border border-white/10 backdrop-blur-md hover:-rotate-6 transition-all duration-500 hover:scale-110`}
+            >
+              <div>
                 {s.icon}
-                <h3 className="text-xl font-semibold">{s.name}</h3>
+                <h3>{s.name}</h3>
               </div>
-              <div className="flex flex-wrap gap-2 mt-4">
+              <div>
                 {s.skillSet.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1 text-xs font-semibold rounded-full bg-background/40 border border-white/10">
-                    {skill}
-                  </span>
+                  <span key={skill}>{skill}</span>
                 ))}
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        <motion.div
-          variants={container}
-          className="grid md:grid-cols-4 gap-8 mt-16 border-t border-white/10 pt-10">
+        <motion.div variants={container}>
           {serviceStats.map((stat) => (
-            <motion.div
-              key={stat.name}
-              variants={item}
-              className="flex flex-col items-center">
+            <motion.div key={stat.name} variants={item}>
               <motion.span
                 className={`text-3xl md:text-4xl font-bold ${stat.color}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}>
+                transition={{ duration: 0.8 }}
+              >
                 <AnimatedNumber target={stat.value} suffix={stat.suffix} />
               </motion.span>
-              <p className="text-sm text-muted-foreground">{stat.name}</p>
+              <p>{stat.name}</p>
             </motion.div>
           ))}
         </motion.div>

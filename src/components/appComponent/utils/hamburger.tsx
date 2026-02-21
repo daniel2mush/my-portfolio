@@ -8,9 +8,7 @@ export default function Hamburger({
   open: boolean;
 }) {
   return (
-    <button
-      className="relative w-6 h-6 flex flex-col justify-between items-center"
-      onClick={onClick}>
+    <button onClick={onClick}>
       <span
         className={`block h-0.5 w-full bg-white rounded transform transition duration-300 ease-in-out ${
           open ? "rotate-45 translate-y-3" : ""
