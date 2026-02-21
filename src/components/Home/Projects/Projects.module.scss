@@ -1,6 +1,9 @@
 @use "../../../styles/mixins.scss" as *;
+@use "../../../styles/variables.scss" as *;
 
-// --- Animations ---
+// ==========================================
+// 🎭 ANIMATIONS
+// ==========================================
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -18,34 +21,33 @@
   }
 }
 
-// --- Layout ---
+// ==========================================
+// 🏗️ LAYOUT & CONTAINERS
+// ==========================================
 .section {
-  @include container;
-  padding: clamp(60px, 10vw, 120px) 20px;
+  @include container(auto);
+  padding: clamp(60px, 10vw, 120px) var(--spacing-lg);
   background-color: var(--app-bg);
 }
 
 .content {
-  @include content;
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include content(1200px);
+  @include flex(flex-start, stretch, column);
 }
 
-// --- Header ---
+// ==========================================
+// 🏷️ HEADER
+// ==========================================
 .header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(center, center, column);
   text-align: center;
   margin-bottom: clamp(40px, 8vw, 60px);
 
   h2 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    color: white;
-    margin: 0 0 16px 0;
-    font-weight: 800;
+    color: var(--text-base);
+    margin: 0 0 var(--spacing-md) 0;
+    font-weight: var(--font-weight-black);
 
     .highlight {
       color: var(--text-primary);
@@ -59,35 +61,40 @@
         left: 0;
         width: 100%;
         height: 6px;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
         background-color: var(--primary-color);
       }
     }
   }
 
   .subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-size: clamp(1.1rem, 2vw, var(--font-lg));
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
     max-width: 650px;
     margin: 0;
+    text-wrap: balance; // Prevents lonely words on the last line
   }
 }
 
-// --- Grid ---
+// ==========================================
+// 📊 PROJECTS GRID
+// ==========================================
 .grid {
   display: grid;
-  // Creates a beautiful, responsive grid that requires zero media queries for column changes!
+  // Beautiful, responsive grid that requires zero media queries for column changes!
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
-  margin-bottom: 60px;
+  gap: var(--spacing-xxl);
+  margin-bottom: var(--spacing-xxxl);
 }
 
-// --- Card ---
+// ==========================================
+// 🃏 PROJECT CARD
+// ==========================================
+
 .card {
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--radius-lg, 16px);
+  @include flex(flex-start, stretch, column);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -118,7 +125,9 @@
   }
 }
 
-// --- Image & Overlay ---
+// ==========================================
+// 🖼️ IMAGE & OVERLAY
+// ==========================================
 .imageWrapper {
   position: relative;
   width: 100%;
@@ -133,26 +142,22 @@
 }
 
 .placeholderImage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   font-size: 3rem;
   width: 100%;
   height: 100%;
 }
+
 .overlay {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
+  @include flex(center, center, row, var(--spacing-md));
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px); // This is blurring the image
+  backdrop-filter: blur(4px);
   opacity: 0;
   transition: opacity 0.3s ease;
 
-  @media screen and (max-width: 992px) {
+  @include respond-to("lg") {
     opacity: 1;
     background: linear-gradient(
       to top,
@@ -160,66 +165,62 @@
       transparent 100%
     );
     align-items: flex-end;
-    padding: 20px;
-
-    /* ADD THIS LINE TO FIX THE BLUR */
-    backdrop-filter: none;
+    padding: var(--spacing-lg);
+    backdrop-filter: none; // Fixes mobile blur clipping
   }
 }
 
+// Custom overlay button (If not using your global Button component here)
 .actionBtn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @include flex(center, center, row, var(--spacing-sm));
   padding: 10px 20px;
   background-color: var(--primary-color);
-  color: #000;
-  border-radius: 30px;
-  font-weight: 600;
+  color: var(--app-bg);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-bold);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: var(--font-sm);
   transition:
     transform 0.2s ease,
     background-color 0.2s ease;
 
   &:hover {
     transform: scale(1.05);
-    background-color: white;
+    background-color: var(--text-base);
   }
 
-  @media screen and (max-width: 768px) {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+  @include respond-to("md") {
+    padding: 8px var(--spacing-md);
   }
 }
 
-// --- Card Info ---
+// ==========================================
+// 📝 CARD INFO
+// ==========================================
 .cardInfo {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
+  padding: var(--spacing-xl);
+  @include flex(flex-start, stretch, column);
   flex-grow: 1; // Pushes tools to the bottom if cards are different heights
 }
 
 .title {
   font-size: 1.4rem;
-  color: white;
-  margin: 0 0 12px 0;
-  font-weight: 700;
+  color: var(--text-base);
+  margin: 0 0 var(--spacing-md) 0;
+  font-weight: var(--font-weight-bold);
 }
 
 .description {
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: var(--font-md);
   line-height: 1.6;
-  margin: 0 0 20px 0;
+  margin: 0 0 var(--spacing-lg) 0;
   flex-grow: 1;
 }
 
 .tools {
-  display: flex;
+  @include flex(flex-start, center, row, var(--spacing-sm));
   flex-wrap: wrap;
-  gap: 8px;
   margin-top: auto;
 }
 
@@ -227,27 +228,24 @@
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--primary-color);
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-// --- Footer & Loading States ---
+// ==========================================
+// 🔄 FOOTER & LOADING STATES
+// ==========================================
 .footer {
-  display: flex;
-  justify-content: center;
+  @include flex-center;
 }
 
 .statusContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex(center, center, column, var(--spacing-lg));
   min-height: 300px;
   color: var(--text-secondary);
-  font-size: 1.2rem;
-  gap: 20px;
+  font-size: var(--font-lg);
 }
 
 .spinner {
@@ -255,6 +253,6 @@
   height: 40px;
   border: 4px solid rgba(var(--primary-color-rgb), 0.2);
   border-top-color: var(--primary-color);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   animation: spin 1s linear infinite;
 }

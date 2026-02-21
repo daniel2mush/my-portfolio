@@ -1,10 +1,13 @@
 @use "../../../styles/mixins.scss" as *;
+@use "../../../styles/variables.scss" as *;
 
-// --- Animations ---
+// ==========================================
+// 🎭 ANIMATIONS
+// ==========================================
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -22,151 +25,147 @@
   }
 }
 
-// --- Layout & Background ---
+// ==========================================
+// 🏗️ LAYOUT & BACKGROUND
+// ==========================================
 .heroSection {
   position: relative;
-  width: 100%;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include container(100vh);
   overflow: hidden;
+  background-color: var(--app-bg);
 }
 
 .heroBackground {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   z-index: 0;
-  background-color: #111; // Fallback while the video loads
 }
 
 .heroVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0.6;
 }
 
 .gradientOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  // Cinematic vignette: darker at the edges, slightly clearer in the center
+  inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(0, 0, 0, 0.4) 0%,
-    rgba(0, 0, 0, 0.8) 100%
+    rgba(var(--app-bg-rgb), 0.2) 0%,
+    var(--app-bg) 100%
   );
-  backdrop-filter: blur(
-    4px
-  ); // Subtle blur keeps text readable while preserving video motion
+  backdrop-filter: blur(2px);
 }
 
-// --- Foreground Content ---
+// ==========================================
+// ✨ CONTENT & TYPOGRAPHY (The Big Upgrade)
+// ==========================================
 .heroContent {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include content(1000px); // Widened slightly to let the big text breathe
+  @include flex(center, center, column);
   text-align: center;
-  padding: 0 20px;
-  max-width: 900px;
-  animation: fadeInUp 1s ease-out forwards;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .heroTitle {
-  // Fluid typography: scales dynamically between 2.5rem and 4.5rem based on screen width
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  color: #ffffff;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 24px;
-  letter-spacing: -1px;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); // Pop off the background
+  // Pushed the max size up to 5rem for massive desktop impact
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: var(--text-base);
+  font-weight: var(--font-weight-black);
+
+  // Tighter line-height and letter-spacing makes huge text look much cleaner
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--spacing-lg);
+
+  // Deep shadow to lift it off the video background
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+
+  span {
+    // Replaced flat color with a premium linear gradient (Indigo to a lighter lavender)
+    background: linear-gradient(135deg, var(--primary-color) 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    // Gives the colored text a subtle glowing aura
+    filter: drop-shadow(0 0 16px rgba(var(--primary-color-rgb), 0.4));
+  }
 }
 
 .heroSubtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 400;
-  line-height: 1.6;
-  max-width: 650px;
-  margin-bottom: 40px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  // Scales up beautifully on larger screens
+  font-size: clamp(1rem, 2.5vw, var(--font-xl));
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.7; // Extra breathing room
+  max-width: 700px;
+  margin-bottom: var(--spacing-xxl);
+
+  // Lifts the gray text off the background
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+
+  // Modern CSS Magic: Balances lines so you don't end up with one word on the bottom line
+  text-wrap: balance;
 }
 
-// --- Interactions ---
+// ==========================================
+// 🖱️ INTERACTIONS
+// ==========================================
 .heroButtons {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 48px;
+  @include flex(center, center, row, var(--spacing-md));
+  margin-bottom: var(--spacing-xxl);
 
-  @media screen and (max-width: 480px) {
+  @include respond-to("sm") {
     flex-direction: column;
     width: 100%;
-    max-width: 300px; // Keeps mobile buttons looking neat
   }
-}
-
-.heroButton {
-  font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .socialIcons {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+  @include flex(center, center, row, 20px);
 }
 
 .socialIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05); // Glassmorphism
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Snappy, premium transition
+  border-radius: var(--radius-full);
+  color: var(--text-base);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
 
   &:hover {
-    background: #ffffff;
-    color: #000000;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    border-color: #ffffff;
-  }
-
-  @media screen and (max-width: 480px) {
-    width: 44px;
-    height: 44px;
+    background: var(--primary-color);
+    color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(var(--primary-color-rgb), 0.3);
+    border-color: var(--primary-color);
   }
 }
 
-// --- Scroll Indicator ---
+// ==========================================
+// ⬇️ SCROLL INDICATOR
+// ==========================================
 .arrowDown {
   position: absolute;
   bottom: 40px;
   left: 50%;
-  // X-translate centers it, Y-translate is handled by the float animation
   transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5); // Slightly dimmer by default
   z-index: 1;
-  transition: color 0.3s ease;
   animation: floatBounce 2.5s infinite ease-in-out;
   cursor: pointer;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: #ffffff;
+    color: var(--primary-color);
   }
 }

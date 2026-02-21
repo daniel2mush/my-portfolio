@@ -1,6 +1,8 @@
 @use "../../styles/mixins.scss" as *;
 
-// --- Animations ---
+// ==========================================
+// 🎭 ANIMATIONS
+// ==========================================
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -21,48 +23,48 @@
   }
 }
 
-// --- Form Layout ---
+// ==========================================
+// 📝 FORM LAYOUT
+// ==========================================
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  @include flex(flex-start, stretch, column, var(--spacing-xl));
   width: 100%;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: var(--spacing-xl);
 
-  @media screen and (max-width: 600px) {
+  @include respond-to("sm") {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: var(--spacing-lg); // Slightly tighter gap on mobile to save space
   }
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @include flex(flex-start, stretch, column, var(--spacing-sm));
 }
 
 .label {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
   letter-spacing: 0.5px;
 }
 
-// --- Inputs & Textarea ---
+// ==========================================
+// 🔤 INPUTS & TEXTAREA
+// ==========================================
 .input,
 .textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-sm, 8px);
-  padding: 14px 16px;
-  color: white;
-  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  padding: 14px var(--spacing-md);
+  color: var(--text-base);
+  font-size: var(--font-md);
   font-family: inherit;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -82,7 +84,6 @@
     outline: none;
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--primary-color);
-    // Uses the primary color variable to create a soft outer glow
     box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.15);
   }
 
@@ -94,48 +95,50 @@
 
 .textarea {
   min-height: 160px;
-  resize: vertical; // Allows users to make it taller, but not wider
+  resize: vertical; // Allows vertical resize without breaking layout
   line-height: 1.6;
 }
 
-// --- Submit Area ---
+// ==========================================
+// 📤 SUBMIT AREA
+// ==========================================
 .submitContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  @include flex(flex-start, stretch, column, var(--spacing-md));
   margin-top: 10px;
 }
 
+// Note: If you are wrapping your global <Button> component,
+// some of these properties might be redundant, but they are here just in case!
 .submitButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  @include flex(center, center, row, 10px);
   background-color: var(--primary-color);
-  color: #000;
+  color: var(--app-bg); // High contrast navy text
   border: none;
-  padding: 16px 32px;
-  border-radius: var(--radius-sm, 8px);
-  font-size: 1.05rem;
-  font-weight: 600;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-full); // Matches your premium pill buttons
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    background-color: white;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: var(--text-base);
+    box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.3);
   }
 
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
   }
 
   // Success state override
   &:disabled:has(svg.lucide-check-circle-2) {
-    background-color: #00e676; // Success green
-    color: #000;
+    background-color: #10b981; // Matches the Emerald pulse dot
+    color: var(--app-bg);
   }
 }
 
@@ -143,23 +146,22 @@
   animation: spin 1s linear infinite;
 }
 
-// --- Status Messages ---
+// ==========================================
+// ✅ STATUS MESSAGES
+// ==========================================
 .successMessage,
 .errorMessage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
+  @include flex(center, center, row, var(--spacing-sm));
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
   margin: 0;
   animation: slideUpFade 0.4s ease forwards;
 }
 
 .successMessage {
-  color: #00e676;
+  color: #10b981; // Emerald green
 }
 
 .errorMessage {
-  color: #ff5252;
+  color: var(--warning-red); // Unified warning color
 }

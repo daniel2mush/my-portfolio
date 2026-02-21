@@ -1,6 +1,8 @@
 @use "../../../styles/mixins.scss" as *;
 
-// --- Animations ---
+// ==========================================
+// 🎭 ANIMATIONS
+// ==========================================
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -23,19 +25,22 @@
   }
 }
 
-// --- Layout & Blobs ---
+// ==========================================
+// 🏗️ LAYOUT & BACKGROUND BLOBS
+// ==========================================
 .section {
-  @include container;
+  @include container(auto);
   position: relative;
-  padding: clamp(60px, 10vw, 120px) 20px;
+  padding: clamp(60px, 10vw, 120px) var(--spacing-lg);
   background-color: var(--app-bg);
   overflow: hidden; // Keeps blobs from causing horizontal scroll
 }
 
+// Ambient Background Lighting
 .blobTop,
 .blobBottom {
   position: absolute;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   filter: blur(100px);
   z-index: 0;
   opacity: 0.15; // Subtle glow
@@ -55,32 +60,30 @@
   left: -5%;
   width: 500px;
   height: 500px;
-  background-color: #808bf8; // A secondary accent color to mix the lighting
+  // A slightly altered primary color to mix the lighting
+  background-color: rgba(var(--primary-color-rgb), 0.7);
 }
 
 .content {
-  @include content;
+  @include content(1200px);
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include flex(flex-start, stretch, column);
 }
 
-// --- Header ---
+// ==========================================
+// 🏷️ HEADER
+// ==========================================
 .header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(center, center, column);
   text-align: center;
   margin-bottom: clamp(40px, 8vw, 60px);
 
   h2 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    color: white;
-    margin: 0 0 16px 0;
-    font-weight: 800;
+    color: var(--text-base);
+    margin: 0 0 var(--spacing-md) 0;
+    font-weight: var(--font-weight-black);
 
     .highlight {
       color: var(--text-primary);
@@ -94,54 +97,53 @@
         left: 0;
         width: 100%;
         height: 6px;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
         background-color: var(--primary-color);
       }
     }
   }
 
   .subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-size: clamp(1.1rem, 2vw, var(--font-lg));
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
     max-width: 600px;
     margin: 0;
+    text-wrap: balance; // Cleaner line breaks
   }
 }
 
-// --- Grid ---
+// ==========================================
+// 📊 TWO-COLUMN GRID
+// ==========================================
 .grid {
   display: grid;
   grid-template-columns: 1fr 1.2fr; // Gives the form slightly more room
   gap: clamp(40px, 6vw, 80px);
   align-items: flex-start;
 
-  @media screen and (max-width: 992px) {
+  @include respond-to("lg") {
     grid-template-columns: 1fr;
   }
 }
 
-// --- Info Column & Cards ---
+// ==========================================
+// ℹ️ INFO COLUMN & CARDS
+// ==========================================
 .infoColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  @include flex(flex-start, stretch, column, var(--spacing-xl));
 }
 
 .infoCards {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  @include flex(flex-start, stretch, column, var(--spacing-md));
 }
 
 .contactCard {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
+  @include flex(flex-start, center, row, var(--spacing-lg));
+  padding: var(--spacing-xl);
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg, 16px);
+  border-radius: var(--radius-lg);
   backdrop-filter: blur(10px);
   text-decoration: none;
 
@@ -149,13 +151,12 @@
   opacity: 0;
   animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   animation-delay: calc(var(--index) * 0.1s);
-
   transition:
     transform 0.3s ease,
     background 0.3s ease,
     border-color 0.3s ease;
 
-  // Only apply hover effects if it's an anchor tag
+  // Only apply hover effects if it's an anchor tag (e.g., mailto: or tel:)
   &:is(a):hover {
     transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.05);
@@ -163,71 +164,68 @@
 
     .iconWrapper {
       background: var(--primary-color);
-      color: #000;
+      color: var(--app-bg); // High contrast icon on hover
+      border-color: var(--primary-color);
     }
   }
 }
 
 .iconWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   width: 50px;
   height: 50px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: rgba(var(--primary-color-rgb), 0.1);
-  background: #1e213a; // Fallback
   color: var(--primary-color);
   border: 1px solid rgba(var(--primary-color-rgb), 0.2);
   transition: all 0.3s ease;
 }
 
 .cardText {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  @include flex(flex-start, flex-start, column, 4px);
 
   h3 {
     color: var(--text-secondary);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   p {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
+    color: var(--text-base);
+    font-size: var(--font-lg);
+    font-weight: var(--font-weight-bold);
     margin: 0;
   }
 }
 
-// --- Freelance Status Banner ---
+// ==========================================
+// 💼 FREELANCE STATUS BANNER
+// ==========================================
 .freelanceStatus {
-  padding: 30px 24px;
+  padding: 30px var(--spacing-xl);
   background: linear-gradient(
     135deg,
     rgba(var(--primary-color-rgb), 0.1) 0%,
     rgba(255, 255, 255, 0.02) 100%
   );
   border: 1px solid rgba(var(--primary-color-rgb), 0.2);
-  border-radius: var(--radius-lg, 16px);
+  border-radius: var(--radius-lg);
 
   opacity: 0;
   animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   animation-delay: calc(var(--index) * 0.1s);
 
   .statusHeader {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    @include flex(flex-start, center, row, var(--spacing-md));
+    margin-bottom: var(--spacing-md);
 
     h3 {
-      color: white;
+      color: var(--text-base);
       font-size: 1.2rem;
+      font-weight: var(--font-weight-bold);
       margin: 0;
     }
   }
@@ -235,7 +233,7 @@
   p {
     color: var(--text-secondary);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 }
 
@@ -244,30 +242,29 @@
   position: relative;
   width: 12px;
   height: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
 
   .dotCore {
     width: 10px;
     height: 10px;
-    background-color: #00e676; // Success green
-    border-radius: 50%;
+    background-color: #10b981; // Emerald green
+    border-radius: var(--radius-full);
     z-index: 2;
   }
 
   .dotRing {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #00e676;
-    border-radius: 50%;
+    inset: 0;
+    border: 2px solid #10b981;
+    border-radius: var(--radius-full);
     z-index: 1;
     animation: pulseRing 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
   }
 }
 
-// --- Form Column ---
+// ==========================================
+// 📝 FORM COLUMN
+// ==========================================
 .formColumn {
   width: 100%;
   opacity: 0;
@@ -279,7 +276,7 @@
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  border-radius: var(--radius-lg, 16px);
+  border-radius: var(--radius-lg);
   padding: clamp(24px, 4vw, 40px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }

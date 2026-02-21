@@ -1,15 +1,29 @@
 @use "../../styles/mixins.scss" as *;
 
-// --- Layout & Background ---
+// ==========================================
+// 🎭 ANIMATIONS
+// ==========================================
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================
+// 🏗️ LAYOUT & BACKGROUND
+// ==========================================
 .loginContainer {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   min-height: 100vh;
   background-color: var(--app-bg);
   overflow: hidden;
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 // Subtle ambient glow behind the card
@@ -18,7 +32,7 @@
   width: 50vw;
   height: 50vw;
   background-color: rgba(var(--primary-color-rgb), 0.1);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   filter: blur(100px);
   z-index: 0;
   top: 50%;
@@ -32,108 +46,90 @@
   z-index: 1;
   width: 100%;
   max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  @include flex(flex-start, stretch, column, var(--spacing-xl));
 }
 
 .backLink {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @include flex(flex-start, center, row, var(--spacing-sm));
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
   transition: color 0.2s ease;
   width: fit-content;
 
   &:hover {
-    color: white;
+    color: var(--text-base);
   }
 }
 
-// --- Glassmorphic Card ---
+// ==========================================
+// 🃏 GLASSMORPHIC CARD
+// ==========================================
 .card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
-  border-radius: var(--radius-xl, 24px);
-  padding: 40px 32px;
+  border-radius: var(--radius-xl);
+  padding: 40px var(--spacing-xxl);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes slideUpFade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// --- Header ---
+// ==========================================
+// 🏷️ HEADER
+// ==========================================
 .cardHeader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(center, center, column);
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: var(--spacing-xxl);
 
   .iconCircle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     width: 56px;
     height: 56px;
     background: rgba(var(--primary-color-rgb), 0.1);
     color: var(--primary-color);
-    border-radius: 50%;
-    margin-bottom: 16px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--spacing-md);
     border: 1px solid rgba(var(--primary-color-rgb), 0.2);
   }
 
   h1 {
     font-size: 1.75rem;
-    font-weight: 700;
-    color: white;
-    margin: 0 0 8px 0;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-base);
+    margin: 0 0 var(--spacing-sm) 0;
   }
 
   p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: var(--font-sm);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 }
 
-// --- Form & Inputs ---
+// ==========================================
+// 📝 FORM & INPUTS
+// ==========================================
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  @include flex(flex-start, stretch, column, var(--spacing-lg));
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @include flex(flex-start, stretch, column, var(--spacing-sm));
 
   label {
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: var(--text-base);
+    font-size: var(--font-sm);
+    font-weight: var(--font-weight-medium);
   }
 }
 
 .inputWrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  @include flex(flex-start, center, row);
 
   .inputIcon {
     position: absolute;
@@ -145,13 +141,13 @@
 
   .input {
     width: 100%;
-    padding: 12px 16px 12px 42px; // Room for left icon
+    padding: 12px var(--spacing-md) 12px 42px; // Room for left icon
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-sm, 8px);
-    color: white;
+    border-radius: var(--radius-sm);
+    color: var(--text-base);
     font-family: inherit;
-    font-size: 1rem;
+    font-size: var(--font-md);
     transition: all 0.2s ease;
     outline: none;
 
@@ -179,19 +175,16 @@
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     padding: 4px;
     transition: color 0.2s ease;
 
     &:hover {
-      color: white;
+      color: var(--text-base);
     }
   }
 }
 
-// Adding a little extra space above the button
 .submitBtn {
-  margin-top: 8px;
+  margin-top: var(--spacing-sm);
 }

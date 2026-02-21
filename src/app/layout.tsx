@@ -1,72 +1,20 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import "../styles/globals.scss";
-import Themes from "@/lib/theme/theme";
-import { Providers } from "@/lib/query/provider";
-import { Analytics } from "@vercel/analytics/next";
-import Footer from "@/components/Home/Footer/Footer";
-import NavBar from "@/components/Navigation/Navigation";
+import { Inter } from "next/font/google";
 
-const PoppinsSans = Poppins({
-  variable: "--font-poppins",
+// Import your global SCSS where your CSS variables live
+import "@/styles/globals.scss";
+import Providers from "@/lib/query/provider";
+
+// Next.js Font Optimization
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Regular, SemiBold, Bold
+  variable: "--font-family", // Maps perfectly to your SCSS variables!
 });
 
 export const metadata: Metadata = {
-  title: "ZCoder Portfolio | Full‑stack Developer & Designer",
+  title: "Daniel Ogbeide | Graphic Designer & Web Developer",
   description:
-    "Portfolio of Daniel Freeman (ZCoder): full‑stack development and design for accessible, civic‑minded web experiences in West Africa.",
-  keywords: [
-    "ZCoder",
-    "Daniel Freeman",
-    "portfolio",
-    "full-stack developer",
-    "designer",
-    "civic tech",
-    "accessibility",
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-    "Framer Motion",
-    "Cloudinary",
-    "West Africa",
-    "Mali",
-    "Nigeria",
-  ],
-  authors: [{ name: "Daniel Freeman", url: "mailto:daniel2mush@gmail.com" }],
-  creator: "Daniel Freeman",
-  publisher: "Daniel Freeman",
-  metadataBase: new URL("https://zcoderportfolio.vercel.app"),
-  alternates: {
-    canonical: "https://zcoderportfolio.vercel.app",
-  },
-  openGraph: {
-    title: "ZCoder Portfolio | Full‑stack Developer & Designer",
-    description:
-      "Explore projects, case studies, and design systems for African creatives — modular, animated, and accessible.",
-    url: "https://zcoderportfolio.vercel.app",
-    siteName: "ZCoder",
-    // images: [
-    //   {
-    //     url: "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,c_fill,w_1200,h_630/vXYZ/og-zcoder.jpg",
-    //     width: 1200,
-    //     height: 630,
-    //     alt: "ZCoder portfolio preview",
-    //   },
-    // ],
-    locale: "fr_FR",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ZCoder Portfolio | Full‑stack Developer & Designer",
-    description:
-      "Civic‑minded, accessible web experiences for African creatives — crafted by Daniel Freeman (ZCoder).",
-    // images: [
-    //   "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,c_fill,w_1200,h_630/vXYZ/og-zcoder.jpg",
-    // ],
-  },
+    "Portfolio showcasing high-end graphic design and full-stack web development.",
 };
 
 export default function RootLayout({
@@ -75,19 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${PoppinsSans.variable}  antialiased scroll-smooth transition-all duration-300 ease-in-out`}
-      >
-        <Providers>
-          <Themes defaultTheme="dark">
-            <Analytics />
-            <NavBar />
-            {children}
-            {/* <FooterPage /> */}
-          </Themes>
-        </Providers>
-        <Footer />
+    <html lang="en" className={inter.variable}>
+      {/* Applying a base class to the body ensures the background color 
+        and text rendering are locked in before any components load.
+      */}
+      <body className="antialiased selection-bg">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

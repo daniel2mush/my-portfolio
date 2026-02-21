@@ -1,32 +1,36 @@
 @use "../../../styles/mixins.scss" as *;
 
+// ==========================================
+// 🏗️ LAYOUT & CONTAINERS
+// ==========================================
 .section {
-  @include container;
-  padding: clamp(60px, 10vw, 120px) 20px;
+  @include container(auto);
+  padding: clamp(60px, 10vw, 120px) var(--spacing-lg);
   background-color: var(--app-bg);
 }
 
 .content {
-  @include content;
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include content(1200px);
+  @include flex(flex-start, stretch, column);
 }
 
-// --- Header ---
+.flexContainer {
+  @include flex(flex-start, stretch, column, clamp(40px, 8vw, 80px));
+}
+
+// ==========================================
+// 🏷️ HEADER
+// ==========================================
 .header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(center, center, column);
   text-align: center;
   margin-bottom: clamp(40px, 8vw, 60px);
 
   h2 {
     font-size: clamp(2.5rem, 5vw, 4rem);
-    color: white;
-    margin: 0 0 16px 0;
-    font-weight: 800;
+    color: var(--text-base);
+    margin: 0 0 var(--spacing-md) 0;
+    font-weight: var(--font-weight-black);
 
     .highlight {
       color: var(--text-primary);
@@ -40,55 +44,52 @@
         left: 0;
         width: 100%;
         height: 6px;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
         background-color: var(--primary-color);
       }
     }
   }
 
   .subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    font-size: clamp(1.1rem, 2vw, var(--font-lg));
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.6;
     max-width: 600px;
     margin: 0;
   }
 }
 
-.flexContainer {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(40px, 8vw, 80px);
-}
-
-// --- Skills Grid ---
+// ==========================================
+// 📊 SKILLS GRID
+// ==========================================
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: var(--spacing-lg);
 
-  @media screen and (max-width: 1024px) {
+  // Using your centralized breakpoints!
+  @include respond-to("lg") {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 600px) {
+  @include respond-to("sm") {
     grid-template-columns: 1fr;
   }
 }
 
-// --- Glassmorphic Skill Card ---
+// ==========================================
+// 🃏 GLASSMORPHIC SKILL CARD
+// ==========================================
 .card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 30px 24px;
-  border-radius: var(--radius-lg, 16px);
+  @include flex(flex-start, stretch, column, var(--spacing-lg));
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border-radius: var(--radius-lg);
 
   // Base glass effect
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
 
-  // We use color-mix to create a custom gradient and border based on the React prop!
+  // Advanced color-mix for themed glow based on React inline style
   border: 1px solid color-mix(in srgb, var(--theme) 20%, transparent);
   background: linear-gradient(
     135deg,
@@ -96,7 +97,7 @@
     rgba(255, 255, 255, 0.02) 100%
   );
 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
     transform: translateY(-5px);
@@ -105,7 +106,7 @@
 
     .iconWrapper {
       transform: scale(1.1);
-      color: white;
+      color: var(--text-base);
       background-color: var(--theme);
       box-shadow: 0 0 15px color-mix(in srgb, var(--theme) 50%, transparent);
     }
@@ -113,30 +114,26 @@
 }
 
 .cardHeader {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  @include flex(flex-start, center, row, var(--spacing-md));
 
   h3 {
-    font-size: 1.25rem;
+    font-size: var(--font-xl);
     margin: 0;
-    color: white;
-    font-weight: 600;
+    color: var(--text-base);
+    font-weight: var(--font-weight-bold);
   }
 
-  @media screen and (max-width: 1024px) {
+  @include respond-to("lg") {
     flex-direction: column;
     text-align: center;
-    gap: 12px;
+    gap: var(--spacing-sm);
   }
 }
 
 .iconWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  border-radius: 12px;
+  @include flex-center;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
   color: var(--theme);
   background: color-mix(in srgb, var(--theme) 15%, transparent);
   transition: all 0.3s ease;
@@ -144,38 +141,39 @@
 
 // --- Tags ---
 .tags {
-  display: flex;
+  @include flex(flex-start, center, row, var(--spacing-sm));
   flex-wrap: wrap;
-  gap: 8px;
 
-  @media screen and (max-width: 1024px) {
+  @include respond-to("lg") {
     justify-content: center;
   }
 }
 
 .tag {
-  background-color: rgba(0, 0, 0, 0.3); // Deepens the pill against the card
+  background-color: rgba(0, 0, 0, 0.3);
   color: var(--text-secondary);
   padding: 6px 12px;
-  border-radius: 20px; // Pill shape
-  font-size: 0.85rem;
-  font-weight: 500;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition:
     color 0.2s ease,
     border-color 0.2s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-base);
     border-color: rgba(255, 255, 255, 0.2);
   }
 }
 
-// --- Separator ---
+// ==========================================
+// ➖ SEPARATOR
+// ==========================================
 .separator {
   width: 100%;
   height: 2px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: linear-gradient(
     to right,
     transparent,
@@ -186,47 +184,46 @@
   );
   opacity: 0.5;
 
-  @media screen and (max-width: 768px) {
-    display: none; // Hides on mobile as requested
+  @include respond-to("md") {
+    display: none;
   }
 }
 
-// --- Stats ---
+// ==========================================
+// 📈 STATS GRID
+// ==========================================
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   width: 100%;
 
-  @media screen and (max-width: 900px) {
+  @include respond-to("lg") {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 480px) {
+  @include respond-to("sm") {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 }
 
 .stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex(center, center, column, var(--spacing-sm));
   text-align: center;
-  gap: 8px;
 }
 
 .statValue {
   font-size: clamp(2.5rem, 4vw, 3.5rem);
-  font-weight: 800;
+  font-weight: var(--font-weight-black);
   line-height: 1;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .statName {
   color: var(--text-secondary);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: var(--font-md);
+  font-weight: var(--font-weight-medium);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;

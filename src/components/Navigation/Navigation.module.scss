@@ -1,55 +1,55 @@
 @use "../../styles/mixins.scss" as *;
 
-// --- Header Wrapper ---
+// ==========================================
+// 🚀 HEADER WRAPPER
+// ==========================================
 .header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   z-index: 1000;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  // Default state is transparent for the top of the hero section
   background-color: transparent;
   border-bottom: 1px solid transparent;
 }
 
-// Applies when user scrolls past 50px
+// Applies dynamically via React state when scrolling past 50px
 .scrolled {
-  background-color: rgba(10, 10, 15, 0.85); // Adjust to match your app-bg
+  background-color: rgba(var(--app-bg-rgb), 0.85); // Perfect cinematic match
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  height: 70px; // Shrinks slightly when scrolling
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  height: 70px; // Shrinks slightly for more reading room
 }
 
-// --- Top Progress Bar ---
+// ==========================================
+// 📊 TOP PROGRESS BAR
+// ==========================================
 .progressBar {
   position: absolute;
   top: 0;
   left: 0;
   height: 3px;
   background: var(--primary-color);
-  box-shadow: 0 0 10px var(--primary-color); // Adds a beautiful cinematic glow
+  box-shadow: 0 0 12px rgba(var(--primary-color-rgb), 0.8); // Softer, integrated glow
   transition: width 0.1s ease-out;
   z-index: 1001;
 }
 
-// --- Container & Logo ---
+// ==========================================
+// 🏗️ LAYOUT & LOGO
+// ==========================================
 .navContainer {
-  width: 100%;
-  max-width: 1400px; // Keeps nav aligned with content
+  @include content(1400px);
   height: 100%;
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 0 var(--spacing-xxl);
+  @include flex(space-between, center);
 
-  @media screen and (max-width: 768px) {
-    padding: 0 20px;
+  @include respond-to("md") {
+    padding: 0 var(--spacing-lg);
   }
 }
 
@@ -57,8 +57,7 @@
   position: relative;
   width: 120px;
   height: 40px;
-  display: flex;
-  align-items: center;
+  @include flex(flex-start, center);
 
   .logo {
     object-fit: contain;
@@ -66,30 +65,30 @@
   }
 }
 
-// --- Desktop Nav ---
+// ==========================================
+// 💻 DESKTOP NAVIGATION
+// ==========================================
 .desktopNav {
-  display: flex;
-  align-items: center;
-  gap: 32px;
+  @include flex(center, center, row, var(--spacing-xl));
 
-  @media screen and (max-width: 768px) {
-    display: none; // Hides entirely on mobile
+  @include respond-to("md") {
+    display: none; // Hides smoothly on mobile breakpoints
   }
 }
 
 .navButton {
   background: none;
   border: none;
-  padding: 8px 0;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--text-secondary);
   cursor: pointer;
   position: relative;
   transition: color 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-base);
   }
 
   // Animated underline for active/hover states
@@ -102,7 +101,7 @@
     height: 2px;
     background-color: var(--primary-color);
     transition: width 0.3s ease;
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
   }
 
   &:hover::after {
@@ -111,8 +110,8 @@
 }
 
 .activeNavLink {
-  color: white;
-  font-weight: 600;
+  color: var(--text-base);
+  font-weight: var(--font-weight-bold);
 
   &::after {
     width: 100% !important;
@@ -121,13 +120,13 @@
 
 .resumeButton {
   text-decoration: none;
-  color: white;
+  color: var(--text-base);
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.05);
-  padding: 10px 24px;
-  border-radius: 30px; // Pill shape
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 10px var(--spacing-lg);
+  border-radius: var(--radius-full); // Pill shape utilizing our variable
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-bold);
   transition: all 0.3s ease;
 
   &:hover {
@@ -138,33 +137,29 @@
   }
 }
 
-// --- Mobile Toggle ---
+// ==========================================
+// 📱 MOBILE NAVIGATION
+// ==========================================
 .menuToggleButton {
   display: none;
   background: none;
   border: none;
-  color: white;
+  color: var(--text-base);
   cursor: pointer;
-  padding: 8px;
+  padding: var(--spacing-sm);
 
-  @media screen and (max-width: 768px) {
-    display: flex; // Shows only on mobile
+  @include respond-to("md") {
+    @include flex-center;
   }
 }
 
-// --- Full Screen Mobile Menu ---
+// Full Screen Glass Menu
 .mobileMenu {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(10, 10, 15, 0.98); // Solid dark glass
+  inset: 0;
+  background-color: rgba(var(--app-bg-rgb), 0.98); // Seamless dark overlay
   backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include flex(center, center, column);
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
@@ -180,38 +175,37 @@
 
 .closeButton {
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
   background: none;
   border: none;
-  color: white;
+  color: var(--text-base);
   cursor: pointer;
-  padding: 10px;
-  transition: transform 0.3s ease;
+  padding: var(--spacing-sm);
+  border-radius: 50%;
+  transition: all 0.3s ease;
 
   &:hover {
     transform: rotate(90deg);
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 
 .mobileNavLinks {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
+  @include flex(center, center, column, var(--spacing-xxl));
 }
 
 .navButtonMobile {
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: var(--font-xl);
+  font-weight: var(--font-weight-bold);
   cursor: pointer;
   transition: color 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-base);
   }
 }
 
@@ -223,30 +217,30 @@
   text-decoration: none;
   color: #000;
   background: var(--primary-color);
-  padding: 15px 40px;
-  border-radius: 40px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 20px;
+  padding: var(--spacing-md) var(--spacing-xxl);
+  border-radius: var(--radius-full);
+  font-size: var(--font-lg);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--spacing-lg);
 }
 
-// --- Subpage Fallback Navs ---
+// ==========================================
+// 🔙 SUBPAGE FALLBACK NAVS (Admin, etc.)
+// ==========================================
 .backLink {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  @include flex(flex-start, center, row, var(--spacing-sm));
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   transition: color 0.3s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-base);
   }
 }
 
 .pageTitle {
-  color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
+  color: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-lg);
 }

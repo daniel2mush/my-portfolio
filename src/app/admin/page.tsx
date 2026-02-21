@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import {
   useGetAdminProject,
   usePublishProject,
+  useDeleteProject, // Added this import
 } from "@/lib/query/projectQuery";
 import styles from "./AdminDashboard.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
@@ -84,6 +85,7 @@ export default function AdminDashboard() {
   const [openForm, setOpenForm] = useState(false);
   const [preview, setPreview] = useState<Project | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Project | null>(null);
+  const [projectToEdit, setProjectToEdit] = useState<Project | null>(null); // New state for editing
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
@@ -92,6 +94,7 @@ export default function AdminDashboard() {
 
   const { data, isLoading, isError } = useGetAdminProject();
   const { mutate: publish, isPending: isPublishing } = usePublishProject();
+  const { mutate: deleteProject, isPending: isDeleting } = useDeleteProject(); // Initialized delete mutation
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -102,6 +105,7 @@ export default function AdminDashboard() {
       if ((e.key === "a" || e.key === "A") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpenForm(true);
+        setProjectToEdit(null); // Ensure form is empty for "Add"
       }
     };
     window.addEventListener("keydown", onKey);
@@ -154,16 +158,35 @@ export default function AdminDashboard() {
         { projectId: id },
         {
           onSuccess: () => toast.success("Published"),
-          onError: () => toast.error("Failed"),
+          onError: () => toast.error("Failed to publish some items"),
         },
       ),
     );
     clearSelection();
   };
 
+  const bulkDelete = () => {
+    if (selected.size === 0) return toast.info("No projects selected.");
+    const ids = Array.from(selected);
+    ids.forEach((id) => deleteProject(id));
+    toast.success("Initiated deletion of selected projects.");
+    clearSelection();
+  };
+
   const doDelete = (proj: Project) => {
-    setConfirmDelete(null);
-    toast.info(`Implement delete mutation for: ${proj.title}`);
+    deleteProject(proj.id, {
+      onSuccess: () => {
+        toast.success(`${proj.title} deleted permanently.`);
+        setConfirmDelete(null);
+      },
+      onError: () => toast.error(`Failed to delete ${proj.title}.`),
+    });
+  };
+
+  // Helper to cleanly close the form and wipe the edit state
+  const handleCloseForm = () => {
+    setOpenForm(false);
+    setProjectToEdit(null);
   };
 
   if (isLoading)
@@ -179,17 +202,26 @@ export default function AdminDashboard() {
           <span className={styles.badge}>{projects.length} Total Projects</span>
         </div>
 
-        <Button variant="primary" onClick={() => setOpenForm(true)}>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setProjectToEdit(null); // Ensure form is blank for new project
+            setOpenForm(true);
+          }}
+        >
           <Plus size={18} /> Add Project
         </Button>
       </header>
 
       <Modal
         isOpen={openForm}
-        onClose={() => setOpenForm(false)}
-        title="Add New Project"
+        onClose={handleCloseForm}
+        title={projectToEdit ? "Edit Project" : "Add New Project"}
       >
-        <AdminForm setOpen={() => setOpenForm(false)} />
+        <AdminForm
+          setOpen={handleCloseForm}
+          projectToEdit={projectToEdit} // Pass this down to pre-fill your form!
+        />
       </Modal>
 
       {/* Toolbar */}
@@ -248,11 +280,7 @@ export default function AdminDashboard() {
             >
               <CheckCircle2 size={16} /> Publish Selected
             </Button>
-            <Button
-              size="sm"
-              variant="danger"
-              onClick={() => toast.info("Bulk delete not implemented")}
-            >
+            <Button size="sm" variant="danger" onClick={bulkDelete}>
               <Trash2 size={16} /> Delete Selected
             </Button>
             <Button size="sm" variant="ghost" onClick={clearSelection}>
@@ -320,7 +348,10 @@ export default function AdminDashboard() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => toast.info("Edit modal coming soon")}
+                      onClick={() => {
+                        setProjectToEdit(p);
+                        setOpenForm(true);
+                      }}
                     >
                       <Pencil size={14} /> Edit
                     </Button>
@@ -415,6 +446,7 @@ export default function AdminDashboard() {
           <Button
             variant="danger"
             onClick={() => confirmDelete && doDelete(confirmDelete)}
+            isLoading={isDeleting}
           >
             Delete Permanently
           </Button>

@@ -1,45 +1,46 @@
 @use "../../../styles/mixins.scss" as *;
 
+// ==========================================
+// 📝 FORM LAYOUT
+// ==========================================
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  @include flex(flex-start, stretch, column, var(--spacing-lg));
   width: 100%;
 }
 
 .formRow {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
 
-  @media screen and (min-width: 768px) {
-    grid-template-columns: 1fr 1fr 1fr;
+  @include respond-to("md") {
+    grid-template-columns: 1fr;
   }
 }
 
 .formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  @include flex(flex-start, stretch, column, var(--spacing-sm));
 }
 
 .label {
-  color: white;
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: var(--text-base);
+  font-size: var(--font-sm);
+  font-weight: var(--font-weight-medium);
 }
 
-// --- Inputs & Textareas ---
+// ==========================================
+// 🔤 INPUTS & TEXTAREAS
+// ==========================================
 .input,
 .textarea {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px var(--spacing-md);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
-  color: white;
+  color: var(--text-base);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: var(--font-sm);
   transition: all 0.2s ease;
   outline: none;
 
@@ -59,14 +60,13 @@
   resize: vertical;
 }
 
-// --- File Upload Styling ---
+// ==========================================
+// ☁️ FILE UPLOAD DRAG & DROP
+// ==========================================
 .fileUploadWrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 30px 20px;
+  @include flex(center, center, column);
+  padding: var(--spacing-xl) var(--spacing-lg);
   border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.02);
@@ -86,19 +86,19 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0; // Hides the ugly native button but keeps it clickable!
+  opacity: 0; // Hides the native button but keeps it clickable
   cursor: pointer;
 }
 
 .uploadIcon {
   color: var(--primary-color);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-md);
 }
 
 .uploadText {
-  color: white;
-  font-weight: 500;
-  font-size: 0.95rem;
+  color: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-sm);
   margin-bottom: 4px;
 }
 
@@ -107,63 +107,66 @@
   font-size: 0.8rem;
 }
 
-// --- Error States ---
+// ==========================================
+// 🚨 ERROR STATES
+// ==========================================
 .inputError {
   border-color: var(--warning-red) !important;
-  background: rgba(239, 68, 68, 0.05) !important;
+  // Dynamic transparency without needing an RGB variable!
+  background: color-mix(in srgb, var(--warning-red) 5%, transparent) !important;
 
   &:focus {
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--warning-red) 15%, transparent) !important;
   }
 }
 
 .errorText {
-  color: #f87171; // Tailwind red-400
+  color: var(--warning-red);
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin-top: 2px;
 }
 
-// --- Custom Progress Bar ---
+// ==========================================
+// ⏳ CUSTOM PROGRESS BAR
+// ==========================================
 .progressContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @include flex(flex-start, stretch, column, var(--spacing-sm));
   background: rgba(255, 255, 255, 0.03);
-  padding: 16px;
+  padding: var(--spacing-md);
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .progressHeader {
-  display: flex;
-  justify-content: space-between;
-  color: white;
+  @include flex(space-between, center, row);
+  color: var(--text-base);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .progressBar {
   width: 100%;
   height: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
   background: var(--primary-color);
-  border-radius: 4px;
+  border-radius: var(--radius-full);
   transition: width 0.3s ease;
 }
 
-// --- Footer ---
+// ==========================================
+// 🦶 FOOTER ACTIONS
+// ==========================================
 .formFooter {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  @include flex(flex-end, center, row, var(--spacing-md));
   margin-top: 10px;
-  padding-top: 20px;
+  padding-top: var(--spacing-xl);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }

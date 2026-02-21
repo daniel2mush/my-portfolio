@@ -1,16 +1,51 @@
-@mixin flex-center {
+// --- Flexbox Utilities ---
+// Added parameters so you can change direction or alignment on the fly
+@mixin flex($justify: center, $align: center, $direction: row, $gap: 0) {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+  gap: $gap;
 }
 
-@mixin container {
-  min-height: 100vh;
-  padding: 50px;
-  @include flex-center;
+// Keeping a shorthand for the most common use case
+@mixin flex-center {
+  @include flex(center, center);
 }
 
-@mixin content {
-  max-width: 1200px;
+// --- Layout Containers ---
+// Using clamp() for padding makes it automatically responsive for mobile
+@mixin container($min-height: auto) {
   width: 100%;
+  min-height: $min-height;
+  padding: clamp(20px, 5vw, 80px) clamp(16px, 3vw, 40px);
+  @include flex(center, center, column);
+}
+
+// --- Inner Content Constraints ---
+// Added a parameter so you can have "slim" or "wide" sections
+@mixin content($max-width: 1200px) {
+  width: 100%;
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// --- Pro Addition: Responsive Breakpoints ---
+// This is a life-saver for keeping media queries organized
+$breakpoints: (
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Invalid breakpoint: #{$breakpoint}.";
+  }
 }

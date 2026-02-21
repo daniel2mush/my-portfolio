@@ -1,35 +1,47 @@
-// Import the variables file so we can use them here if needed.
-// 'as *' means we can use variables directly like $primary-blue without a prefix.
-@use "variables" as *;
+@use "./variables.scss" as *;
 
-// --- BASE RESET ---
-// This ensures that padding and borders are included in an element's total width.
-// Without this, a 100% width input with padding would overflow the screen.
+// CSS Reset & Base Rules
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-// --- BODY DEFAULTS ---
+html,
 body {
-  margin: 0; // Remove default browser margin
-  padding: 0; // Remove default browser padding
-
-  // Set the default font for the whole app.
-  // 'Inter' is loaded by Next.js in layout.tsx.
-  font-family: "Inter", sans-serif;
-
-  // Set the background color using our CSS Variable (defined in _variables.scss)
+  max-width: 100vw;
+  overflow-x: hidden;
   background-color: var(--app-bg);
+  color: var(--text-base);
+  font-family: var(--font-family), sans-serif;
 
-  // Set the default text color
-  color: var(--text-primary);
+  // Makes text rendering incredibly sharp on high-res monitors
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-// --- LINK DEFAULTS ---
-// Ensure links inherit the font settings and don't look like default blue browser links
-a {
-  text-decoration: none;
-  color: inherit;
+// Custom text selection to match your brand
+.selection-bg ::selection {
+  background-color: var(--primary-color);
+  color: #000;
+}
+
+// Global Custom Scrollbar (Optional, but highly recommended for a premium feel)
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+
+  &:hover {
+    background: rgba(var(--primary-color-rgb), 0.5);
+  }
 }

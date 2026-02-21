@@ -1,12 +1,12 @@
-@use "@/styles/variables" as *;
+@use "../../../styles/mixins.scss" as *;
 
-// --- Base Button Styles ---
+// ==========================================
+// 🏗️ BASE BUTTON STYLES
+// ==========================================
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; // Automatically spaces text and icons perfectly
-  border-radius: var(--radius-full, 9999px); // Pill shape for a premium feel
+  // Utilizing your new flex mixin: center align, row direction, 8px gap
+  @include flex(center, center, row, var(--spacing-sm));
+  border-radius: var(--radius-full); // Pill shape for a premium feel
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Snappy, easing transition
   border: 1px solid transparent;
@@ -27,41 +27,47 @@
   }
 }
 
-// --- Sizing ---
+// ==========================================
+// 📏 SIZING
+// ==========================================
 .sm {
   height: 36px;
-  padding: 0 1rem;
+  padding: 0 var(--spacing-md);
   font-size: var(--font-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .md {
   height: 48px;
-  padding: 0 1.5rem;
+  padding: 0 var(--spacing-lg); // 24px padding for wider, elegant targets
   font-size: var(--font-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
 }
 
 .lg {
   height: 56px;
-  padding: 0 2rem;
+  padding: 0 var(--spacing-xl);
   font-size: var(--font-lg);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .fullWidth {
   width: 100%;
 }
 
-// --- Variants ---
+// ==========================================
+// 🎨 VARIANTS
+// ==========================================
 
 // Primary (Main Actions)
 .primary {
   background-color: var(--primary-color);
-  color: #000; // High contrast text
+  color: var(
+    --app-bg
+  ); // Using your deep navy for high-end contrast instead of harsh black
 
   &:hover:not(:disabled) {
-    background-color: white; // Snappy contrast flip
+    background-color: var(--text-base); // Snappy contrast flip to pure white
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.35);
   }
@@ -77,7 +83,7 @@
   &:hover:not(:disabled) {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    color: #000;
+    color: var(--app-bg);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(var(--primary-color-rgb), 0.25);
   }
@@ -86,11 +92,12 @@
 // CTA (High Attention)
 .cta {
   background-color: var(--cta);
-  color: #000;
+  color: var(--app-bg);
 
   &:hover:not(:disabled) {
-    background-color: white;
+    background-color: var(--text-base);
     transform: translateY(-2px);
+    // Hardcoded RGB since we didn't add an RGB variable for CTA, but it matches perfectly
     box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
   }
 }
@@ -102,17 +109,17 @@
 
   &:hover:not(:disabled) {
     background-color: rgba(255, 255, 255, 0.06);
-    color: white;
+    color: var(--text-base);
   }
 }
 
 // Danger (Destructive Action)
 .danger {
   background-color: var(--warning-red);
-  color: white;
+  color: var(--text-base);
 
   &:hover:not(:disabled) {
-    background-color: #dc2626; // Slightly darker red
+    background-color: #dc2626; // Deep red
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
   }
@@ -122,7 +129,7 @@
 .danger-text {
   background-color: transparent;
   color: var(--warning-red);
-  padding: 0 1rem;
+  padding: 0 var(--spacing-md);
 
   &:hover:not(:disabled) {
     background-color: rgba(239, 68, 68, 0.1);
@@ -130,7 +137,9 @@
   }
 }
 
-// --- Animations ---
+// ==========================================
+// 🌀 ANIMATIONS
+// ==========================================
 @keyframes spin {
   from {
     transform: rotate(0deg);
