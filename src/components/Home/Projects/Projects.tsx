@@ -114,7 +114,9 @@ export default function Projects() {
         {/* Call to Action */}
         <div className={styles.footer}>
           <Button size="md">
-            <Link href="/projects">View All Projects</Link>
+            <Link className={styles.btnLink} href="/projects">
+              View All Projects
+            </Link>
           </Button>
         </div>
       </div>
