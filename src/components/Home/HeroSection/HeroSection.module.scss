@@ -84,17 +84,6 @@
 
   // Deep shadow to lift it off the video background
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-
-  span {
-    // Replaced flat color with a premium linear gradient (Indigo to a lighter lavender)
-    background: linear-gradient(135deg, var(--primary-color) 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-
-    // Gives the colored text a subtle glowing aura
-    filter: drop-shadow(0 0 16px rgba(var(--primary-color-rgb), 0.4));
-  }
 }
 
 .heroSubtitle {

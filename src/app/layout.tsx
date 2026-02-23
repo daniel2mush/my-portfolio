@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.scss";
 import Providers from "@/lib/query/provider";
 import NavBar from "@/components/Navigation/Navigation";
+import Footer from "@/components/Home/Footer/Footer";
 
 // Next.js Font Optimization
 const inter = Inter({
@@ -100,6 +101,7 @@ export default function RootLayout({
           <NavBar />
           {children}
         </Providers>
+        <Footer />
       </body>
     </html>
   );
