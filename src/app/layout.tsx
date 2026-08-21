@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-// Import your global SCSS where your CSS variables live
-import "@/styles/globals.scss";
+// Import global Tailwind and design tokens.
+import "@/styles/globals.css";
 import Providers from "@/lib/query/provider";
 import NavBar from "@/components/Navigation/Navigation";
 import Footer from "@/components/Home/Footer/Footer";
@@ -10,7 +10,7 @@ import Footer from "@/components/Home/Footer/Footer";
 // Next.js Font Optimization
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-family", // Maps perfectly to your SCSS variables!
+  variable: "--font-family",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     "UI/UX Design",
     "Next.js",
     "React",
-    "SCSS",
+    "Tailwind CSS",
     "Print Production",
     "Bamako Web Development",
     "Creative Developer",

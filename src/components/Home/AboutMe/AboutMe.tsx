@@ -2,109 +2,136 @@
 
 import { IoCode, IoColorPaletteOutline, IoRocket } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
-import styles from "./AboutMe.module.scss";
+import type { IconType } from "react-icons";
 
-// Moved outside the component to prevent recreation on every render
-const skillsInfo = [
+// Extracted data for cleaner JSX
+const corePillars = [
   {
-    header: "Clean Code",
-    p: "Maintainable, scalable, future-proof.",
-    icon: <IoCode size={24} />,
+    title: "Bulletproof Architecture",
+    description: "Writing scalable, maintainable code that doesn't break when your user base doubles.",
+    icon: IoCode,
   },
   {
-    header: "Design Thinking",
-    p: "User-first, detail-obsessed workflows.",
-    icon: <IoColorPaletteOutline size={24} />,
+    title: "Pixel-Perfect Execution",
+    description: "Bridging the gap between Figma and React. If it's designed, I can build it flawlessly.",
+    icon: IoColorPaletteOutline,
   },
   {
-    header: "Performance",
-    p: "Optimized for speed, efficiency, and trust.",
-    icon: <IoRocket size={24} />,
+    title: "Relentless Optimization",
+    description: "Obsessing over milliseconds, LCP scores, and smooth 60fps interactions.",
+    icon: IoRocket,
   },
   {
-    header: "Collaboration",
-    p: "Team synergy for exceptional outcomes.",
-    icon: <FiUser size={24} />,
+    title: "Cross-Functional Synergy",
+    description: "I speak both 'developer' and 'designer', eliminating friction in the product pipeline.",
+    icon: FiUser,
   },
 ];
 
 export default function AboutMe() {
   return (
-    <section id="about" className={styles.section}>
-      {/* Decorative background pattern (if you add CSS for it later) */}
-      <div className={styles.bgPattern} aria-hidden="true" />
+    <>
+      {/* Self-contained animation keyframes */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          opacity: 0;
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+      `}</style>
 
-      <div className={styles.sectionContent}>
-        {/* Section Header */}
-        <header className={styles.header}>
-          <h2>
-            About
-            <span className={styles.highlight}>
-              Me
-              <span className={styles.underline} />
-            </span>
-          </h2>
-          <p className={styles.subtitle}>
-            I build digital tools that empower people — blending{" "}
-            <span className={styles.textAccent}>code</span>,{" "}
-            <span className={styles.textAccent}>design</span>, and civic
-            purpose.
-          </p>
-        </header>
+      <section
+        id="about"
+        className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32"
+      >
+        {/* Subtle background gradient */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(var(--primary-rgb),0.08),transparent_50%)]"
+          aria-hidden="true"
+        />
 
-        {/* Main Grid Content */}
-        <div className={styles.sectionGrid}>
-          {/* Left Column: Text */}
-          <article className={styles.gridLeft}>
-            <h3>Crafting Digital Experiences</h3>
-            <div className={styles.textContent}>
-              <p>
-                With roots in both development and design, I bridge the gap
-                between aesthetics and functionality. My journey began with
-                curiosity and became a mission to build scalable, civic‑minded
-                platforms.
-              </p>
-              <p>
-                Specializing in React, Node.js, and modern design systems, I
-                deliver inclusive and high‑performance experiences.
-              </p>
-              <p>
-                Outside of code, I explore design trends, contribute to open
-                source, and mentor emerging creatives.
-              </p>
+        <div className="relative mx-auto max-w-6xl">
+          {/* Section Header */}
+          <header className="mb-16 flex flex-col items-center text-center animate-fade-in">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-muted-foreground">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+              </span>
+              The Philosophy
             </div>
+            <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              Beyond the <span className="text-primary">Codebase</span>
+            </h2>
+            <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              I exist at the intersection of logic and aesthetics. I don&apos;t just build applications;
+              I engineer digital ecosystems that feel as good as they perform.
+            </p>
+          </header>
 
-            {/* Tags */}
-            <div className={styles.tags}>
-              {["#Accessibility", "#ScalableCode", "#CivicImpact"].map(
-                (tag) => (
-                  <span key={tag} className={styles.tag}>
-                    {tag}
-                  </span>
-                ),
-              )}
-            </div>
-          </article>
+          {/* Main Grid Content */}
+          <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
+            {/* Left Column: The Story */}
+            <article className="lg:col-span-3 flex flex-col justify-center animate-fade-in delay-100">
+              <h3 className="mb-6 text-2xl font-bold text-foreground sm:text-3xl">
+                Bridging the gap between engineering and design.
+              </h3>
 
-          {/* Center Column: Vertical Accent Bar */}
-          <div className={styles.dividerWrapper}>
-            <div className={styles.divider} />
-          </div>
-
-          {/* Right Column: Skill Cards */}
-          <div className={styles.gridRight}>
-            {skillsInfo.map((skill) => (
-              <div className={styles.skillCard} key={skill.header}>
-                <div className={styles.iconWrapper}>
-                  <div className={styles.icon}>{skill.icon}</div>
-                </div>
-                <h4 className={styles.skillHeader}>{skill.header}</h4>
-                <p className={styles.skillP}>{skill.p}</p>
+              <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
+                <p>
+                  While most developers focus solely on the backend, and designers obsess over the pixels,
+                  I live in the space in between. My journey started with a simple question: <em className="text-foreground font-medium">Why can&apos;t software be both incredibly powerful and beautiful to use?</em>
+                </p>
+                <p>
+                  Today, I specialize in architecting high-performance Next.js and Node.js platforms, backed by
+                  design systems that scale. I believe that accessibility, speed, and stunning visuals aren&apos;t
+                  mutually exclusive—they are the baseline.
+                </p>
               </div>
-            ))}
+
+              {/* Expertise Tags */}
+              <div className="mt-8 flex flex-wrap gap-3">
+                {["System Architecture", "UI/UX Engineering", "Performance Optimization", "Open Source"].map(
+                  (tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-primary/50 hover:bg-primary/5"
+                    >
+                      {tag}
+                    </span>
+                  ),
+                )}
+              </div>
+            </article>
+
+            {/* Right Column: Core Pillars (Bento Grid) */}
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 animate-fade-in delay-200">
+              {corePillars.map((pillar, index) => (
+                <div
+                  key={pillar.title}
+                  className="group relative overflow-hidden rounded-2xl border border-border bg-card/30 p-6 backdrop-blur-md transition-all duration-300 hover:border-primary/50 hover:bg-card/60 hover:shadow-lg hover:shadow-primary/5"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110">
+                    <pillar.icon size={20} strokeWidth={1.5} />
+                  </div>
+                  <h4 className="mb-2 text-lg font-semibold text-foreground">
+                    {pillar.title}
+                  </h4>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {pillar.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -2,7 +2,27 @@
 
 import { useRef } from "react";
 import { Code2, Server, Palette, Cloud } from "lucide-react";
-import styles from "./Skills.module.scss";
+
+const styles = {
+  section: "min-h-screen bg-background px-5 py-24",
+  content: "mx-auto max-w-[1200px]",
+  header: "mb-14 flex flex-col items-center text-center",
+  highlight: "relative inline-flex flex-col text-primary",
+  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
+  subtitle: "m-0 max-w-2xl text-balance text-lg leading-7 text-text-secondary",
+  flexContainer: "flex flex-col gap-10",
+  grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
+  card: "rounded-xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:-translate-y-1 hover:border-[var(--theme)]",
+  cardHeader: "mb-5 flex items-center gap-4",
+  iconWrapper: "flex size-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[var(--theme)]",
+  tags: "flex flex-wrap gap-2",
+  tag: "rounded-full border border-white/10 bg-black/20 px-3 py-1 text-sm text-text-secondary",
+  separator: "h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent",
+  statsGrid: "grid grid-cols-2 gap-5 md:grid-cols-4",
+  stat: "rounded-xl border border-white/10 bg-white/[0.02] p-5 text-center",
+  statValue: "block text-3xl font-black",
+  statName: "m-0 mt-2 text-sm text-text-secondary",
+};
 
 // Moved outside component to prevent unnecessary re-renders
 const skills = [
@@ -74,7 +94,7 @@ export default function Skills() {
       <div className={styles.content}>
         {/* Header */}
         <header className={styles.header}>
-          <h2>
+          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
             Skills &{" "}
             <span className={styles.highlight}>
               Expertise
@@ -95,12 +115,12 @@ export default function Skills() {
               <div
                 className={styles.card}
                 key={s.name}
-                // Passing the hex color as a CSS variable for dynamic SCSS styling
+                // Passing the hex color as a CSS variable for dynamic Tailwind styling
                 style={{ "--theme": s.color } as React.CSSProperties}
               >
                 <div className={styles.cardHeader}>
                   <div className={styles.iconWrapper}>{s.icon}</div>
-                  <h3>{s.name}</h3>
+                  <h3 className="text-xl font-bold text-foreground">{s.name}</h3>
                 </div>
 
                 <div className={styles.tags}>

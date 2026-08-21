@@ -9,9 +9,30 @@ import { toast } from "sonner";
 import { UploadCloud, FileImage } from "lucide-react";
 
 import { useAddProjectQuery, useEditProject } from "@/lib/query/projectQuery";
-import styles from "./AdminForm.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
 import { Project } from "@/types/project";
+import { cn } from "@/lib/utils";
+
+const styles = {
+  form: "flex w-full flex-col gap-5",
+  formRow: "grid grid-cols-1 gap-5 lg:grid-cols-3",
+  formGroup: "flex flex-col gap-2",
+  label: "text-sm font-medium text-foreground",
+  input: "w-full rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-white/30 focus:border-primary focus:bg-white/[0.05] focus:ring-4 focus:ring-primary/15",
+  textarea: "min-h-[120px] w-full resize-y rounded-md border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-white/30 focus:border-primary focus:bg-white/[0.05] focus:ring-4 focus:ring-primary/15",
+  fileUploadWrapper: "relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-md border-2 border-dashed border-white/15 bg-white/[0.02] px-5 py-8 text-center transition-all hover:border-primary hover:bg-primary/5",
+  fileInput: "absolute inset-0 size-full cursor-pointer opacity-0",
+  uploadIcon: "mb-4 text-primary",
+  uploadText: "mb-1 text-sm font-medium text-foreground",
+  uploadSubtext: "text-xs text-text-secondary",
+  inputError: "border-red-500 bg-red-500/5 focus:ring-red-500/15",
+  errorText: "mt-0.5 text-xs font-medium text-red-400",
+  progressContainer: "flex flex-col gap-2 rounded-md border border-white/10 bg-white/[0.03] p-4",
+  progressHeader: "flex items-center justify-between text-sm font-medium text-foreground",
+  progressBar: "h-1.5 w-full overflow-hidden rounded-full bg-white/10",
+  progressFill: "h-full rounded-full bg-primary transition-[width] duration-300",
+  formFooter: "mt-2 flex justify-end gap-4 border-t border-white/10 pt-6",
+};
 
 // --- Schema ---
 // Modified to accept a File (new upload) OR a string (existing database URL)
@@ -204,7 +225,7 @@ export default function AdminForm({
           id="title"
           type="text"
           placeholder="e.g. Next.js E-commerce Platform"
-          className={`${styles.input} ${errors.title ? styles.inputError : ""}`}
+          className={cn(styles.input, errors.title && styles.inputError)}
           {...register("title")}
         />
         {errors.title && (
@@ -219,7 +240,7 @@ export default function AdminForm({
         <textarea
           id="description"
           placeholder="Describe the project, challenges, and solutions..."
-          className={`${styles.textarea} ${errors.description ? styles.inputError : ""}`}
+          className={cn(styles.textarea, errors.description && styles.inputError)}
           {...register("description")}
         />
         {errors.description && (
@@ -235,10 +256,10 @@ export default function AdminForm({
           <input
             id="tools"
             type="text"
-            placeholder="React, SCSS, Node.js"
+            placeholder="React, Tailwind CSS, Node.js"
             value={toolsInput}
             onChange={handleToolsChange}
-            className={`${styles.input} ${errors.tools ? styles.inputError : ""}`}
+            className={cn(styles.input, errors.tools && styles.inputError)}
           />
           {errors.tools && (
             <span className={styles.errorText}>{errors.tools.message}</span>
@@ -253,7 +274,7 @@ export default function AdminForm({
             id="liveLink"
             type="url"
             placeholder="https://myproject.com"
-            className={`${styles.input} ${errors.liveLink ? styles.inputError : ""}`}
+            className={cn(styles.input, errors.liveLink && styles.inputError)}
             {...register("liveLink")}
           />
           {errors.liveLink && (
@@ -269,7 +290,7 @@ export default function AdminForm({
             id="projectLink"
             type="url"
             placeholder="https://github.com/..."
-            className={`${styles.input} ${errors.projectLink ? styles.inputError : ""}`}
+            className={cn(styles.input, errors.projectLink && styles.inputError)}
             {...register("projectLink")}
           />
           {errors.projectLink && (
@@ -284,7 +305,10 @@ export default function AdminForm({
       <div className={styles.formGroup}>
         <label className={styles.label}>Project Thumbnail</label>
         <div
-          className={`${styles.fileUploadWrapper} ${errors.thumbNail ? styles.inputError : ""}`}
+          className={cn(
+            styles.fileUploadWrapper,
+            errors.thumbNail && styles.inputError,
+          )}
         >
           {/* Visual feedback if a file or existing image is present */}
           {currentThumbnail ? (

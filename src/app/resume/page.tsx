@@ -1,8 +1,37 @@
 "use client";
 
 import { Download } from "lucide-react";
-import styles from "./Resume.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
+
+const styles = {
+  section: "min-h-screen bg-background px-5 py-24 md:py-28",
+  content: "mx-auto flex max-w-[1200px] flex-col",
+  header: "mb-12 flex animate-[fade-in-up_0.6s_ease-out_forwards] flex-col items-center text-center opacity-0",
+  highlight: "relative inline-flex flex-col text-foreground",
+  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
+  subtitle: "m-0 text-[clamp(1.1rem,2vw,1.3rem)] leading-6 text-text-secondary",
+  resumeGrid: "grid grid-cols-1 gap-10 lg:grid-cols-[1.8fr_1fr]",
+  mainColumn: "flex flex-col gap-10",
+  resumeBlock: "animate-[fade-in-up_0.6s_ease-out_forwards] opacity-0",
+  blockTitle: "mb-5 border-b border-white/10 pb-3 text-3xl font-bold text-foreground",
+  summaryText: "m-0 text-lg font-light leading-8 text-text-secondary",
+  timeline: "flex flex-col gap-8 border-l-2 border-primary/30 pl-5",
+  timelineItem: "relative flex flex-col gap-2",
+  timelineDot: "absolute -left-[27px] top-1.5 size-3 rounded-full bg-primary shadow-[0_0_10px_rgba(242,242,242,0.5)]",
+  role: "m-0 text-xl font-semibold text-foreground",
+  companyMeta: "text-sm font-medium text-primary",
+  jobDetails: "mt-2 list-disc pl-5 text-base leading-7 text-text-secondary marker:text-white/30",
+  sidebarColumn: "flex flex-col gap-6",
+  resumeCard: "animate-[fade-in-up_0.6s_ease-out_forwards] rounded-lg border border-white/5 bg-white/[0.02] p-6 opacity-0 backdrop-blur transition-all hover:-translate-y-1 hover:border-white/15",
+  cardTitle: "mb-4 text-xl font-semibold text-foreground",
+  tags: "flex flex-wrap gap-2.5",
+  tag: "rounded-full border border-white/5 bg-black/30 px-3.5 py-1.5 text-sm text-text-secondary transition-colors hover:border-primary hover:text-foreground",
+  eduItem: "flex flex-col gap-1",
+  langList: "m-0 flex list-none flex-col gap-3 p-0",
+  langLevel: "text-sm text-text-secondary",
+  footerAction: "mt-14 flex animate-[fade-in-up_0.6s_ease-out_forwards] justify-center opacity-0",
+  downloadBtn: "gap-2.5 px-10 text-lg",
+};
 
 // Refined, high-impact copywriting
 const resumeData = {
@@ -83,7 +112,7 @@ export default function ResumeSection() {
           className={styles.header}
           style={{ "--index": 0 } as React.CSSProperties}
         >
-          <h2>
+          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
             My{" "}
             <span className={styles.highlight}>
               Resume
@@ -173,9 +202,15 @@ export default function ResumeSection() {
               <h3 className={styles.cardTitle}>Education</h3>
               {resumeData.education.map((edu, i) => (
                 <div key={i} className={styles.eduItem}>
-                  <h4>{edu.degree}</h4>
-                  <p>{edu.school}</p>
-                  <span>{edu.period}</span>
+                  <h4 className="m-0 text-base font-semibold text-foreground">
+                    {edu.degree}
+                  </h4>
+                  <p className="m-0 text-sm text-text-secondary">
+                    {edu.school}
+                  </p>
+                  <span className="text-sm font-medium text-primary">
+                    {edu.period}
+                  </span>
                 </div>
               ))}
             </div>
@@ -188,7 +223,10 @@ export default function ResumeSection() {
               <h3 className={styles.cardTitle}>Languages</h3>
               <ul className={styles.langList}>
                 {resumeData.languages.map((lang) => (
-                  <li key={lang.name}>
+                  <li
+                    key={lang.name}
+                    className="flex items-center justify-between border-b border-dashed border-white/10 pb-2 text-sm text-foreground last:border-b-0 last:pb-0"
+                  >
                     <strong>{lang.name}</strong>
                     <span className={styles.langLevel}>{lang.level}</span>
                   </li>

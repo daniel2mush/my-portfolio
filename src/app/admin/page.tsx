@@ -22,12 +22,65 @@ import {
   usePublishProject,
   useDeleteProject, // Added this import
 } from "@/lib/query/projectQuery";
-import styles from "./AdminDashboard.module.scss";
 import { Button } from "@/components/ui/Buttons/Buttons";
 import AdminForm from "@/components/Admin/Form/AdminForm";
 import { Project } from "@/lib/types";
 import { StatusFilter, SortOption } from "@/types/project";
 import MessagesList from "./MessageList";
+import { cn } from "@/lib/utils";
+
+export const adminStyles = {
+  dashboard: "flex min-h-screen flex-col gap-8 bg-background p-5 text-foreground md:p-10",
+  loader: "flex min-h-screen items-center justify-center bg-background text-lg text-text-secondary",
+  error: "flex min-h-screen items-center justify-center bg-background text-lg text-red-400",
+  header: "flex flex-col gap-5 border-b border-white/10 pb-6 sm:flex-row sm:items-center sm:justify-between",
+  headerTitles: "",
+  badge: "inline-block rounded-full border border-primary/20 bg-primary/15 px-3 py-1 text-sm font-semibold text-primary",
+  toolbar: "flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between",
+  searchBox: "relative grow lg:max-w-[450px]",
+  searchIcon: "pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary",
+  nativeInput: "w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 pl-11 text-sm text-foreground outline-none transition-all placeholder:text-white/30 focus:border-primary focus:bg-white/[0.05] focus:ring-4 focus:ring-primary/15",
+  filters: "flex flex-col gap-4 sm:flex-row",
+  nativeSelect: "min-w-40 cursor-pointer rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-foreground outline-none transition-all focus:border-primary focus:bg-white/[0.05] focus:ring-4 focus:ring-primary/15",
+  bulkBar: "flex animate-[slide-down-fade_0.3s_ease-out_forwards] flex-col gap-4 rounded-lg border border-primary/30 bg-primary/10 p-4 md:flex-row md:items-center md:justify-between md:px-6",
+  bulkCount: "text-base font-semibold text-primary",
+  bulkActions: "flex flex-wrap gap-3",
+  grid: "grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-7",
+  emptyState: "col-span-full rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-5 py-20 text-center text-lg text-text-secondary",
+  card: "flex animate-[slide-up-fade_0.5s_cubic-bezier(0.16,1,0.3,1)_forwards] flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] opacity-0 backdrop-blur transition-all hover:border-white/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]",
+  cardSelected: "border-primary bg-primary/5 shadow-[0_0_0_1px_var(--primary)]",
+  cardHeader: "relative h-[180px] border-b border-white/5 bg-black/40",
+  imageWrapper: "relative size-full",
+  image: "object-cover",
+  imageFallback: "flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-white/[0.02] to-white/[0.05] text-text-secondary",
+  fallbackIcon: "opacity-50",
+  badges: "absolute right-3.5 top-3.5",
+  statusBadge: "rounded-full px-3 py-1 text-xs font-bold uppercase",
+  published: "border border-emerald-500/30 bg-emerald-500/15 text-emerald-300",
+  draft: "border border-amber-500/30 bg-amber-500/15 text-amber-300",
+  checkboxWrapper: "absolute left-3 top-3 flex cursor-pointer items-center justify-center rounded-md border border-white/10 bg-black/60 p-2 backdrop-blur transition-colors hover:bg-black/80",
+  checkbox: "size-[18px] cursor-pointer accent-primary",
+  cardBody: "flex grow flex-col p-6",
+  title: "mb-2 text-xl font-bold text-foreground",
+  description: "mb-5 overflow-hidden text-sm leading-6 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]",
+  tools: "mt-auto flex flex-wrap gap-2",
+  toolTag: "rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-text-light",
+  cardFooter: "flex justify-between border-t border-white/5 bg-black/20 px-6 py-4",
+  actionGroup: "flex gap-3",
+  modalOverlay: "fixed inset-0 z-[9999] flex items-center justify-center bg-black/75 p-5 backdrop-blur-md",
+  modalContent: "max-h-[90vh] w-full max-w-[650px] overflow-y-auto rounded-2xl border border-white/10 bg-background shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]",
+  modalHeader: "flex items-center justify-between border-b border-white/10 px-6 py-5 md:px-8",
+  closeModalBtn: "flex items-center justify-center rounded-md p-1.5 text-text-secondary transition-all hover:bg-white/10 hover:text-foreground",
+  modalBody: "p-6 md:p-8",
+  previewContent: "flex flex-col gap-6",
+  previewImageWrapper: "relative aspect-video w-full overflow-hidden rounded-lg border border-white/10",
+  previewTools: "flex flex-wrap gap-2.5",
+  previewLinks: "flex flex-col gap-4 sm:flex-row",
+  deleteWarning: "mb-6 text-base leading-7 text-text-secondary",
+  deleteDialogActions: "flex justify-end gap-4 border-t border-white/10 pt-6",
+};
+
+const styles = adminStyles;
 
 const AdminProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
@@ -67,7 +120,7 @@ const Modal = ({
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2>{title}</h2>
+          <h2 className="text-xl font-bold text-foreground">{title}</h2>
           <button
             className={styles.closeModalBtn}
             onClick={onClose}
@@ -199,7 +252,9 @@ export default function AdminDashboard() {
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <div className={styles.headerTitles}>
-          <h1>Project Management</h1>
+          <h1 className="mb-2 text-[clamp(1.8rem,3vw,2.2rem)] font-bold text-foreground">
+            Project Management
+          </h1>
           <span className={styles.badge}>{projects.length} Total Projects</span>
         </div>
 
@@ -305,7 +360,7 @@ export default function AdminDashboard() {
             return (
               <article
                 key={p.id}
-                className={`${styles.card} ${isChecked ? styles.cardSelected : ""}`}
+                className={cn(styles.card, isChecked && styles.cardSelected)}
                 style={{ "--index": index } as React.CSSProperties}
               >
                 <div className={styles.cardHeader}>
@@ -314,7 +369,10 @@ export default function AdminDashboard() {
                   </div>
                   <div className={styles.badges}>
                     <span
-                      className={`${styles.statusBadge} ${p.isPublished ? styles.published : styles.draft}`}
+                      className={cn(
+                        styles.statusBadge,
+                        p.isPublished ? styles.published : styles.draft,
+                      )}
                     >
                       {p.isPublished ? "Published" : "Draft"}
                     </span>
@@ -440,7 +498,8 @@ export default function AdminDashboard() {
       >
         <p className={styles.deleteWarning}>
           Are you sure? This will permanently delete{" "}
-          <strong>{confirmDelete?.title}</strong>. This action cannot be undone.
+          <strong className="text-foreground">{confirmDelete?.title}</strong>.
+          This action cannot be undone.
         </p>
         <div className={styles.deleteDialogActions}>
           <Button variant="outline" onClick={() => setConfirmDelete(null)}>

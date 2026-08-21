@@ -10,9 +10,38 @@ import { FiGithub } from "react-icons/fi";
 import { Project } from "@/types/project";
 import { useGetAllProject } from "@/lib/query/projectQuery";
 import { Button } from "@/components/ui/Buttons/Buttons";
-import styles from "./Projects.module.scss";
 
-import type { Metadata } from "next";
+const styles = {
+  section: "min-h-screen bg-background px-5 py-24 md:py-28",
+  content: "mx-auto flex max-w-[1200px] flex-col",
+  header: "mb-12 flex flex-col items-center text-center",
+  highlight: "text-primary",
+  subtitle: "m-0 max-w-[600px] text-balance text-lg text-text-secondary",
+  grid: "grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8",
+  card: "flex animate-[slide-up_0.6s_ease_forwards] flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] opacity-0 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]",
+  imageWrapper: "relative h-[200px] w-full",
+  image: "object-cover",
+  imageFallback: "flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-white/[0.02] to-white/[0.05] text-text-secondary",
+  fallbackIcon: "opacity-50",
+  cardBody: "flex grow flex-col items-stretch p-6",
+  title: "mb-2 text-xl font-bold text-foreground",
+  description: "mb-5 overflow-hidden text-sm leading-6 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]",
+  tools: "mt-auto flex flex-wrap gap-2",
+  toolTag: "rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary",
+  cardFooter: "border-t border-white/5 px-6 py-4",
+  statusContainer: "flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background text-lg text-text-secondary",
+  spinner: "animate-spin text-primary",
+  modalOverlay: "fixed inset-0 z-[1000] flex items-center justify-center bg-background/85 p-5 backdrop-blur-md",
+  modalContent: "max-h-[90vh] w-full max-w-[700px] overflow-y-auto rounded-2xl border border-white/10 bg-background shadow-[0_25px_50px_rgba(0,0,0,0.5)]",
+  modalHeader: "flex items-center justify-between border-b border-white/5 px-6 py-5",
+  closeModalBtn: "flex items-center justify-center rounded-full p-2 text-text-secondary transition-all hover:rotate-90 hover:bg-white/10 hover:text-foreground",
+  modalBody: "p-6",
+  previewContent: "flex flex-col gap-6",
+  previewImageWrapper: "relative aspect-video w-full overflow-hidden rounded-lg border border-white/10",
+  fullDescription: "whitespace-pre-wrap text-base leading-8 text-text-secondary",
+  previewTools: "flex flex-wrap gap-2.5",
+  previewLinks: "flex flex-col gap-4 sm:flex-row",
+};
 
 const ProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
@@ -52,7 +81,7 @@ const Modal = ({
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2>{title}</h2>
+          <h2 className="text-xl font-bold text-foreground">{title}</h2>
           <button
             className={styles.closeModalBtn}
             onClick={onClose}
@@ -97,7 +126,7 @@ export default function AllProjectsPage() {
     <section id="projects" className={styles.section}>
       <div className={styles.content}>
         <header className={styles.header}>
-          <h1>
+          <h1 className="mb-4 text-[clamp(2.5rem,5vw,3.5rem)] font-black text-foreground">
             My <span className={styles.highlight}>Projects</span>
           </h1>
           <p className={styles.subtitle}>
@@ -119,7 +148,7 @@ export default function AllProjectsPage() {
 
               <div className={styles.cardBody}>
                 <h3 className={styles.title}>{p.title}</h3>
-                {/* 3-line truncation handled via SCSS */}
+                {/* 3-line truncation handled via Tailwind */}
                 <p className={styles.description}>{p.description}</p>
 
                 <div className={styles.tools}>
