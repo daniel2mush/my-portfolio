@@ -1,147 +1,198 @@
 "use client";
 
 import { useGetAllProject } from "@/lib/query/projectQuery";
-import { CiShare1 } from "react-icons/ci";
-import { FiGithub } from "react-icons/fi"; // Assuming this is your custom button
+import { ExternalLink, Github, ArrowUpRight, Code2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/Buttons/Buttons";
+import {Button} from "@/components/ui/button";
 
-const styles = {
-  section: "min-h-screen bg-background px-5 py-24",
-  content: "mx-auto max-w-[1200px]",
-  header: "mb-14 flex flex-col items-center text-center",
-  highlight: "relative inline-flex flex-col text-primary",
-  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
-  subtitle: "m-0 max-w-2xl text-balance text-lg leading-7 text-text-secondary",
-  grid: "grid grid-cols-1 gap-8 md:grid-cols-2",
-  card: "animate-[slide-up_0.6s_ease_forwards] overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] opacity-0 transition-all hover:-translate-y-1 hover:border-primary",
-  imageWrapper: "group relative aspect-video w-full overflow-hidden",
-  image: "object-cover transition-transform duration-300 group-hover:scale-105",
-  placeholderImage: "flex size-full items-center justify-center bg-white/[0.03] text-4xl",
-  overlay: "absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/60 opacity-100 transition-opacity md:opacity-0 md:group-hover:opacity-100",
-  actionBtn: "inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-primary hover:text-primary-foreground",
-  cardInfo: "flex flex-col gap-4 p-6",
-  title: "text-xl font-bold text-foreground",
-  description: "text-sm leading-6 text-text-secondary",
-  tools: "flex flex-wrap gap-2",
-  toolTag: "rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary",
-  footer: "mt-10 flex justify-center",
-  btnLink: "inline-flex items-center",
-  statusContainer: "flex min-h-[40vh] flex-col items-center justify-center gap-4 text-text-secondary",
-  spinner: "size-8 animate-spin rounded-full border-2 border-primary border-t-transparent",
-};
+// --- Skeleton Loader for better UX ---
+const ProjectSkeleton = () => (
+  <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card animate-pulse">
+    <div className="aspect-video bg-muted" />
+    <div className="flex flex-1 flex-col p-6 space-y-4">
+      <div className="h-6 w-3/4 rounded bg-muted" />
+      <div className="h-4 w-full rounded bg-muted" />
+      <div className="h-4 w-5/6 rounded bg-muted" />
+      <div className="mt-auto pt-4 flex items-center justify-between border-t border-border/50">
+        <div className="flex gap-2">
+          <div className="h-6 w-16 rounded-full bg-muted" />
+          <div className="h-6 w-16 rounded-full bg-muted" />
+        </div>
+        <div className="flex gap-2">
+          <div className="size-8 rounded-full bg-muted" />
+          <div className="size-8 rounded-full bg-muted" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default function Projects() {
   const { data: projects, isLoading, isError } = useGetAllProject(2);
 
+  // 1. Loading State (Skeleton Grid)
   if (isLoading) {
     return (
-      <section className={styles.section}>
-        <div className={styles.statusContainer}>
-          <div className={styles.spinner} />
-          <p>Loading projects...</p>
+      <section id="projects" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <div className="mb-4 h-6 w-32 rounded-full bg-muted animate-pulse" />
+            <div className="h-10 w-64 rounded bg-muted animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+          </div>
         </div>
       </section>
     );
   }
 
+  // 2. Error or Empty State
   if (isError || !projects || projects.length === 0) {
     return (
-      <section className={styles.section}>
-        <div className={styles.statusContainer}>
-          <p>No projects found right now. Check back later!</p>
+      <section id="projects" className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 text-center">
+        <div className="mb-6 flex size-20 items-center justify-center rounded-full bg-muted/50 text-muted-foreground">
+          <Code2 size={32} />
         </div>
+        <h2 className="mb-2 text-2xl font-bold text-foreground">The studio is quiet.</h2>
+        <p className="max-w-md text-muted-foreground">
+          No projects are currently on display. Check back soon for new case studies.
+        </p>
       </section>
     );
   }
 
+  // 3. Main Content
   return (
-    <section id="projects" className={styles.section}>
-      <div className={styles.content}>
-        {/* Section Header */}
-        <header className={styles.header}>
-          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
-            Featured{" "}
-            <span className={styles.highlight}>
-              Projects
-              <span className={styles.underline} />
+    <section id="projects" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      {/* Background Elements */}
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-6xl">
+        {/* Header */}
+        <header className="mb-16 flex flex-col items-center text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
+            Selected Works
+          </div>
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Recent <span className="text-gradient">Projects</span>
           </h2>
-          <p className={styles.subtitle}>
-            A curated showcase of my recent work — combining technical
-            expertise, creativity, and problem‑solving.
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            A collection of case studies where engineering precision meets design intuition.
           </p>
         </header>
 
         {/* Projects Grid */}
-        <div className={styles.grid}>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {projects.map((p, index) => (
             <article
               key={p.id}
-              className={styles.card}
-              // This inline style passes the index for staggered CSS animations.
-              style={{ "--index": index } as React.CSSProperties}
+              // Uses the animation utility from your globals.css
+              className="animate-fade-in-up group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Image & Hover Action Overlay */}
-              <div className={styles.imageWrapper}>
+              {/* Image Area */}
+              <Link
+                href={p.liveLink || "#"}
+                target="_blank"
+                className="relative block aspect-video w-full overflow-hidden bg-muted"
+              >
                 {p.imageUrl ? (
                   <Image
                     src={p.imageUrl}
                     alt={p.title}
                     fill
-                    className={styles.image}
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 ) : (
-                  <div className={styles.placeholderImage}>🌐</div>
+                  <div className="flex size-full items-center justify-center text-muted-foreground/20">
+                    <Code2 size={64} />
+                  </div>
                 )}
+                {/* Gradient overlay for better text contrast if needed, or just visual depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-                {/* Unified overlay for links (Hover on Desktop, Static on Mobile) */}
-                <div className={styles.overlay}>
-                  <a
-                    href={p.liveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.actionBtn}
-                  >
-                    <CiShare1 size={20} /> Live Demo
-                  </a>
-                  <a
-                    href={p.projectLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.actionBtn}
-                  >
-                    <FiGithub size={20} /> Source Code
-                  </a>
+                {/* "Visit" Indicator */}
+                <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+                  View Live <ArrowUpRight size={14} />
                 </div>
-              </div>
+              </Link>
 
-              {/* Project Info */}
-              <div className={styles.cardInfo}>
-                <h3 className={styles.title}>{p.title}</h3>
-                <p className={styles.description}>{p.description}</p>
+              {/* Content Area */}
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="mb-2 text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {p.title}
+                </h3>
+                <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                  {p.description}
+                </p>
 
-                <div className={styles.tools}>
-                  {p.tools.map((t) => (
-                    <span key={t} className={styles.toolTag}>
-                      {t}
-                    </span>
-                  ))}
+                {/* Footer: Tags & Actions */}
+                <div className="mt-auto flex items-center justify-between border-t border-border/50 pt-4">
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-2">
+                    {p.tools?.slice(0, 3).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-md bg-secondary/50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-secondary-foreground"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    {p.tools && p.tools.length > 3 && (
+                       <span className="text-xs text-muted-foreground">+{p.tools.length - 3}</span>
+                    )}
+                  </div>
+
+                  {/* Action Icons */}
+                  <div className="flex gap-2">
+                    {p.projectLink && (
+                      <Link
+                        href={p.projectLink}
+                        target="_blank"
+                        className="flex size-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                        aria-label="View Source Code"
+                      >
+                        <Github size={16} />
+                      </Link>
+                    )}
+                    {p.liveLink && (
+                      <Link
+                        href={p.liveLink}
+                        target="_blank"
+                        className="flex size-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                        aria-label="View Live Demo"
+                      >
+                        <ExternalLink size={16} />
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className={styles.footer}>
-          <Button size="md">
-            <Link className={styles.btnLink} href="/projects">
+        {/* Footer CTA */}
+        <div className="mt-16 flex justify-center">
+          {/*
+             Using asChild is the correct way to handle Links inside Buttons in modern UI libs.
+             If your custom Button doesn't support it, just remove 'asChild' and wrap the Button in the Link.
+          */}
+          <Link href="/projects">
+            <Button size="lg" variant="outline" className="group gap-2">
               View All Projects
-            </Link>
-          </Button>
+              <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

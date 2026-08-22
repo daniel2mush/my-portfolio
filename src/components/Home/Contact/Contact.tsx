@@ -1,140 +1,134 @@
 "use client";
 
-import { Mail, MapPin, Phone } from "lucide-react";
-// import MyForm from "./form"; // Assuming this handles its own styling or adapts to parent
-
+import { Mail, Phone, MapPin, ArrowUpRight, type LucideIcon } from "lucide-react";
 import MyForm from "@/components/Form/Form";
+import {FiInstagram} from "react-icons/fi";
 
-const styles = {
-  section: "relative min-h-screen overflow-hidden bg-background px-5 py-24",
-  blobTop: "pointer-events-none absolute -right-24 top-24 size-72 rounded-full bg-primary/10 blur-3xl",
-  blobBottom: "pointer-events-none absolute -bottom-24 left-0 size-72 rounded-full bg-white/5 blur-3xl",
-  content: "relative mx-auto max-w-[1200px]",
-  header: "mb-14 flex flex-col items-center text-center",
-  highlight: "relative inline-flex flex-col text-primary",
-  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
-  subtitle: "m-0 max-w-2xl text-balance text-lg leading-7 text-text-secondary",
-  grid: "grid grid-cols-1 gap-8 lg:grid-cols-[0.8fr_1.2fr]",
-  infoColumn: "flex flex-col gap-6",
-  infoCards: "grid gap-4",
-  contactCard: "flex animate-[slide-up-fade_0.5s_ease_forwards] items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-5 text-left opacity-0 transition-all hover:-translate-y-1 hover:border-primary",
-  iconWrapper: "flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary",
-  cardText: "",
-  freelanceStatus: "animate-[slide-up-fade_0.5s_ease_forwards] rounded-xl border border-white/10 bg-white/[0.03] p-5 opacity-0",
-  statusHeader: "mb-2 flex items-center gap-3",
-  pulseDot: "relative flex size-3 items-center justify-center",
-  dotCore: "absolute size-2 rounded-full bg-emerald-400",
-  dotRing: "absolute size-3 animate-ping rounded-full bg-emerald-400/40",
-  formColumn: "rounded-xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur",
-  formWrapper: "",
-};
+interface ContactMethod {
+  name: string;
+  value: string;
+  href: string;
+  icon: LucideIcon;
+}
 
-const contactInfo = [
+const contactMethods: ContactMethod[] = [
   {
     name: "Email",
-    info: "Daniel2mush@gmail.com",
-    href: "mailto:Daniel2mush@gmail.com",
-    icon: <Mail size={24} strokeWidth={1.5} />,
+    value: "daniel2mush@gmail.com",
+    href: "mailto:daniel2mush@gmail.com",
+    icon: Mail,
   },
   {
-    name: "Phone",
-    info: "+223 71 90 70 48",
+    name: "Phone / WhatsApp",
+    value: "+223 71 90 70 48",
     href: "tel:+22371907048",
-    icon: <Phone size={24} strokeWidth={1.5} />,
+    icon: Phone,
   },
   {
     name: "Location",
-    info: "Bamako, Mali",
-    href: null,
-    icon: <MapPin size={24} strokeWidth={1.5} />,
+    value: "Bamako, Mali",
+    href: "https://maps.google.com/?q=Bamako,Mali",
+    icon: MapPin,
   },
 ];
 
 export default function Contact() {
   return (
-    <section id="contact" className={styles.section}>
-      {/* CSS-only Decorative Glowing Blobs */}
-      <div className={styles.blobTop} aria-hidden="true" />
-      <div className={styles.blobBottom} aria-hidden="true" />
+    <section id="contact" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute -left-20 top-1/4 size-[500px] rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-20 bottom-1/4 size-[500px] rounded-full bg-primary/10 blur-[120px]" aria-hidden="true" />
 
-      <div className={styles.content}>
-        {/* Header */}
-        <header className={styles.header}>
-          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
-            Let&apos;s{" "}
-            <span className={styles.highlight}>
-              Connect
-              <span className={styles.underline} />
+      <div className="relative mx-auto max-w-6xl">
+        <header className="mb-16 flex flex-col items-center text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm">
+             <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
+            Let's Work Together
+          </div>
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Ready to <span className="text-gradient">Build Something?</span>
           </h2>
-          <p className={styles.subtitle}>
-            Have a project in mind or just want to chat? I’d love to hear from
-            you.
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Whether you need a brand identity, a print campaign, or a full-stack web application — I'd love to hear about your project.
           </p>
         </header>
 
-        {/* Layout Grid */}
-        <div className={styles.grid}>
-          {/* Left Column: Contact Info */}
-          <div className={styles.infoColumn}>
-            <div className={styles.infoCards}>
-              {contactInfo.map((c, index) => {
-                const isLink = c.href !== null;
-
-                const CardContent = (
-                  <>
-                    <div className={styles.iconWrapper}>{c.icon}</div>
-                    <div className={styles.cardText}>
-                      <h3 className="mb-1 text-base font-bold text-foreground">{c.name}</h3>
-                      <p className="m-0 text-sm text-text-secondary">{c.info}</p>
-                    </div>
-                  </>
-                );
-
-                return isLink ? (
+        <div className="grid gap-8 lg:grid-cols-5 lg:gap-12">
+          <div className="flex flex-col gap-6 lg:col-span-2">
+            <div className="space-y-4">
+              {contactMethods.map((method, index) => {
+                const isExternal = method.name === "Location";
+                return (
                   <a
-                    key={c.name}
-                    href={c.href}
-                    className={styles.contactCard}
-                    style={{ "--index": index } as React.CSSProperties}
+                    key={method.name}
+                    href={method.href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    className="glass group flex items-center gap-4 rounded-xl p-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    {CardContent}
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <method.icon size={22} strokeWidth={1.5} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{method.name}</p>
+                      <p className="truncate text-base font-medium text-foreground transition-colors group-hover:text-primary">{method.value}</p>
+                    </div>
+                    <div className="text-muted-foreground transition-transform group-hover:translate-x-1">
+                      <ArrowUpRight size={18} />
+                    </div>
                   </a>
-                ) : (
-                  <div
-                    key={c.name}
-                    className={styles.contactCard}
-                    style={{ "--index": index } as React.CSSProperties}
-                  >
-                    {CardContent}
-                  </div>
                 );
               })}
             </div>
 
-            {/* Freelance Availability Status */}
-            <div
-              className={styles.freelanceStatus}
-              style={{ "--index": contactInfo.length } as React.CSSProperties}
-            >
-              <div className={styles.statusHeader}>
-                <span className={styles.pulseDot}>
-                  <span className={styles.dotCore} />
-                  <span className={styles.dotRing} />
+            <div className="glass rounded-xl p-5 border-l-4 border-l-emerald-500/50">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
                 </span>
-                <h3 className="text-lg font-bold text-foreground">
-                  Available for Freelance
-                </h3>
+                <h3 className="font-semibold text-foreground">Available for Freelance</h3>
               </div>
-              <p className="m-0 text-sm text-text-secondary">
-                Open to exciting projects and new opportunities.
+              <p className="text-sm text-muted-foreground">
+                Currently taking on design and development projects. Remote-friendly.
               </p>
+            </div>
+
+            {/* Portfolio Links */}
+            <div className="glass rounded-xl p-5">
+              <h3 className="font-semibold text-foreground mb-3">My Portfolios</h3>
+              <div className="space-y-2">
+                <a href="https://bit.ly/daniel-ogbeide-fullstack" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <span>Graphic Design Portfolio</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://www.instagram.com/ogbeide_daniiel/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <span>Instagram Profile</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://github.com/daniel2mush" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <span>GitHub Profile</span>
+                  <ArrowUpRight size={14} />
+                </a>
+                <a href="https://www.linkedin.com/in/daniel-ogbeide/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
+                  <span>LinkedIn</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: Contact Form */}
-          <div className={styles.formColumn}>
-            <div className={styles.formWrapper}>{<MyForm />}</div>
+          <div className="lg:col-span-3">
+            <div className="glass h-full rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+              <div className="absolute -right-10 -top-10 size-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+              <div className="relative z-10">
+                <MyForm />
+              </div>
+            </div>
           </div>
         </div>
       </div>

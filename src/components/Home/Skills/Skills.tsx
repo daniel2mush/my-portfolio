@@ -1,157 +1,120 @@
 "use client";
 
-import { useRef } from "react";
-import { Code2, Server, Palette, Cloud } from "lucide-react";
+import { Code2, Server, Palette, Cloud, type LucideIcon } from "lucide-react";
 
-const styles = {
-  section: "min-h-screen bg-background px-5 py-24",
-  content: "mx-auto max-w-[1200px]",
-  header: "mb-14 flex flex-col items-center text-center",
-  highlight: "relative inline-flex flex-col text-primary",
-  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
-  subtitle: "m-0 max-w-2xl text-balance text-lg leading-7 text-text-secondary",
-  flexContainer: "flex flex-col gap-10",
-  grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
-  card: "rounded-xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:-translate-y-1 hover:border-[var(--theme)]",
-  cardHeader: "mb-5 flex items-center gap-4",
-  iconWrapper: "flex size-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[var(--theme)]",
-  tags: "flex flex-wrap gap-2",
-  tag: "rounded-full border border-white/10 bg-black/20 px-3 py-1 text-sm text-text-secondary",
-  separator: "h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent",
-  statsGrid: "grid grid-cols-2 gap-5 md:grid-cols-4",
-  stat: "rounded-xl border border-white/10 bg-white/[0.02] p-5 text-center",
-  statValue: "block text-3xl font-black",
-  statName: "m-0 mt-2 text-sm text-text-secondary",
-};
+interface Skill {
+  name: string;
+  icon: LucideIcon;
+  color: string;
+  skillSet: string[];
+}
 
-// Moved outside component to prevent unnecessary re-renders
-const skills = [
+const skills: Skill[] = [
   {
     name: "Frontend Development",
-    icon: <Code2 size={28} />,
+    icon: Code2,
     color: "#808bf8",
-    skillSet: [
-      "React",
-      "TypeScript",
-      "Next.js",
-      "Tailwind CSS",
-      "Framer Motion",
-    ],
+    skillSet: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"],
   },
   {
-    name: "Backend Development",
-    icon: <Server size={28} />,
+    name: "Backend & Data",
+    icon: Server,
     color: "#ac47ff",
-    skillSet: [
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "MongoDB",
-      "DrizzleORM",
-      "Auth.js",
-    ],
+    skillSet: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "REST APIs"],
   },
   {
-    name: "Design & Tools",
-    icon: <Palette size={28} />,
+    name: "Design & Creative",
+    icon: Palette,
     color: "#f6339a",
-    skillSet: [
-      "Figma",
-      "Adobe XD",
-      "Sketch",
-      "Photoshop",
-      "Illustrator",
-      "After Effects",
-    ],
+    skillSet: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "UI/UX", "Brand Identity", "Print Production"],
   },
   {
-    name: "DevOps & Cloud",
-    icon: <Cloud size={28} />,
+    name: "Tools & Platform",
+    icon: Cloud,
     color: "#00c851",
-    skillSet: [
-      "AWS",
-      "Docker",
-      "Kubernetes",
-      "GitHub Actions",
-      "Vercel",
-      "Netlify",
-    ],
+    skillSet: ["Git", "GitHub", "WordPress", "SEO", "Digital Marketing", "Web Maintenance"],
   },
 ];
 
 const serviceStats = [
-  { name: "Years Experience", value: 5, suffix: "+", color: "#808bf8" },
-  { name: "Projects Completed", value: 50, suffix: "+", color: "#ac47ff" },
-  { name: "Client Satisfaction", value: 100, suffix: "%", color: "#f6339a" },
-  { name: "Support Available", value: 24, suffix: "/7", color: "#00c851" },
+  { name: "Years Experience", value: 9, suffix: "+", color: "#808bf8" },
+  { name: "Design Projects", value: 200, suffix: "+", color: "#ac47ff" },
+  { name: "Web Apps Built", value: 15, suffix: "+", color: "#f6339a" },
+  { name: "Languages Spoken", value: 2, suffix: "", color: "#00c851" },
 ];
 
 export default function Skills() {
-  const ref = useRef<HTMLDivElement>(null);
-
   return (
-    <section id="skills" className={styles.section} ref={ref}>
-      <div className={styles.content}>
-        {/* Header */}
-        <header className={styles.header}>
-          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
-            Skills &{" "}
-            <span className={styles.highlight}>
-              Expertise
-              <span className={styles.underline} />
+    <section id="skills" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-6xl">
+        <header className="mb-16 flex flex-col items-center text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
+            The Toolkit
+          </div>
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Skills & <span className="text-gradient">Expertise</span>
           </h2>
-          <p className={styles.subtitle}>
-            A comprehensive toolkit for building modern web applications and
-            digital experiences.
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            A rare combination of visual design mastery and modern web engineering.
           </p>
         </header>
 
-        {/* Main Content Area */}
-        <div className={styles.flexContainer}>
-          {/* Skills Grid */}
-          <div className={styles.grid}>
-            {skills.map((s) => (
-              <div
-                className={styles.card}
-                key={s.name}
-                // Passing the hex color as a CSS variable for dynamic Tailwind styling
-                style={{ "--theme": s.color } as React.CSSProperties}
-              >
-                <div className={styles.cardHeader}>
-                  <div className={styles.iconWrapper}>{s.icon}</div>
-                  <h3 className="text-xl font-bold text-foreground">{s.name}</h3>
+        <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-4">
+          {skills.map((skill) => (
+            <div
+              key={skill.name}
+              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[var(--theme)]/50 hover:shadow-xl hover:shadow-[var(--theme)]/5"
+              style={{ "--theme": skill.color } as React.CSSProperties}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--theme)]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              <div className="relative z-10">
+                <div className="mb-6 flex items-center gap-4">
+                  <div
+                    className="flex size-12 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110"
+                    style={{ backgroundColor: `${skill.color}15`, color: skill.color }}
+                  >
+                    <skill.icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">{skill.name}</h3>
                 </div>
 
-                <div className={styles.tags}>
-                  {s.skillSet.map((skill) => (
-                    <span key={skill} className={styles.tag}>
-                      {skill}
+                <div className="flex flex-wrap gap-2">
+                  {skill.skillSet.map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full border border-border/50 bg-background/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-all duration-300 group-hover:border-[var(--theme)]/30 group-hover:text-foreground"
+                    >
+                      {tech}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
-          {/* Smooth Separator */}
-          <div className={styles.separator} aria-hidden="true" />
-
-          {/* Stats Grid */}
-          <div className={styles.statsGrid}>
-            {serviceStats.map((stat) => (
-              <div className={styles.stat} key={stat.name}>
-                <span
-                  className={styles.statValue}
-                  style={{ color: stat.color }}
-                >
-                  {stat.value}
-                  {stat.suffix}
-                </span>
-                <p className={styles.statName}>{stat.name}</p>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          {serviceStats.map((stat) => (
+            <div
+              key={stat.name}
+              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/20 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--theme)]/50 hover:shadow-lg hover:shadow-[var(--theme)]/5"
+              style={{ "--theme": stat.color } as React.CSSProperties}
+            >
+              <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-[var(--theme)] to-transparent opacity-60 transition-opacity group-hover:opacity-100" />
+              <span className="block text-4xl font-bold tracking-tight transition-transform duration-300 group-hover:scale-105" style={{ color: stat.color }}>
+                {stat.value}<span className="text-2xl text-muted-foreground">{stat.suffix}</span>
+              </span>
+              <p className="mt-2 text-sm font-medium text-muted-foreground">{stat.name}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

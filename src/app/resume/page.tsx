@@ -1,69 +1,17 @@
 "use client";
 
-import { Download } from "lucide-react";
-import { Button } from "@/components/ui/Buttons/Buttons";
+import { Download, Briefcase, GraduationCap, Globe, Code2, Palette, Sparkles } from "lucide-react";
 
-const styles = {
-  section: "min-h-screen bg-background px-5 py-24 md:py-28",
-  content: "mx-auto flex max-w-[1200px] flex-col",
-  header: "mb-12 flex animate-[fade-in-up_0.6s_ease-out_forwards] flex-col items-center text-center opacity-0",
-  highlight: "relative inline-flex flex-col text-foreground",
-  underline: "absolute -bottom-1 left-0 h-1.5 w-full rounded bg-primary",
-  subtitle: "m-0 text-[clamp(1.1rem,2vw,1.3rem)] leading-6 text-text-secondary",
-  resumeGrid: "grid grid-cols-1 gap-10 lg:grid-cols-[1.8fr_1fr]",
-  mainColumn: "flex flex-col gap-10",
-  resumeBlock: "animate-[fade-in-up_0.6s_ease-out_forwards] opacity-0",
-  blockTitle: "mb-5 border-b border-white/10 pb-3 text-3xl font-bold text-foreground",
-  summaryText: "m-0 text-lg font-light leading-8 text-text-secondary",
-  timeline: "flex flex-col gap-8 border-l-2 border-primary/30 pl-5",
-  timelineItem: "relative flex flex-col gap-2",
-  timelineDot: "absolute -left-[27px] top-1.5 size-3 rounded-full bg-primary shadow-[0_0_10px_rgba(242,242,242,0.5)]",
-  role: "m-0 text-xl font-semibold text-foreground",
-  companyMeta: "text-sm font-medium text-primary",
-  jobDetails: "mt-2 list-disc pl-5 text-base leading-7 text-text-secondary marker:text-white/30",
-  sidebarColumn: "flex flex-col gap-6",
-  resumeCard: "animate-[fade-in-up_0.6s_ease-out_forwards] rounded-lg border border-white/5 bg-white/[0.02] p-6 opacity-0 backdrop-blur transition-all hover:-translate-y-1 hover:border-white/15",
-  cardTitle: "mb-4 text-xl font-semibold text-foreground",
-  tags: "flex flex-wrap gap-2.5",
-  tag: "rounded-full border border-white/5 bg-black/30 px-3.5 py-1.5 text-sm text-text-secondary transition-colors hover:border-primary hover:text-foreground",
-  eduItem: "flex flex-col gap-1",
-  langList: "m-0 flex list-none flex-col gap-3 p-0",
-  langLevel: "text-sm text-text-secondary",
-  footerAction: "mt-14 flex animate-[fade-in-up_0.6s_ease-out_forwards] justify-center opacity-0",
-  downloadBtn: "gap-2.5 px-10 text-lg",
-};
-
-// Refined, high-impact copywriting
+// Data structure remains the same, just cleanly typed
 const resumeData = {
-  name: "Daniel",
-  title: "Full-Stack Developer & Head of Production",
-  contact: {
-    email: "Daniel2mush@gmail.com",
-    phone: "+223 71 90 70 48",
-    location: "Bamako, Mali",
-  },
   summary:
     "Versatile technologist and design leader bridging the gap between digital architecture and physical branding. I combine expertise in modern Full-Stack web development (React, Node.js) with extensive experience directing large-scale print production and UI/UX design. Passionate about building scalable applications and delivering pixel-perfect, high-impact visual experiences from screen to print.",
   skills: {
     technical: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "Zod",
+      "React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Express", "PostgreSQL", "Zod",
     ],
     design: [
-      "UI/UX Design",
-      "Figma",
-      "Adobe XD",
-      "Photoshop",
-      "Illustrator",
-      "InDesign",
-      "Large Format Printing",
-      "Brand Identity",
+      "UI/UX Design", "Figma", "Adobe XD", "Photoshop", "Illustrator", "InDesign", "Large Format Printing", "Brand Identity",
     ],
   },
   languages: [
@@ -79,7 +27,7 @@ const resumeData = {
       details: [
         "Direct end-to-end production for high-volume custom print items, including kakemonos, apparel, and corporate merchandise.",
         "Led the comprehensive design and print execution for major national events, including the Salon Monétique National du Mali (SamonaM).",
-        "Design engaging magazine layouts, promotional materials, and brand identities, optimizing for maximum visual impact and audience retention.",
+        "Design engaging magazine layouts, promotional materials, and brand identities, optimizing for maximum visual impact.",
         "Ensure rigorous quality control across all print-ready files and final physical deliverables.",
       ],
     },
@@ -105,74 +53,97 @@ const resumeData = {
 
 export default function ResumeSection() {
   return (
-    <section id="resume" className={styles.section}>
-      <div className={styles.content}>
-        {/* Section Header */}
-        <header
-          className={styles.header}
-          style={{ "--index": 0 } as React.CSSProperties}
-        >
-          <h2 className="mb-4 text-[clamp(2.5rem,5vw,4rem)] font-extrabold text-foreground">
-            My{" "}
-            <span className={styles.highlight}>
-              Resume
-              <span className={styles.underline} />
+    <section id="resume" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      {/* Background Elements */}
+      <div   className="absolute inset-0 h-full w-full opacity-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]"
+ />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-6xl">
+        {/* Header */}
+        <header className="mb-16 flex flex-col items-center text-center animate-fade-in-up">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
+            Career Timeline
+          </div>
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            My <span className="text-gradient">Resume</span>
           </h2>
-          <p className={styles.subtitle}>
-            A snapshot of my professional journey, skills, and milestones.
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            A snapshot of my professional journey, technical milestones, and creative leadership.
           </p>
         </header>
 
-        {/* Main Resume Grid */}
-        <div className={styles.resumeGrid}>
-          {/* Left Column: Summary & Experience */}
-          <div className={styles.mainColumn}>
-            {/* Summary */}
-            <article
-              className={styles.resumeBlock}
-              style={{ "--index": 1 } as React.CSSProperties}
-            >
-              <h3 className={styles.blockTitle}>Professional Summary</h3>
-              <p className={styles.summaryText}>{resumeData.summary}</p>
-            </article>
+        {/* Summary Block */}
+        <div
+          className="animate-fade-in-up glass mb-10 rounded-2xl p-8 sm:p-10 border-l-4 border-l-primary/50"
+          style={{ animationDelay: "100ms" }}
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <h3 className="text-lg font-semibold text-foreground">Professional Summary</h3>
+          </div>
+          <p className="text-lg leading-relaxed text-muted-foreground">
+            {resumeData.summary}
+          </p>
+        </div>
 
-            {/* Experience (Timeline style) */}
-            <article
-              className={styles.resumeBlock}
-              style={{ "--index": 2 } as React.CSSProperties}
-            >
-              <h3 className={styles.blockTitle}>Experience</h3>
-              <div className={styles.timeline}>
+        {/* Main Content Grid */}
+        <div className="grid gap-8 lg:grid-cols-5">
+
+          {/* Left Column: Experience */}
+          <div className="lg:col-span-3 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+            <div className="glass rounded-2xl p-6 sm:p-8 h-full">
+              <div className="flex items-center gap-3 mb-8">
+                <Briefcase className="text-primary" size={20} />
+                <h3 className="text-xl font-semibold text-foreground">Experience</h3>
+              </div>
+
+              {/* Custom Timeline */}
+              <div className="relative pl-8 space-y-10">
+                {/* Gradient Line */}
+                <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-primary via-border to-transparent" />
+
                 {resumeData.experience.map((job, i) => (
-                  <div key={i} className={styles.timelineItem}>
-                    <div className={styles.timelineDot} />
-                    <h4 className={styles.role}>{job.role}</h4>
-                    <span className={styles.companyMeta}>
-                      {job.company} • {job.period}
-                    </span>
-                    <ul className={styles.jobDetails}>
+                  <div key={i} className="relative">
+                    {/* Glowing Dot */}
+
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                      <h4 className="text-lg font-bold text-foreground">{job.role}</h4>
+                      <span className="text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 px-2.5 py-0.5 rounded-full w-fit border border-primary/20">
+                        {job.period}
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium text-muted-foreground mb-4">{job.company}</p>
+
+                    <ul className="space-y-3 text-sm leading-relaxed text-muted-foreground">
                       {job.details.map((detail, idx) => (
-                        <li key={idx}>{detail}</li>
+                        <li key={idx} className="flex gap-3">
+                          <span className="mt-2 size-1 shrink-0 rounded-full bg-primary/60" />
+                          <span>{detail}</span>
+                        </li>
                       ))}
                     </ul>
                   </div>
                 ))}
               </div>
-            </article>
+            </div>
           </div>
 
-          {/* Right Column: Skills, Education, Languages */}
-          <aside className={styles.sidebarColumn}>
+          {/* Right Column: Sidebar (Skills, Edu, Languages) */}
+          <div className="lg:col-span-2 flex flex-col gap-6 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+
             {/* Technical Skills */}
-            <div
-              className={styles.resumeCard}
-              style={{ "--index": 3 } as React.CSSProperties}
-            >
-              <h3 className={styles.cardTitle}>Technical Stack</h3>
-              <div className={styles.tags}>
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Code2 className="text-primary" size={18} />
+                <h3 className="font-semibold text-foreground">Engineering Stack</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {resumeData.skills.technical.map((skill) => (
-                  <span key={skill} className={styles.tag}>
+                  <span key={skill} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">
                     {skill}
                   </span>
                 ))}
@@ -180,74 +151,66 @@ export default function ResumeSection() {
             </div>
 
             {/* Design Skills */}
-            <div
-              className={styles.resumeCard}
-              style={{ "--index": 4 } as React.CSSProperties}
-            >
-              <h3 className={styles.cardTitle}>Design & Production</h3>
-              <div className={styles.tags}>
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Palette className="text-primary" size={18} />
+                <h3 className="font-semibold text-foreground">Design & Production</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {resumeData.skills.design.map((skill) => (
-                  <span key={skill} className={styles.tag}>
+                  <span key={skill} className="px-3 py-1 rounded-full bg-secondary/50 text-secondary-foreground text-xs font-medium border border-border/50">
                     {skill}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Education */}
-            <div
-              className={styles.resumeCard}
-              style={{ "--index": 5 } as React.CSSProperties}
-            >
-              <h3 className={styles.cardTitle}>Education</h3>
-              {resumeData.education.map((edu, i) => (
-                <div key={i} className={styles.eduItem}>
-                  <h4 className="m-0 text-base font-semibold text-foreground">
-                    {edu.degree}
-                  </h4>
-                  <p className="m-0 text-sm text-text-secondary">
-                    {edu.school}
-                  </p>
-                  <span className="text-sm font-medium text-primary">
-                    {edu.period}
-                  </span>
+            {/* Education & Languages Combined */}
+            <div className="glass rounded-2xl p-6 space-y-6">
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <GraduationCap className="text-primary" size={18} />
+                  <h3 className="font-semibold text-foreground">Education</h3>
                 </div>
-              ))}
-            </div>
-
-            {/* Languages */}
-            <div
-              className={styles.resumeCard}
-              style={{ "--index": 6 } as React.CSSProperties}
-            >
-              <h3 className={styles.cardTitle}>Languages</h3>
-              <ul className={styles.langList}>
-                {resumeData.languages.map((lang) => (
-                  <li
-                    key={lang.name}
-                    className="flex items-center justify-between border-b border-dashed border-white/10 pb-2 text-sm text-foreground last:border-b-0 last:pb-0"
-                  >
-                    <strong>{lang.name}</strong>
-                    <span className={styles.langLevel}>{lang.level}</span>
-                  </li>
+                {resumeData.education.map((edu, i) => (
+                  <div key={i}>
+                    <h4 className="text-sm font-bold text-foreground">{edu.degree}</h4>
+                    <p className="text-xs text-muted-foreground">{edu.school} • {edu.period}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
+
+              <div className="h-px bg-border/50" />
+
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <Globe className="text-primary" size={18} />
+                  <h3 className="font-semibold text-foreground">Languages</h3>
+                </div>
+                <div className="space-y-2">
+                  {resumeData.languages.map((lang) => (
+                    <div key={lang.name} className="flex items-center justify-between text-sm">
+                      <span className="text-foreground font-medium">{lang.name}</span>
+                      <span className="text-muted-foreground text-xs">{lang.level}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </aside>
+          </div>
         </div>
 
-        {/* Download Action */}
-        <div
-          className={styles.footerAction}
-          style={{ "--index": 7 } as React.CSSProperties}
-        >
-          <Button
-            onClick={() => window.open("/resume.pdf", "_blank")}
-            className={styles.downloadBtn}
+        {/* Download CTA */}
+        <div className="mt-12 flex justify-center animate-fade-in-up" style={{ animationDelay: "400ms" }}>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
           >
-            <Download size={18} />
+            <Download size={18} className="transition-transform group-hover:-translate-y-0.5" />
             Download Full Resume
-          </Button>
+          </a>
         </div>
       </div>
     </section>

@@ -6,6 +6,7 @@ import "@/styles/globals.css";
 import Providers from "@/lib/query/provider";
 import NavBar from "@/components/Navigation/Navigation";
 import Footer from "@/components/Home/Footer/Footer";
+import {LanguageProvider} from "@/lib/i18n/LanguageContext";
 
 // Next.js Font Optimization
 const inter = Inter({
@@ -99,7 +100,9 @@ export default function RootLayout({
       <body className="antialiased selection-bg">
         <Providers>
           <NavBar />
+            <LanguageProvider>
           {children}
+        </LanguageProvider>
         </Providers>
         <Footer />
       </body>
