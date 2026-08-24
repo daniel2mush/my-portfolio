@@ -5,8 +5,16 @@ import Image from "next/image";
 import { FiGithub, FiLinkedin, FiMail, FiInstagram } from "react-icons/fi";
 import { IoArrowDown } from "react-icons/io5";
 import {Button} from "@/components/ui/button";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+
 
 export default function HeroSection() {
+  const {t} = useLanguage();
+
+  const h = t.hero
+
+
+
   return (
     <>
       <style>{`
@@ -22,7 +30,7 @@ export default function HeroSection() {
 
       <section
         id="home"
-        className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background px-4 sm:px-6"
+        className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-background px-4 sm:px-6"
       >
         <div className="absolute inset-0 z-0">
           <Image
@@ -40,26 +48,26 @@ export default function HeroSection() {
 
 
           <h1 className="mb-6 text-4xl font-black leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            9 Years of Design.<br className="hidden sm:block" />
-            <span className="text-gradient">A Lifetime of Code.</span>
+            {h.title1}<br className="hidden sm:block" />
+            <span className="text-gradient">{h.title2}</span>
           </h1>
 
           <p className="mb-10 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            I&#39;m <strong className="text-foreground font-semibold">Daniel Ogbeide</strong> — a Graphic Designer turned Full-Stack Developer.
-            I bridge print-ready visual communication with modern web architecture,
-            building digital products that look as good as they perform.
+            {
+              h.subtitle
+            }
           </p>
 
           <div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button onClick={() => scrollToSection("#projects")} size="lg">
-              View My Work
+              {h.ctaWork}
             </Button>
             <Button
               onClick={() => scrollToSection("#contact")}
               size="lg"
               variant="outline"
             >
-              Let&#39;s Collaborate
+              {h.ctaContact}
             </Button>
           </div>
 

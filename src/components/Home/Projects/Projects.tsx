@@ -5,6 +5,8 @@ import { ExternalLink, Github, ArrowUpRight, Code2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+
 
 // --- Skeleton Loader for better UX ---
 const ProjectSkeleton = () => (
@@ -30,11 +32,13 @@ const ProjectSkeleton = () => (
 
 export default function Projects() {
   const { data: projects, isLoading, isError } = useGetAllProject(2);
+  const {t} = useLanguage();
+  const pp = t.projectsPage
 
   // 1. Loading State (Skeleton Grid)
   if (isLoading) {
     return (
-      <section id="projects" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      <section id="projects" className="relative h-auto overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 flex flex-col items-center text-center">
             <div className="mb-4 h-6 w-32 rounded-full bg-muted animate-pulse" />
@@ -56,9 +60,9 @@ export default function Projects() {
         <div className="mb-6 flex size-20 items-center justify-center rounded-full bg-muted/50 text-muted-foreground">
           <Code2 size={32} />
         </div>
-        <h2 className="mb-2 text-2xl font-bold text-foreground">The studio is quiet.</h2>
+        <h2 className="mb-2 text-2xl font-bold text-foreground">{pp.emptyTitle}</h2>
         <p className="max-w-md text-muted-foreground">
-          No projects are currently on display. Check back soon for new case studies.
+          {pp.emptySubtitle}
         </p>
       </section>
     );
@@ -66,7 +70,7 @@ export default function Projects() {
 
   // 3. Main Content
   return (
-    <section id="projects" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+    <section id="projects" className="relative h-auto overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
       {/* Background Elements */}
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
       <div className="pointer-events-none absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
@@ -79,13 +83,13 @@ export default function Projects() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
-            Selected Works
+            {pp.badge}
           </div>
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Recent <span className="text-gradient">Projects</span>
+            {pp.title1} <span className="text-gradient">{pp.title2}</span>
           </h2>
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A collection of case studies where engineering precision meets design intuition.
+            {pp.subtitle}
           </p>
         </header>
 
@@ -122,7 +126,7 @@ export default function Projects() {
 
                 {/* "Visit" Indicator */}
                 <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-black/60 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
-                  View Live <ArrowUpRight size={14} />
+                  {pp.viewLive} <ArrowUpRight size={14} />
                 </div>
               </Link>
 
@@ -189,7 +193,7 @@ export default function Projects() {
           */}
           <Link href="/projects">
             <Button size="lg" variant="outline" className="group gap-2">
-              View All Projects
+              {pp.viewAll}
               <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Button>
           </Link>

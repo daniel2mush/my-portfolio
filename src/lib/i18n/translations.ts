@@ -1,3 +1,5 @@
+import {Cloud, Code2, Palette, Server} from "lucide-react";
+
 export type Lang = "en" | "fr";
 
 const en = {
@@ -46,17 +48,21 @@ const en = {
     title1: "Skills &",
     title2: "Expertise",
     subtitle: "A rare combination of visual design mastery and modern web engineering.",
-    categories: [
-      { name: "Frontend Development", items: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"] },
-      { name: "Backend & Data", items: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "REST APIs"] },
-      { name: "Design & Creative", items: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "Brand Identity", "Large-Format Print", "Illustration"] },
-      { name: "Tools & Platform", items: ["Git", "GitHub", "WordPress", "SEO", "Digital Marketing", "Web Maintenance"] },
+    skills: [
+      { name: "Frontend Development",  icon: Code2,
+    color: "#808bf8", skillSet: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"] },
+      { name: "Backend & Data",   icon: Server,
+    color: "#ac47ff",skillSet: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "REST APIs"] },
+      { name: "Design & Creative",     icon: Palette,
+    color: "#f6339a", skillSet: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "Brand Identity", "Large-Format Print", "Illustration"] },
+      { name: "Tools & Platform", icon: Cloud,
+    color: "#00c851",skillSet: ["Git", "GitHub", "WordPress", "SEO", "Digital Marketing", "Web Maintenance"] },
     ],
-    stats: [
-      { value: 9, suffix: "+", name: "Years Experience" },
-      { value: 200, suffix: "+", name: "Design Projects" },
-      { value: 15, suffix: "+", name: "Web Apps Built" },
-      { value: 2, suffix: "", name: "Languages Spoken" },
+    serviceStats: [
+      { value: 9, suffix: "+", name: "Years Experience",color: "#808bf8"  },
+      { value: 200, suffix: "+", name: "Design Projects",color: "#ac47ff" },
+      { value: 15, suffix: "+", name: "Web Apps Built",color: "#f6339a" },
+      { value: 2, suffix: "", name: "Languages Spoken",color: "#00c851" },
     ],
   },
   experience: {
@@ -122,21 +128,79 @@ const en = {
     nationalityNote: "Available for remote work and international collaborations.",
   },
   contact: {
-    badge: "Let's Work Together",
-    title1: "Ready to",
-    title2: "Build Something?",
-    subtitle: "Whether you need a brand identity, a print campaign, or a full-stack web application — I'd love to hear about your project.",
-    availableTitle: "Available for Freelance",
-    availableText: "Currently taking on design and development projects. Remote-friendly.",
-    portfoliosTitle: "My Portfolios",
-    portfolios: {
-      design: "Graphic Design Portfolio",
-      dev: "Developer Portfolio",
-      github: "GitHub Profile",
-      linkedin: "LinkedIn",
-    },
-    methods: ["Email", "Phone / WhatsApp", "Location"],
+  badge: "Let's Work Together",
+  title1: "Ready to",
+  title2: "Build Something?",
+  subtitle: "Whether you need a brand identity, a print campaign, or a full-stack web application — I'd love to hear about your project.",
+  methods: {
+    email: "Email",
+    phone: "Phone / WhatsApp",
+    location: "Location",
   },
+  availableTitle: "Available for Freelance",
+  availableText: "Currently taking on design and development projects. Remote-friendly.",
+  portfoliosTitle: "My Portfolios",
+  portfolios: {
+    design: "Graphic Design Portfolio",
+    instagram: "Instagram Profile",
+    github: "GitHub Profile",
+    linkedin: "LinkedIn",
+  },
+},
+  projectsPage: {
+
+  emptyTitle: "The studio is quiet.",
+  emptySubtitle: "No projects are currently on display. Check back soon for new case studies.",
+      loading: "Loading portfolio...",
+
+ badge: "Selected Works",
+  title1: "Recent",
+  title2: "Projects",
+  subtitle: "A collection of case studies where engineering precision meets design intuition.",
+  viewLive: "View Live",
+  viewAll: "View All Projects",
+  viewCodeAria: "View Source Code",
+  viewLiveAria: "View Live Demo",
+},
+  form: {
+  labels: {
+    name: "Name",
+    email: "Email",
+    subject: "Subject",
+    message: "Message",
+  },
+  placeholders: {
+    name: "John Doe",
+    email: "john@example.com",
+    subject: "How can I help you?",
+    message: "Hi Daniel, I'd like to talk about a project...",
+  },
+  buttons: {
+    sending: "Sending...",
+    sent: "Message Sent",
+    send: "Send Message",
+  },
+  feedback: {
+    success: "Thanks for reaching out! I'll get back to you soon.",
+    error: "Something went wrong. Please try again.",
+  },
+  toasts: {
+    success: "Message sent successfully!",
+    error: "Could not send message. Please try again later.",
+  },
+},
+  projects: {
+  title1: "My",
+  title2: "Projects",
+  subtitle: "A comprehensive showcase of my work, spanning full-stack web development and visual design.",
+  loading: "Loading portfolio...",
+  emptyTitle: "The studio is quiet.",
+  emptySubtitle: "No projects are currently on display. Check back soon for new case studies.",
+  details: "View Details",
+  liveDemo: "Live Demo",
+  viewCode: "Source Code",
+  techStack: "Technologies",
+}
 };
 
 // TypeScript enforces that French has the EXACT same shape as English
@@ -186,17 +250,21 @@ const fr: typeof en = {
     title1: "Compétences &",
     title2: "Savoir-faire",
     subtitle: "Une combinaison rare de maîtrise du design visuel et d'ingénierie web moderne.",
-    categories: [
-      { name: "Développement Frontend", items: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"] },
-      { name: "Backend & Données", items: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "APIs REST"] },
-      { name: "Design & Création", items: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "Identité visuelle", "Impression grand format", "Illustration"] },
-      { name: "Outils & Plateformes", items: ["Git", "GitHub", "WordPress", "SEO", "Marketing digital", "Maintenance web"] },
+    skills: [
+      { name: "Développement Frontend",    icon: Code2,
+    color: "#808bf8", skillSet: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"] },
+      { name: "Backend & Données",  icon: Server,
+    color: "#ac47ff", skillSet: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "APIs REST"] },
+      { name: "Design & Création",   icon: Palette,
+    color: "#f6339a", skillSet: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "Identité visuelle", "Impression grand format", "Illustration"] },
+      { name: "Outils & Plateformes",   icon: Cloud,
+    color: "#00c851", skillSet: ["Git", "GitHub", "WordPress", "SEO", "Marketing digital", "Maintenance web"] },
     ],
-    stats: [
-      { value: 9, suffix: "+", name: "Ans d'expérience" },
-      { value: 200, suffix: "+", name: "Projets design" },
-      { value: 15, suffix: "+", name: "Apps web livrées" },
-      { value: 2, suffix: "", name: "Langues parlées" },
+    serviceStats: [
+      { value: 9, suffix: "+", name: "Ans d'expérience",color: "#808bf8" },
+      { value: 200, suffix: "+", name: "Projets design", color: "#ac47ff" },
+      { value: 15, suffix: "+", name: "Apps web livrées",color: "#f6339a" },
+      { value: 2, suffix: "", name: "Langues parlées",color: "#00c851"  },
     ],
   },
   experience: {
@@ -262,21 +330,80 @@ const fr: typeof en = {
     nationalityNote: "Disponible pour le télétravail et les collaborations internationales.",
   },
   contact: {
-    badge: "Travaillons Ensemble",
-    title1: "Prêt à",
-    title2: "Construire Quelque Chose ?",
-    subtitle: "Identité visuelle, campagne print ou application web full-stack — parlez-moi de votre projet.",
-    availableTitle: "Disponible en Freelance",
-    availableText: "Actuellement disponible pour des projets design et développement. Télétravail bienvenu.",
-    portfoliosTitle: "Mes Portfolios",
-    portfolios: {
-      design: "Portfolio Graphique",
-      dev: "Portfolio Développeur",
-      github: "Profil GitHub",
-      linkedin: "LinkedIn",
-    },
-    methods: ["Email", "Téléphone / WhatsApp", "Localisation"],
+  badge: "Travaillons Ensemble",
+  title1: "Prêt à",
+  title2: "Construire Quelque Chose ?",
+  subtitle: "Identité visuelle, campagne print ou application web full-stack — parlez-moi de votre projet.",
+  methods: {
+    email: "Email",
+    phone: "Téléphone / WhatsApp",
+    location: "Localisation",
   },
+  availableTitle: "Disponible en Freelance",
+  availableText: "Actuellement disponible pour des projets design et développement. Télétravail bienvenu.",
+  portfoliosTitle: "Mes Portfolios",
+  portfolios: {
+    design: "Portfolio Graphique",
+    instagram: "Profil Instagram",
+    github: "Profil GitHub",
+    linkedin: "LinkedIn",
+  },
+},
+
+  projectsPage: {
+
+  emptyTitle: "Le studio est calme.",
+  emptySubtitle: "Aucun projet n'est actuellement affiché. Revenez bientôt pour de nouvelles études de cas.",
+      loading: "Chargement du portfolio...",
+
+  badge: "Travaux Sélectionnés",
+  title1: "Projets",
+  title2: "Récents",
+  subtitle: "Une collection d'études de cas où la précision de l'ingénierie rencontre l'intuition du design.",
+  viewLive: "Voir le site",
+  viewAll: "Voir tous les projets",
+  viewCodeAria: "Voir le code source",
+  viewLiveAria: "Voir la démo",
+},
+  form: {
+  labels: {
+    name: "Nom",
+    email: "Email",
+    subject: "Sujet",
+    message: "Message",
+  },
+  placeholders: {
+    name: "Jean Dupont",
+    email: "jean@example.com",
+    subject: "Comment puis-je vous aider ?",
+    message: "Bonjour Daniel, j'aimerais discuter d'un projet...",
+  },
+  buttons: {
+    sending: "Envoi en cours...",
+    sent: "Message envoyé",
+    send: "Envoyer le message",
+  },
+  feedback: {
+    success: "Merci de m'avoir contacté ! Je vous répondrai rapidement.",
+    error: "Une erreur s'est produite. Veuillez réessayer.",
+  },
+  toasts: {
+    success: "Message envoyé avec succès !",
+    error: "Impossible d'envoyer le message. Veuillez réessayer plus tard.",
+  },
+},
+  projects: {
+  title1: "Mes",
+  title2: "Projets",
+  subtitle: "Une vitrine complète de mon travail, allant du développement web full-stack au design visuel.",
+  loading: "Chargement du portfolio...",
+  emptyTitle: "Le studio est calme.",
+  emptySubtitle: "Aucun projet n'est actuellement affiché. Revenez bientôt pour de nouvelles études de cas.",
+  details: "Voir les détails",
+  liveDemo: "Voir le site",
+  viewCode: "Code source",
+  techStack: "Technologies",
+},
 };
 
 export const translations: Record<Lang, typeof en> = { en, fr };

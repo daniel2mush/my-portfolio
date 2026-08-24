@@ -5,184 +5,238 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { scrollToSection } from "@/components/appComponent/scroll";
-import { FiMenu, FiX } from "react-icons/fi";
-import { Home } from "lucide-react";
+import { Menu, X, Home, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const navSections = [
-  { name: "Home", link: "#home" },
-  { name: "About", link: "#about" },
-  { name: "Skills", link: "#skills" },
-  { name: "Projects", link: "#projects" },
-  { name: "Contact", link: "#contact" },
-  { name: "Resume", link: "/resume" },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function NavBar() {
+  const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState("#home");
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mounted, setMounted] = useState(false);
-  const pathName = usePathname();
-  const navbarHeight = 80; // Adjusted for a slightly taller, premium nav
+  const pathname = usePathname();
+  const navbarHeight = 80;
 
+  const navLinks = [
+    { name: t.nav.home, link: "#home" },
+    { name: t.nav.about, link: "#about" },
+    { name: t.nav.skills, link: "#skills" },
+    { name: t.nav.projects, link: "#projects" },
+    { name: t.nav.contact, link: "#contact" },
+  ];
+
+  // 1. Lock body scroll when mobile menu is open (Fixes the "goes up" bug)
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  // 2. Handle scroll events (Progress, Glassmorphism, Scroll Spy)
   useEffect(() => {
     setMounted(true);
 
     const handleScroll = () => {
-      // 1. Handle Scroll Progress
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const progress = `${(totalScroll / windowHeight) * 100}%`;
-      setScrollProgress(parseFloat(progress));
+      // Progress
+      const totalScroll = window.scrollY;
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = windowHeight > 0 ? (totalScroll / windowHeight) * 100 : 0;
+      setScrollProgress(progress);
 
-      // 2. Handle Glassmorphism state
-      setIsScrolling(window.scrollY > 50);
+      // Glassmorphism
+      setIsScrolled(window.scrollY > 20);
 
-      // 3. Handle Scroll Spy (Active Section)
-      const scrollPos = window.scrollY + navbarHeight + 50;
-      navSections.forEach((section) => {
-        if (!section.link.startsWith("#")) return;
-        const el = document.querySelector(section.link) as HTMLElement;
-        if (el) {
-          const top = el.offsetTop;
-          const bottom = top + el.offsetHeight;
-          if (scrollPos >= top && scrollPos < bottom) {
-            setActiveSection(section.link);
+      // Scroll Spy (only on homepage)
+      if (pathname === "/") {
+        const scrollPos = window.scrollY + navbarHeight + 100;
+        const sections = ["#home", "#about", "#skills", "#projects", "#contact"];
+
+        for (const sectionId of sections) {
+          const el = document.querySelector(sectionId) as HTMLElement | null;
+          if (el) {
+            const top = el.offsetTop;
+            const bottom = top + el.offsetHeight;
+            if (scrollPos >= top && scrollPos < bottom) {
+              setActiveSection(sectionId);
+              break;
+            }
           }
         }
-      });
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Trigger once on mount
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname, navbarHeight]);
 
-  // Prevent hydration mismatch by not rendering complex UI until mounted
-  if (!mounted) return null;
-
-  if (pathName === "/auth" || pathName === "/admin") return;
-
-  // Simplified sub-page navigations (Resume / Projects)
-  if (pathName === "/resume" || pathName === "/projects") {
+  // Prevent hydration mismatch
+  if (!mounted) {
     return (
-      <header className="fixed left-0 top-0 z-[1000] flex h-[70px] w-full items-center border-b border-white/5 bg-background/85 shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition-all duration-300">
+      <header className="fixed left-0 top-0 z-[1000] flex h-20 w-full items-center border-b border-transparent bg-transparent">
+        <div className="mx-auto flex h-full w-full max-w-[1400px] items-center justify-between px-6 md:px-10">
+          <div className="h-10 w-[120px]" />
+        </div>
+      </header>
+    );
+  }
+
+  // Hide on auth/admin
+  if (pathname === "/auth" || pathname === "/admin") return null;
+
+  // Sub-page navigation (Resume / Projects)
+  if (pathname === "/resume" || pathname === "/projects") {
+    return (
+      <header className="fixed left-0 top-0 z-[1000] flex h-20 w-full items-center border-b border-border/50 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-full w-full max-w-[1400px] items-center justify-between px-6 md:px-10">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 font-medium text-text-secondary transition-colors hover:text-foreground"
+            className="group inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-primary/50 hover:bg-primary/5"
           >
-            <Home size={20} />
+            <Home size={16} className="transition-transform group-hover:-translate-x-0.5" />
             <span>Return Home</span>
           </Link>
-          <span className="text-lg font-bold text-foreground">
-            {pathName === "/resume" ? "My Resume" : "All Projects"}
-          </span>
+
+          <LanguageSwitcher />
         </div>
       </header>
     );
   }
 
   return (
-    <header
-      className={cn(
-        "fixed left-0 top-0 z-[1000] flex h-20 w-full items-center border-b border-transparent bg-transparent transition-all duration-300",
-        isScrolling &&
-          "h-[70px] border-white/5 bg-background/85 shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl",
-      )}
-    >
-      <div
-        className="absolute left-0 top-0 z-[1001] h-[3px] bg-primary shadow-[0_0_12px_rgba(242,242,242,0.8)] transition-[width] duration-100"
-        style={{ width: `${scrollProgress}%` }}
-      />
-
-      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center justify-between px-6 md:px-10">
-        <Link href="/" className="relative h-10 w-[120px]">
-          <Image
-            className="object-contain invert"
-            src="/logo.png"
-            alt="Daniel Logo"
-            fill
-            priority
-          />
-        </Link>
-
-        <nav className="hidden items-center justify-center gap-8 md:flex">
-          {navSections.map((n) => {
-            const isResume = n.name === "Resume";
-            const isActive = activeSection === n.link;
-
-            return isResume ? (
-              <Link
-                className="rounded-full border border-white/20 bg-white/5 px-6 py-2.5 text-sm font-bold text-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                key={n.name}
-                href={n.link}
-              >
-                {n.name}
-              </Link>
-            ) : (
-              <button
-                className={cn(
-                  "relative py-2 text-sm font-medium text-text-secondary transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-primary after:transition-all hover:text-foreground hover:after:w-1/2",
-                  isActive && "font-bold text-foreground after:w-full",
-                )}
-                key={n.name}
-                onClick={() => scrollToSection(n.link)}
-              >
-                {n.name}
-              </button>
-            );
-          })}
-        </nav>
-
-        <button
-          className="inline-flex items-center justify-center p-2 text-foreground md:hidden"
-          onClick={() => setMenuOpen(true)}
-          aria-label="Open Menu"
-        >
-          <FiMenu size={28} />
-        </button>
-      </div>
-
-      <div
+    <>
+      <header
         className={cn(
-          "fixed inset-0 z-[2000] flex -translate-y-2 flex-col items-center justify-center bg-background/98 opacity-0 backdrop-blur-2xl transition-all duration-300 pointer-events-none",
-          menuOpen && "translate-y-0 opacity-100 pointer-events-auto",
+          "fixed left-0 top-0 z-[1000] flex h-20 w-full items-center transition-all duration-300",
+          isScrolled
+            ? "h-[70px] border-b border-border/50 bg-background/80 shadow-lg shadow-black/5 backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
         )}
       >
-        <button
-          className="absolute right-8 top-8 rounded-full p-2 text-foreground transition-all hover:rotate-90 hover:bg-white/10"
-          onClick={() => setMenuOpen(false)}
-          aria-label="Close Menu"
-        >
-          <FiX size={32} />
-        </button>
+        {/* Scroll Progress Bar */}
+        <div
+          className="absolute left-0 top-0 z-[1001] h-[2px] bg-gradient-to-r from-primary to-primary/50 shadow-[0_0_10px_var(--primary)] transition-[width] duration-150 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
 
-        <nav className="flex flex-col items-center justify-center gap-8">
-          {navSections.map((n) => {
-            const isResume = n.name === "Resume";
+        <div className="mx-auto flex h-full w-full max-w-[1400px] items-center justify-between px-6 md:px-10">
+          {/* Logo */}
+          <Link href="/" className="relative h-10 w-[120px] shrink-0">
+            <Image
+              className="object-contain invert dark:invert"
+              src="/logo.png"
+              alt="Daniel Ogbeide Logo"
+              fill
+              priority
+            />
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden items-center gap-1 md:flex">
+            {navLinks.map((n) => {
+              const isActive = activeSection === n.link;
+              return (
+                <button
+                  key={n.name}
+                  onClick={() => scrollToSection(n.link, navbarHeight)}
+                  className={cn(
+                    "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {n.name}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Desktop Actions */}
+          <div className="hidden items-center gap-4 md:flex">
+            <LanguageSwitcher />
+            <Link
+              href="/resume"
+              className="group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
+            >
+              {t.nav.resume}
+              <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="flex items-center gap-3 md:hidden">
+            <LanguageSwitcher />
+            <button
+              className="flex size-10 items-center justify-center rounded-full border border-border bg-card/50 text-foreground transition-colors hover:bg-muted"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open Menu"
+              aria-expanded={menuOpen}
+            >
+              <Menu size={20} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[2000] flex flex-col bg-background/95 backdrop-blur-2xl transition-all duration-300 md:hidden",
+          menuOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
+        )}
+        aria-hidden={!menuOpen}
+      >
+        {/* Mobile Header */}
+        <div className="flex h-20 items-center justify-between px-6">
+          <Link href="/" className="relative h-8 w-[100px]" onClick={() => setMenuOpen(false)}>
+            <Image
+              className="object-contain invert dark:invert"
+              src="/logo.png"
+              alt="Daniel Ogbeide Logo"
+              fill
+              priority
+            />
+          </Link>
+          <button
+            className="flex size-10 items-center justify-center rounded-full border border-border bg-card/50 text-foreground transition-all hover:bg-muted hover:rotate-90"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Close Menu"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Mobile Nav Links */}
+        <nav className="flex flex-1 flex-col items-center justify-center gap-2 px-6">
+          {navLinks.map((n, i) => {
             const isActive = activeSection === n.link;
-
-            return isResume ? (
-              <Link
-                className="mt-4 rounded-full bg-primary px-8 py-3 text-lg font-bold text-primary-foreground"
-                key={n.name}
-                href={n.link}
-                onClick={() => setMenuOpen(false)}
-              >
-                {n.name}
-              </Link>
-            ) : (
+            return (
               <button
-                className={cn(
-                  "text-xl font-bold text-text-secondary transition-colors hover:text-foreground",
-                  isActive && "text-primary",
-                )}
                 key={n.name}
+                className={cn(
+                  "w-full rounded-xl px-6 py-4 text-center text-2xl font-semibold transition-all duration-300",
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground hover:bg-muted/50"
+                )}
+                style={{
+                  transitionDelay: menuOpen ? `${i * 50}ms` : "0ms",
+                  opacity: menuOpen ? 1 : 0,
+                  transform: menuOpen ? "translateY(0)" : "translateY(20px)"
+                }}
                 onClick={() => {
                   scrollToSection(n.link, navbarHeight);
                   setMenuOpen(false);
@@ -192,8 +246,21 @@ export default function NavBar() {
               </button>
             );
           })}
+
+          <Link
+            href="/resume"
+            className="mt-4 w-full rounded-xl bg-primary px-6 py-4 text-center text-2xl font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-300"
+            style={{
+              transitionDelay: menuOpen ? `${navLinks.length * 50}ms` : "0ms",
+              opacity: menuOpen ? 1 : 0,
+              transform: menuOpen ? "translateY(0)" : "translateY(20px)"
+            }}
+            onClick={() => setMenuOpen(false)}
+          >
+            {t.nav.resume}
+          </Link>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

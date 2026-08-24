@@ -1,11 +1,13 @@
 "use client";
 
 import { Mail, Phone, MapPin, ArrowUpRight, type LucideIcon } from "lucide-react";
+import { FiInstagram } from "react-icons/fi";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 import MyForm from "@/components/Form/Form";
-import {FiInstagram} from "react-icons/fi";
 
+// Updated interface to use a translation key instead of hardcoded names
 interface ContactMethod {
-  name: string;
+  translationKey: "email" | "phone" | "location";
   value: string;
   href: string;
   icon: LucideIcon;
@@ -13,19 +15,19 @@ interface ContactMethod {
 
 const contactMethods: ContactMethod[] = [
   {
-    name: "Email",
+    translationKey: "email",
     value: "daniel2mush@gmail.com",
     href: "mailto:daniel2mush@gmail.com",
     icon: Mail,
   },
   {
-    name: "Phone / WhatsApp",
+    translationKey: "phone",
     value: "+223 71 90 70 48",
     href: "tel:+22371907048",
     icon: Phone,
   },
   {
-    name: "Location",
+    translationKey: "location",
     value: "Bamako, Mali",
     href: "https://maps.google.com/?q=Bamako,Mali",
     icon: MapPin,
@@ -33,8 +35,10 @@ const contactMethods: ContactMethod[] = [
 ];
 
 export default function Contact() {
+  const { t } = useLanguage();
+
   return (
-    <section id="contact" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+    <section id="contact" className="relative h-auto overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
       <div className="pointer-events-none absolute -left-20 top-1/4 size-[500px] rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
       <div className="pointer-events-none absolute -right-20 bottom-1/4 size-[500px] rounded-full bg-primary/10 blur-[120px]" aria-hidden="true" />
@@ -46,13 +50,13 @@ export default function Contact() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
-            Let's Work Together
+            {t.contact.badge}
           </div>
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Ready to <span className="text-gradient">Build Something?</span>
+            {t.contact.title1} <span className="text-gradient">{t.contact.title2}</span>
           </h2>
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Whether you need a brand identity, a print campaign, or a full-stack web application — I'd love to hear about your project.
+            {t.contact.subtitle}
           </p>
         </header>
 
@@ -60,22 +64,27 @@ export default function Contact() {
           <div className="flex flex-col gap-6 lg:col-span-2">
             <div className="space-y-4">
               {contactMethods.map((method, index) => {
-                const isExternal = method.name === "Location";
+                const isExternal = method.translationKey === "location";
                 return (
                   <a
-                    key={method.name}
+                    key={method.translationKey}
                     href={method.href}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
-                    className="glass group flex items-center gap-4 rounded-xl p-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                    className="glass group flex items-center gap-4 rounded-xl p-4 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                       <method.icon size={22} strokeWidth={1.5} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{method.name}</p>
-                      <p className="truncate text-base font-medium text-foreground transition-colors group-hover:text-primary">{method.value}</p>
+                      {/* Dynamic Label based on language */}
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        {t.contact.methods[method.translationKey]}
+                      </p>
+                      <p className="truncate text-base font-medium text-foreground transition-colors group-hover:text-primary">
+                        {method.value}
+                      </p>
                     </div>
                     <div className="text-muted-foreground transition-transform group-hover:translate-x-1">
                       <ArrowUpRight size={18} />
@@ -91,31 +100,31 @@ export default function Contact() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
                 </span>
-                <h3 className="font-semibold text-foreground">Available for Freelance</h3>
+                <h3 className="font-semibold text-foreground">{t.contact.availableTitle}</h3>
               </div>
               <p className="text-sm text-muted-foreground">
-                Currently taking on design and development projects. Remote-friendly.
+                {t.contact.availableText}
               </p>
             </div>
 
             {/* Portfolio Links */}
             <div className="glass rounded-xl p-5">
-              <h3 className="font-semibold text-foreground mb-3">My Portfolios</h3>
+              <h3 className="font-semibold text-foreground mb-3">{t.contact.portfoliosTitle}</h3>
               <div className="space-y-2">
                 <a href="https://bit.ly/daniel-ogbeide-fullstack" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <span>Graphic Design Portfolio</span>
+                  <span>{t.contact.portfolios.design}</span>
                   <ArrowUpRight size={14} />
                 </a>
                 <a href="https://www.instagram.com/ogbeide_daniiel/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <span>Instagram Profile</span>
+                  <span>{t.contact.portfolios.instagram}</span>
                   <ArrowUpRight size={14} />
                 </a>
                 <a href="https://github.com/daniel2mush" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <span>GitHub Profile</span>
+                  <span>{t.contact.portfolios.github}</span>
                   <ArrowUpRight size={14} />
                 </a>
                 <a href="https://www.linkedin.com/in/daniel-ogbeide/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-sm text-muted-foreground hover:text-primary transition-colors">
-                  <span>LinkedIn</span>
+                  <span>{t.contact.portfolios.linkedin}</span>
                   <ArrowUpRight size={14} />
                 </a>
               </div>

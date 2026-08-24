@@ -1,178 +1,227 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Loader2, Image as ImageIcon, Eye, X } from "lucide-react";
-import { CiShare1 } from "react-icons/ci";
-import { FiGithub } from "react-icons/fi";
+import { Loader2, Image as ImageIcon, X, ExternalLink, Github, FolderKanban } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-// 1. Import your new shared type
 import { Project } from "@/types/project";
 import { useGetAllProject } from "@/lib/query/projectQuery";
-import { Button } from "@/components/ui/Buttons/Buttons";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const styles = {
-  section: "min-h-screen bg-background px-5 py-24 md:py-28",
-  content: "mx-auto flex max-w-[1200px] flex-col",
-  header: "mb-12 flex flex-col items-center text-center",
-  highlight: "text-primary",
-  subtitle: "m-0 max-w-[600px] text-balance text-lg text-text-secondary",
-  grid: "grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8",
-  card: "flex animate-[slide-up_0.6s_ease_forwards] flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] opacity-0 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)]",
-  imageWrapper: "relative h-[200px] w-full",
-  image: "object-cover",
-  imageFallback: "flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-white/[0.02] to-white/[0.05] text-text-secondary",
-  fallbackIcon: "opacity-50",
-  cardBody: "flex grow flex-col items-stretch p-6",
-  title: "mb-2 text-xl font-bold text-foreground",
-  description: "mb-5 overflow-hidden text-sm leading-6 text-text-secondary [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]",
-  tools: "mt-auto flex flex-wrap gap-2",
-  toolTag: "rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary",
-  cardFooter: "border-t border-white/5 px-6 py-4",
-  statusContainer: "flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-background text-lg text-text-secondary",
-  spinner: "animate-spin text-primary",
-  modalOverlay: "fixed inset-0 z-[1000] flex items-center justify-center bg-background/85 p-5 backdrop-blur-md",
-  modalContent: "max-h-[90vh] w-full max-w-[700px] overflow-y-auto rounded-2xl border border-white/10 bg-background shadow-[0_25px_50px_rgba(0,0,0,0.5)]",
-  modalHeader: "flex items-center justify-between border-b border-white/5 px-6 py-5",
-  closeModalBtn: "flex items-center justify-center rounded-full p-2 text-text-secondary transition-all hover:rotate-90 hover:bg-white/10 hover:text-foreground",
-  modalBody: "p-6",
-  previewContent: "flex flex-col gap-6",
-  previewImageWrapper: "relative aspect-video w-full overflow-hidden rounded-lg border border-white/10",
-  fullDescription: "whitespace-pre-wrap text-base leading-8 text-text-secondary",
-  previewTools: "flex flex-wrap gap-2.5",
-  previewLinks: "flex flex-col gap-4 sm:flex-row",
-};
+// --- Sub-Components ---
 
 const ProjectImage = ({ src, alt }: { src: string; alt: string }) => {
   const [hasError, setHasError] = useState(false);
+
   if (!src || hasError) {
     return (
-      <div className={styles.imageFallback}>
-        <ImageIcon size={30} className={styles.fallbackIcon} />
-        <span>No image</span>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-muted text-muted-foreground">
+        <ImageIcon size={32} className="opacity-50" />
+        <span className="text-xs font-medium">No Image</span>
       </div>
     );
   }
+
   return (
     <Image
       src={src}
       alt={alt}
       fill
-      className={styles.image}
+      className="object-cover transition-transform duration-500 group-hover:scale-105"
       sizes="(max-width: 768px) 100vw, 400px"
       onError={() => setHasError(true)}
     />
   );
 };
 
-const Modal = ({
-  isOpen,
-  onClose,
-  title,
-  children,
-}: {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
-}) => {
+}
+
+const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Lock body scroll
+    const originalStyle = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    // Close on Escape
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalStyle;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.modalHeader}>
-          <h2 className="text-xl font-bold text-foreground">{title}</h2>
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <div
+        className="glass relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-2xl border border-border shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/50 bg-background/80 px-6 py-4 backdrop-blur-md">
+          <h2 id="modal-title" className="text-lg font-semibold text-foreground truncate pr-4">
+            {title}
+          </h2>
           <button
-            className={styles.closeModalBtn}
             onClick={onClose}
+            className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Close modal"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
-        <div className={styles.modalBody}>{children}</div>
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );
 };
 
-export default function AllProjectsPage() {
-  const { data, isLoading, isError } = useGetAllProject();
+// --- Skeleton Loader ---
+const ProjectSkeleton = () => (
+  <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card animate-pulse">
+    <div className="aspect-video bg-muted" />
+    <div className="flex flex-1 flex-col p-6 space-y-4">
+      <div className="h-6 w-3/4 rounded bg-muted" />
+      <div className="h-4 w-full rounded bg-muted" />
+      <div className="h-4 w-5/6 rounded bg-muted" />
+      <div className="mt-auto pt-4 flex gap-2">
+        <div className="h-6 w-16 rounded-full bg-muted" />
+        <div className="h-6 w-16 rounded-full bg-muted" />
+      </div>
+    </div>
+  </div>
+);
 
-  // 2. Use the Project type instead of 'any'
+// --- Main Component ---
+export default function AllProjectsPage() {
+  const { t } = useLanguage();
+  const { data, isLoading, isError } = useGetAllProject();
   const [preview, setPreview] = useState<Project | null>(null);
 
-  // Safely cast data from query
   const projects = (data ?? []) as Project[];
 
   if (isLoading) {
     return (
-      <div className={styles.statusContainer}>
-        <Loader2 className={styles.spinner} size={40} />
-        <p>Loading projects...</p>
-      </div>
+      <section className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <div className="mb-4 h-6 w-32 rounded-full bg-muted animate-pulse" />
+            <div className="h-10 w-64 rounded bg-muted animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+            <ProjectSkeleton />
+          </div>
+        </div>
+      </section>
     );
   }
 
   if (isError || projects.length === 0) {
     return (
-      <div className={styles.statusContainer}>
-        <p>No projects found. Check back soon!</p>
-      </div>
+      <section className="flex min-h-[80vh] flex-col items-center justify-center bg-background px-4 text-center">
+        <div className="mb-6 flex size-20 items-center justify-center rounded-full bg-muted/50 text-muted-foreground">
+          <FolderKanban size={32} />
+        </div>
+        <h2 className="mb-2 text-2xl font-bold text-foreground">{t.projects.emptyTitle}</h2>
+        <p className="max-w-md text-muted-foreground">
+          {t.projects.emptySubtitle}
+        </p>
+      </section>
     );
   }
 
   return (
-    <section id="projects" className={styles.section}>
-      <div className={styles.content}>
-        <header className={styles.header}>
-          <h1 className="mb-4 text-[clamp(2.5rem,5vw,3.5rem)] font-black text-foreground">
-            My <span className={styles.highlight}>Projects</span>
+    <section className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+      {/* Background Elements */}
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-6xl">
+        {/* Header */}
+        <header className="mb-16 flex flex-col items-center text-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/50 px-4 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+            </span>
+            Portfolio
+          </div>
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            {t.projects.title1} <span className="text-gradient">{t.projects.title2}</span>
           </h1>
-          <p className={styles.subtitle}>
-            A showcase of my recent work, from web applications to creative
-            experiments.
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            {t.projects.subtitle}
           </p>
         </header>
 
-        <div className={styles.grid}>
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p, index) => (
             <article
               key={p.id}
-              className={styles.card}
-              style={{ "--index": index } as React.CSSProperties}
+              className="group glass relative flex flex-col overflow-hidden rounded-2xl border border-border/60 transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 animate-fade-in-up"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <div className={styles.imageWrapper}>
+              <div className="relative aspect-video w-full overflow-hidden bg-muted">
                 <ProjectImage src={p.imageUrl} alt={p.title} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
 
-              <div className={styles.cardBody}>
-                <h3 className={styles.title}>{p.title}</h3>
-                {/* 3-line truncation handled via Tailwind */}
-                <p className={styles.description}>{p.description}</p>
+              <div className="flex grow flex-col p-6">
+                <h3 className="mb-2 text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                  {p.title}
+                </h3>
+                <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                  {p.description}
+                </p>
 
-                <div className={styles.tools}>
-                  {p.tools?.slice(0, 3).map((t) => (
-                    <span key={t} className={styles.toolTag}>
-                      {t}
+                <div className="mt-auto flex flex-wrap gap-2">
+                  {p.tools?.slice(0, 3).map((t_item) => (
+                    <span key={t_item} className="rounded-md border border-border/50 bg-background/50 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                      {t_item}
                     </span>
                   ))}
-                  {p.tools?.length > 3 && (
-                    <span className={styles.toolTag}>
+                  {p.tools && p.tools.length > 3 && (
+                    <span className="text-[10px] font-medium text-muted-foreground self-center">
                       +{p.tools.length - 3}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className={styles.cardFooter}>
+              <div className="border-t border-border/50 px-6 py-4">
                 <Button
                   variant="outline"
-                  size="sm"
-                  fullWidth
+                  className="w-full gap-2"
                   onClick={() => setPreview(p)}
                 >
-                  <Eye size={16} /> Details
+                  <ExternalLink size={16} /> {t.projects.details}
                 </Button>
               </div>
             </article>
@@ -180,43 +229,51 @@ export default function AllProjectsPage() {
         </div>
       </div>
 
+      {/* Preview Modal */}
       <Modal
         isOpen={!!preview}
         onClose={() => setPreview(null)}
         title={preview?.title || ""}
       >
-        <div className={styles.previewContent}>
-          <div className={styles.previewImageWrapper}>
+        <div className="space-y-6">
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border bg-muted">
             <ProjectImage
               src={preview?.imageUrl || ""}
               alt={preview?.title || ""}
             />
           </div>
-          {/* Full description shown here */}
-          <p className={styles.fullDescription}>{preview?.description}</p>
-          <div className={styles.previewTools}>
-            {preview?.tools?.map((t) => (
-              <span key={t} className={styles.toolTag}>
-                {t}
-              </span>
-            ))}
-          </div>
-          <div className={styles.previewLinks}>
+
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
+            {preview?.description}
+          </p>
+
+          {preview?.tools && preview.tools.length > 0 && (
+            <div>
+              <h4 className="mb-3 text-sm font-semibold text-foreground">{t.projects.techStack}</h4>
+              <div className="flex flex-wrap gap-2">
+                {preview.tools.map((t_item) => (
+                  <span key={t_item} className="rounded-md border border-border/50 bg-muted/50 px-2.5 py-1 text-xs font-medium text-foreground">
+                    {t_item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-3 sm:flex-row pt-2">
             {preview?.liveLink && (
-              <Button
-                variant="primary"
-                onClick={() => window.open(preview.liveLink, "_blank")}
-              >
-                <CiShare1 size={20} /> Live Demo
-              </Button>
+              <a href={preview.liveLink} target="_blank" rel="noopener noreferrer" className="flex-1">
+                <Button variant="default" className="w-full gap-2">
+                  <ExternalLink size={16} /> {t.projects.liveDemo}
+                </Button>
+              </a>
             )}
             {preview?.projectLink && (
-              <Button
-                variant="outline"
-                onClick={() => window.open(preview.projectLink, "_blank")}
-              >
-                <FiGithub size={20} /> View Code
-              </Button>
+              <a href={preview.projectLink} target="_blank" rel="noopener noreferrer" className="flex-1">
+                <Button variant="outline" className="w-full gap-2">
+                  <Github size={16} /> {t.projects.viewCode}
+                </Button>
+              </a>
             )}
           </div>
         </div>

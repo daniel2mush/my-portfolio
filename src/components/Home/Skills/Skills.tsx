@@ -1,51 +1,15 @@
 "use client";
 
-import { Code2, Server, Palette, Cloud, type LucideIcon } from "lucide-react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-interface Skill {
-  name: string;
-  icon: LucideIcon;
-  color: string;
-  skillSet: string[];
-}
-
-const skills: Skill[] = [
-  {
-    name: "Frontend Development",
-    icon: Code2,
-    color: "#808bf8",
-    skillSet: ["React", "Next.js", "TanStack Start", "TypeScript", "JavaScript", "Tailwind CSS", "HTML5", "CSS3"],
-  },
-  {
-    name: "Backend & Data",
-    icon: Server,
-    color: "#ac47ff",
-    skillSet: ["Python", "FastAPI", "Node.js", "Express.js", "PostgreSQL", "SQL", "GraphQL", "REST APIs"],
-  },
-  {
-    name: "Design & Creative",
-    icon: Palette,
-    color: "#f6339a",
-    skillSet: ["Photoshop", "Illustrator", "InDesign", "After Effects", "Premiere Pro", "UI/UX", "Brand Identity", "Print Production"],
-  },
-  {
-    name: "Tools & Platform",
-    icon: Cloud,
-    color: "#00c851",
-    skillSet: ["Git", "GitHub", "WordPress", "SEO", "Digital Marketing", "Web Maintenance"],
-  },
-];
-
-const serviceStats = [
-  { name: "Years Experience", value: 9, suffix: "+", color: "#808bf8" },
-  { name: "Design Projects", value: 200, suffix: "+", color: "#ac47ff" },
-  { name: "Web Apps Built", value: 15, suffix: "+", color: "#f6339a" },
-  { name: "Languages Spoken", value: 2, suffix: "", color: "#00c851" },
-];
 
 export default function Skills() {
+
+  const {t} = useLanguage();
+
+  const s = t.skills
   return (
-    <section id="skills" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+    <section id="skills" className="relative h-auto overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
 
@@ -56,18 +20,18 @@ export default function Skills() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
-            The Toolkit
+            {s.badge}
           </div>
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Skills & <span className="text-gradient">Expertise</span>
+            {s.title1}<span className="text-gradient">{s.title2}</span>
           </h2>
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A rare combination of visual design mastery and modern web engineering.
+            {s.subtitle}
           </p>
         </header>
 
         <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-4">
-          {skills.map((skill) => (
+          {s.skills && s.skills.map((skill) => (
             <div
               key={skill.name}
               className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[var(--theme)]/50 hover:shadow-xl hover:shadow-[var(--theme)]/5"
@@ -102,7 +66,7 @@ export default function Skills() {
         </div>
 
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {serviceStats.map((stat) => (
+          {s.serviceStats.map((stat) => (
             <div
               key={stat.name}
               className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/20 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--theme)]/50 hover:shadow-lg hover:shadow-[var(--theme)]/5"

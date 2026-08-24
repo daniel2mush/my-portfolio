@@ -2,67 +2,14 @@
 
 import { Briefcase, GraduationCap, Globe, Award } from "lucide-react";
 
-const experience = [
-  {
-    role: "Graphic Designer",
-    company: "PACT Afrique",
-    location: "Bamako, Mali",
-    period: "June 2020 — Present",
-    current: true,
-    details: [
-      "Lead graphic production for the company — from concept to final print delivery.",
-      "Design catalogues, brochures, flyers, institutional documents, and large-format supports (banners, kakémonos).",
-      "Create customized promotional merchandise: T-shirts, mugs, agendas, calendars.",
-      "Prepare print-ready files and ensure quality control across all productions.",
-      "Manage multiple client projects simultaneously with strict deadlines.",
-    ],
-  },
-  {
-    role: "Infographer / Graphic Designer",
-    company: "Infographe Com",
-    location: "Bamako, Mali",
-    period: "Jan 2020 — Feb 2021",
-    current: false,
-    details: [
-      "Designed logos, illustrations, and promotional materials for diverse clients.",
-      "Managed graphic projects end-to-end, from initial brief to final delivery.",
-      "Adapted designs based on client feedback while maintaining brand consistency.",
-    ],
-  },
-  {
-    role: "Head of Communication",
-    company: "Lexy",
-    location: "Bamako, Mali",
-    period: "May 2017 — Oct 2019",
-    current: false,
-    details: [
-      "Directed the entire communication department of the company.",
-      "Supervised and mentored two junior graphic designers.",
-      "Developed visual communication strategies to strengthen company visibility.",
-      "Ensured visual consistency and quality control across all productions.",
-      "Organized task distribution and coordinated the graphic team's workflow.",
-    ],
-  },
-];
 
-const education = [
-  {
-    degree: "Web Development Training",
-    school: "Udemy — Self-directed",
-    period: "Ongoing",
-    description: "JavaScript, TypeScript, React, Next.js, Python, FastAPI, PostgreSQL, and modern web technologies.",
-  },
-  {
-    degree: "Graphic Design & Visual Communication",
-    school: "Udemy — Self-directed",
-    period: "2018 — 2020",
-    description: "Graphic design, visual identity, illustration, and graphic communication.",
-  },
-];
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export default function Experience() {
+  const {t} = useLanguage();
+  const e = t.experience
   return (
-    <section id="resume" className="relative min-h-screen overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
+    <section id="resume" className="relative h-auto overflow-hidden bg-background px-4 py-24 sm:px-6 lg:py-32">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" aria-hidden="true" />
 
       <div className="relative mx-auto max-w-6xl">
@@ -72,13 +19,13 @@ export default function Experience() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
             </span>
-            Career Path
+            {e.badge}
           </div>
           <h2 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Professional <span className="text-gradient">Experience</span>
+            {e.title1} <span className="text-gradient">{e.title2}</span>
           </h2>
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Nearly a decade of delivering visual communication and building digital products.
+            {e.subtitle}
           </p>
         </header>
 
@@ -88,13 +35,13 @@ export default function Experience() {
             <div className="glass rounded-2xl p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-8">
                 <Briefcase className="text-primary" size={20} />
-                <h3 className="text-xl font-semibold text-foreground">Work Experience</h3>
+                <h3 className="text-xl font-semibold text-foreground">{e.workTitle}</h3>
               </div>
 
               <div className="relative pl-8 space-y-10">
                 <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-primary via-border to-transparent" />
 
-                {experience.map((job, i) => (
+                {e.items.map((job, i) => (
                   <div key={i} className="relative">
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
@@ -131,10 +78,10 @@ export default function Experience() {
             <div className="glass rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <GraduationCap className="text-primary" size={18} />
-                <h3 className="font-semibold text-foreground">Education & Training</h3>
+                <h3 className="font-semibold text-foreground">{e.educationTitle}</h3>
               </div>
               <div className="space-y-5">
-                {education.map((edu, i) => (
+                {e.education.map((edu, i) => (
                   <div key={i} className="border-l-2 border-primary/30 pl-4">
                     <h4 className="text-sm font-bold text-foreground">{edu.degree}</h4>
                     <p className="text-xs text-muted-foreground mb-1">{edu.school} • {edu.period}</p>
@@ -148,42 +95,49 @@ export default function Experience() {
             <div className="glass rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Globe className="text-primary" size={18} />
-                <h3 className="font-semibold text-foreground">Languages</h3>
+                <h3 className="font-semibold text-foreground">{e.languagesTitle}</h3>
               </div>
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">English</p>
-                    <p className="text-xs text-muted-foreground">Native</p>
-                  </div>
-                  <div className="flex gap-0.5">
-                    {[1,2,3,4,5].map(i => <div key={i} className="h-1.5 w-4 rounded-full bg-primary" />)}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">French</p>
-                    <p className="text-xs text-muted-foreground">Professional</p>
-                  </div>
-                  <div className="flex gap-0.5">
-                    {[1,2,3,4].map(i => <div key={i} className="h-1.5 w-4 rounded-full bg-primary" />)}
-                    <div className="h-1.5 w-4 rounded-full bg-primary/20" />
-                  </div>
-                </div>
-              </div>
+<div className="space-y-3">
+  {/* Map through the translated languages array */}
+  {t.experience.languages.map((language, i) => (
+    <div className="flex items-center justify-between" key={i}>
+
+      {/* Left side: Name and Level */}
+      <div>
+        <p className="text-sm font-semibold text-foreground">{language.name}</p>
+        <p className="text-xs text-muted-foreground">{language.level}</p>
+      </div>
+
+      {/* Right side: Progress Bars */}
+      <div className="flex gap-0.5">
+        {/* 1. Render the FILLED bars based on the 'bars' number from translations */}
+        {Array.from({ length: language.bars }).map((_, idx) => (
+          <div key={`filled-${idx}`} className="h-1.5 w-4 rounded-full bg-primary" />
+        ))}
+
+        {/* 2. Render the EMPTY bars to make up the remaining total of 5 */}
+        {Array.from({ length: 5 - language.bars }).map((_, idx) => (
+          <div key={`empty-${idx}`} className="h-1.5 w-4 rounded-full bg-primary/20" />
+        ))}
+      </div>
+
+    </div>
+  ))}
+</div>              </div>
             </div>
 
             {/* Nationality */}
             <div className="glass rounded-2xl p-6 border-l-4 border-l-primary/50">
               <div className="flex items-center gap-3 mb-2">
                 <Award className="text-primary" size={18} />
-                <h3 className="font-semibold text-foreground">Nationality</h3>
+                <h3 className="font-semibold text-foreground">{e.nationalityTitle}</h3>
               </div>
               <p className="text-sm text-muted-foreground">
-                Nigerian 🇳🇬 • Based in Bamako, Mali 🇲🇱
+                {e.nationality}
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                Available for remote work and international collaborations.
+                {e.nationalityNote}
               </p>
             </div>
           </div>
